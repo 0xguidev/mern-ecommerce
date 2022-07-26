@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "mern shopping cart app",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node ./backend/server.js",
     "server": "npx nodemon ./backend/server.js",
