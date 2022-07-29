@@ -1,6 +1,6 @@
 # Mern e-commerce
 
-Esse é um projeto fullstack, para demonstrar minhas habilidades. è composto por um front-end feito com React e redux. Um backend feito NodeJs e express.
+Esse é um projeto fullstack, para demonstrar minhas habilidades. É composto por um front-end feito com React e redux. Um backend feito NodeJs e express.
 
 
 
