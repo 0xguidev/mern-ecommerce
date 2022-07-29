@@ -1,59 +1,55 @@
-# Project Title
+# Mern e-commerce
 
-One Paragraph of the project description
+Esse é um projeto fullstack, para demonstrar minhas habilidades. è composto por um front-end feito com React e redux. Um backend feito NodeJs e express.
 
-Initially appeared on
-[gist](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2). But the page cannot open anymore so that is why I have moved it here.
+
 
 ## Getting Started
 
-These instructions will give you a copy of the project up and running on
-your local machine for development and testing purposes. See deployment
-for notes on deploying the project on a live system.
+Siga as instruções a baixo para rodar o projeto localmente.
 
 ### Prerequisites
 
-Requirements for the software and other tools to build, test and push 
-- [Example 1](https://www.example.com)
-- [Example 2](https://www.example.com)
+Pre requisitos para rodar o projeto localmente 
+- [MongoDb](https://www.mongodb.com/)
+- [Npm](https://www.npmjs.com/)
+- [Node](https://nodejs.org/)
+- [vscode](https://code.visualstudio.com/) (Ou o seu editor favorito :)
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development
-environment running
+Clone esse repositório do github, abra ele localmente e rode os comandos
 
-Say what the step will be
+instale as dependencias no diretório raiz do projeto
 
-    Give the example
+    npm install
 
-And repeat
+a mesma coisa no diretório /frontend
 
-    until finished
+    npm install
 
-End with an example of getting some data out of the system or using it
-for a little demo
 
-## Running the tests
+<!-- ## Running the tests
 
-Explain how to run the automated tests for this system
+Explain how to run the automated tests for this system -->
 
-### Sample Tests
+<!-- ### Sample Tests
 
 Explain what these tests test and why
 
-    Give an example
+    Give an example -->
 
-### Style test
+<!-- ### Style test
 
 Checks if the best practices and the right coding style has been used.
 
-    Give an example
+    Give an example -->
 
-## Deployment
+<!-- ## Deployment
 
-Add additional notes to deploy this on a live system
+Add additional notes to deploy this on a live system -->
 
-## Built With
+<!-- ## Built With
 
   - [Contributor Covenant](https://www.contributor-covenant.org/) - Used
     for the Code of Conduct
@@ -90,4 +86,4 @@ details
 
   - Hat tip to anyone whose code is used
   - Inspiration
-  - etc
+  - etc -->
