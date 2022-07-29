@@ -29,6 +29,22 @@ a mesma coisa no diretório /frontend
     npm install
 
 
+### Running Frontend
+
+para rodar somente o frontend utilze o comando:
+
+    npm run client
+
+### Running Backend
+
+para rodar somente o backend utilize o comando:
+
+    npm run server
+
+## Running Backend and Frontend
+
+    npm run dev
+
 <!-- ## Running the tests
 
 Explain how to run the automated tests for this system -->
