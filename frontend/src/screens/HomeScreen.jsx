@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
 import Products from '../components/Products';
-import { asyncListProduct } from '../redux/reducers/ProductReducer';
+import axios from 'axios';
 
 const HomeScreen = () => {
-  const products = useSelector((state) => state.productList.products);
-  const dispatch = useDispatch();
+  const [products, setProducts] = useState([]);
   const [isLoad, setIsLoad] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      dispatch(asyncListProduct());
-
+      const {data} = await axios.get('http://localhost:3001/api/products');
+      
+      setProducts(data);
       setIsLoad(true);
     };
     fetchProducts();
-    // eslint-disable-next-line
   }, []);
 
   return !isLoad ? (
