@@ -20,8 +20,10 @@ const HomeScreen = () => {
   }, []);
 
   return !isLoad ? (
-    <div className="spinner-border" role="status">
-      <span className="sr-only">Loading...</span>
+    <div className="text-center">
+      <div className="spinner-grow m-5" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
     </div>
   ) : (
     <>
