@@ -6,9 +6,10 @@ const productReducer = createSlice({
   initialState: {
     loading: 'idle',
     products: [],
+    product: {}
   },
   reducers: {
-    productsLoading(state, action) {
+    productsLoading(state) {
       if (state.loading === 'idle') {
         state.loading = 'pending';
       }
@@ -19,10 +20,16 @@ const productReducer = createSlice({
         state.products = [...action.payload];
       }
     },
+    singleProductReceived(state, action) {
+        if(state.loading === 'pending') {
+            state.loading = 'idle';
+            state.product = action.payload
+        }
+    }
   },
 });
 
-export const { productReceived, productsLoading } = productReducer.actions;
+export const { productReceived, productsLoading, singleProductReceived } = productReducer.actions;
 export default productReducer.reducer;
 
 export const asyncListProduct = () => async (dispatch) => {
@@ -30,3 +37,11 @@ export const asyncListProduct = () => async (dispatch) => {
   const { data } = await axios.get('http://localhost:3001/api/products');
   dispatch(productReceived(data));
 };
+
+export const asyncSingleProduct = (productId) => async (dispatch) => {
+    dispatch(productsLoading());
+    const { data } = await axios.get(
+        `http://localhost:3001/api/products/${productId}`
+      );
+    dispatch(singleProductReceived(data));
+  };
