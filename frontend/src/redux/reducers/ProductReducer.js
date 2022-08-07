@@ -7,14 +7,10 @@ const productReducer = createSlice({
     loading: 'idle',
     products: [],
     product: {},
+    error: '',
   },
   reducers: {
-    productsLoading(state) {
-      if (state.loading === 'idle') {
-        state.loading = 'pending';
-      }
-    },
-    productReceived(state, action) {
+    listProductReceived(state, action) {
       if (state.loading === 'pending') {
         state.loading = 'idle';
         state.products = [...action.payload];
@@ -26,20 +22,35 @@ const productReducer = createSlice({
         state.product = action.payload;
       }
     },
+    throwErrorProduct(state, action) {
+      if (state.loading === 'pending') {
+        state.loading = 'idle';
+        state.error = action.payload;
+      }
+    },
+    productsLoading(state) {
+      if (state.loading === 'idle') {
+        state.loading = 'pending';
+      }
+    },
   },
 });
 
-export const { productReceived, productsLoading, singleProductReceived } =
-  productReducer.actions;
+export const {
+  listProductReceived,
+  productsLoading,
+  singleProductReceived,
+  throwErrorProduct,
+} = productReducer.actions;
 export default productReducer.reducer;
 
 export const asyncListProduct = () => async (dispatch) => {
   try {
     dispatch(productsLoading());
     const { data } = await axios.get('http://localhost:3001/api/products');
-    dispatch(productReceived(data));
+    dispatch(listProductReceived(data));
   } catch (error) {
-    console.error(error.message);
+    dispatch(throwErrorProduct(error.message));
   }
 };
 
@@ -51,6 +62,6 @@ export const asyncSingleProduct = (productId) => async (dispatch) => {
     );
     dispatch(singleProductReceived(data));
   } catch (error) {
-    console.error(error.messageg);
+    dispatch(throwErrorProduct(error.message));
   }
 };

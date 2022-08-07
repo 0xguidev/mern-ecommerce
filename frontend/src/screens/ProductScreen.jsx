@@ -10,20 +10,24 @@ import {
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import Message from '../components/Message';
+import Loading from '../components/Loading';
 import Rating from '../components/Rating';
+import { asyncAddProduct } from '../redux/reducers/cartReducer';
 import { asyncSingleProduct } from '../redux/reducers/ProductReducer';
 
 const ProductScreen = () => {
   const { id } = useParams();
   const product = useSelector((state) => state.productList.product);
+  const error = useSelector((state) => state.productList.error);
   const dispatch = useDispatch();
   const [isLoad, setIsLoad] = useState(false);
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProd = async () => {
-      dispatch(asyncSingleProduct(id));
+      await dispatch(asyncSingleProduct(id));
 
       setIsLoad(true);
     };
@@ -32,15 +36,14 @@ const ProductScreen = () => {
   }, []);
 
   const addtoCartHandler = () => {
-    navigate(`/cart/${id}?qty=${qty}`);
+    dispatch(asyncAddProduct(id, qty));
+    navigate(`../cart/${id}?qty=${qty}`);
   };
 
   return !isLoad ? (
-    <div className="text-center">
-      <div className="spinner-grow m-5" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </div>
-    </div>
+    <Loading />
+  ) : error.length > 0 ? (
+    <Message variant="danger">{error}</Message>
   ) : (
     <>
       <Link className="btn btn-dark my-3" to="/">
