@@ -1,33 +1,49 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap';
-import { Link, useParams } from 'react-router-dom';
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  Image,
+  ListGroup,
+  Row,
+} from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import Message from '../components/Message';
+import Loading from '../components/Loading';
 import Rating from '../components/Rating';
+import { asyncAddProduct } from '../redux/reducers/cartReducer';
+import { asyncSingleProduct } from '../redux/reducers/ProductReducer';
 
 const ProductScreen = () => {
   const { id } = useParams();
-  const [prod, setProd] = useState({});
+  const product = useSelector((state) => state.productList.product);
+  const error = useSelector((state) => state.productList.error);
+  const dispatch = useDispatch();
   const [isLoad, setIsLoad] = useState(false);
+  const [qty, setQty] = useState(1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProd = async () => {
-      const { data } = await axios.get(
-        `http://localhost:3001/api/products/${id}`
-      );
+      await dispatch(asyncSingleProduct(id));
 
-      setProd(data);
       setIsLoad(true);
     };
     fetchProd();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const addtoCartHandler = () => {
+    dispatch(asyncAddProduct(id, qty));
+    navigate(`../cart/${id}?qty=${qty}`);
+  };
+
   return !isLoad ? (
-    <div className="text-center">
-      <div className="spinner-grow m-5" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </div>
-    </div>
+    <Loading />
+  ) : error.length > 0 ? (
+    <Message variant="danger">{error}</Message>
   ) : (
     <>
       <Link className="btn btn-dark my-3" to="/">
@@ -35,18 +51,18 @@ const ProductScreen = () => {
       </Link>
       <Row>
         <Col md={6}>
-          <Image src={prod.image} alt={prod.name} fluid />
+          <Image src={product.image} alt={product.name} fluid />
         </Col>
         <Col md={3}>
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h2>{prod.name}</h2>
+              <h2>{product.name}</h2>
             </ListGroup.Item>
             <ListGroup.Item>
-              <Rating value={prod.rating} text={`${prod.numReviews}`} />
+              <Rating value={product.rating} text={`${product.numReviews}`} />
             </ListGroup.Item>
-            <ListGroup.Item>Price: ${prod.price}</ListGroup.Item>
-            <ListGroup.Item>Description: {prod.description}</ListGroup.Item>
+            <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
+            <ListGroup.Item>Description: {product.description}</ListGroup.Item>
           </ListGroup>
         </Col>
         <Col md={3}>
@@ -56,7 +72,7 @@ const ProductScreen = () => {
                 <Row>
                   <Col>Price:</Col>
                   <Col>
-                    <strong>${prod.price}</strong>
+                    <strong>${product.price}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -64,15 +80,38 @@ const ProductScreen = () => {
                 <Row>
                   <Col>Status:</Col>
                   <Col>
-                    {prod.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
+                    {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
                   </Col>
                 </Row>
               </ListGroup.Item>
+
+              {product.countInStock > 0 && (
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Qty</Col>
+                    <Col>
+                      <Form.Control
+                        as="select"
+                        value={qty}
+                        onChange={(e) => setQty(e.target.value)}
+                      >
+                        {[...Array(product.countInStock).keys()].map((x) => (
+                          <option value={x + 1} key={x + 1}>
+                            {x + 1}
+                          </option>
+                        ))}
+                      </Form.Control>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+              )}
+
               <ListGroup.Item className="d-grid gap-2">
                 <Button
+                  onClick={addtoCartHandler}
                   className="btn btn-lg btn-primary"
                   type="button"
-                  disabled={prod.countInStock === 0}
+                  disabled={product.countInStock === 0}
                 >
                   {' '}
                   Add to Cart
