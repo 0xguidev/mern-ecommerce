@@ -1,13 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+const userInfoFromStorage = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
+    : {user: {}, token: '', isLoged: false}
 
 const userLoginReducer = createSlice({
     name: 'login',
     initialState: {
         loading: 'idle',
-        loginState: false,
-        token: '',
-        user: {},
+        loginState: userInfoFromStorage.isLoged,
+        token: userInfoFromStorage.token,
+        user: userInfoFromStorage.user,
         error: '',
     },
     reducers: {
@@ -39,11 +42,11 @@ const userLoginReducer = createSlice({
                 state.error = action.payload;
             }
         },
-        userLogout(state, action) {
-            if (state.loading === 'pending') {
-                state.loading = 'idle';
-                state.error = action.payload;
-            }
+        userLogout(state) {
+            state.loading = 'idle';
+            state.loginState = false;
+            state.user = {};
+            state.token = '';
         },
     },
 });
@@ -52,7 +55,7 @@ export const {
     userLoginFail,
     userLoginRequest,
     userLoginSucess,
-    // userLogout,
+    userLogout,
 } = userLoginReducer.actions;
 export default userLoginReducer.reducer;
 
@@ -65,22 +68,17 @@ export const asyncUserLoginRequest = (email, password) => async (dispatch) => {
         });
         if (status === 200) {
             dispatch(userLoginSucess(data))
+            localStorage.setItem('userInfo', JSON.stringify({user: data, token: data.token, isLoged: true}))
         }
+
     } catch (e) {
         dispatch(userLoginFail(e.response.data.message))
     }
 
 
 };
-//
-// export const asyncSingleProduct = (productId) => async (dispatch) => {
-//     try {
-//         dispatch(productsLoading());
-//         const { data } = await axios.get(
-//             `http://localhost:3001/api/products/${productId}`
-//         );
-//         dispatch(singleProductReceived(data));
-//     } catch (error) {
-//         dispatch(throwErrorProduct(error.message));
-//     }
-// };
+
+export const logoutUser = () => (dispatch) => {
+    localStorage.setItem('userInfo', JSON.stringify({user: {}, token: '', isLoged: false}))
+    dispatch(userLogout())
+}

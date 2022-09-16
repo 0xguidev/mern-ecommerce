@@ -11,7 +11,6 @@ function LoginScreen() {
     const [isError, setIsError] = useState('');
 
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.userLogin.user)
     const error = useSelector((state) => state.userLogin.error)
     const loginState = useSelector((state) => state.userLogin.loginState)
     const navigate = useNavigate()
@@ -22,7 +21,7 @@ function LoginScreen() {
                 setIsError(error)
             }
             if(loginState) {
-               navigate('/home')
+               navigate('/')
             }
         }, [error, loginState]
     )
@@ -30,8 +29,6 @@ function LoginScreen() {
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(asyncUserLoginRequest(userData.email, userData.pass))
-        console.log('click')
-        console.log(user)
     };
 
     return (
