@@ -14,7 +14,7 @@ import Message from '../components/Message';
 import Loading from '../components/Loading';
 import Rating from '../components/Rating';
 import { asyncAddProduct } from '../redux/reducers/cartReducer';
-import { asyncSingleProduct } from '../redux/reducers/ProductReducer';
+import { asyncSingleProduct } from '../redux/reducers/productReducer';
 
 const ProductScreen = () => {
   const { id } = useParams();
