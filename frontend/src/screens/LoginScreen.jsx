@@ -3,10 +3,9 @@ import Form from 'react-bootstrap/Form';
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from 'react-redux';
 import {asyncUserLoginRequest} from "../redux/reducers/userLoginReducer";
-import {useNavigate} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import Container from "react-bootstrap/Container";
 import {Col, Row} from "react-bootstrap";
-
 
 function LoginScreen() {
     const [userData, setUserData] = useState({email: '', pass: ''});
@@ -57,22 +56,29 @@ function LoginScreen() {
                                 onChange={(e) => setUserData({...userData, pass: e.target.value})}
                             />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="Check me out"/>
-                        </Form.Group>
+
                         <Button
                             variant="primary"
                             type="submit"
                         >
                             Submit
                         </Button>
+
+                            <Row className="py-3">
+                                <Col>
+                                    New Customer?{' '}
+                                    <Link to={'/singup'}>
+                                        Register
+                                    </Link>
+                                </Col>
+                            </Row>
                         {
                             (isError) ??
-                            <div>
+                            <Row>
                                 <Form.Text muted>
                                     {error}
                                 </Form.Text>
-                            </div>
+                            </Row>
                         }
                     </Form>
                 </Col>

@@ -1,9 +1,88 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import {Col, Container, Row} from "react-bootstrap";
+import {asyncRegisterRequest} from "../redux/reducers/registerReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 const SingUpScreen = () => {
-  return (
-    <div>SingUpScreen</div>
-  )
+    const [userData, setUserData] = useState({name: '', email: '', password: ''})
+    const [isError, setIsError] = useState('');
+
+    const dispatch = useDispatch()
+    const loginState = useSelector((state) => state.userLogin.loginState)
+    const error = useSelector((state) => state.registerUser.error)
+    const navigate = useNavigate()
+
+    useEffect(
+        () => {
+            if (error) {
+                setIsError(error)
+            }
+            if (loginState) {
+                navigate('/')
+            }
+        }, [error, loginState]
+    )
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        await dispatch(asyncRegisterRequest(userData))
+    }
+
+    return (
+        <Container>
+            <Form onSubmit={handleSubmit}>
+                <Row className='justify-content-center'>
+                    <Col xs={6} md={3}>
+                        <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Label>Full Name</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter name"
+                                onChange={(e) => setUserData({...userData, name: e.target.value})}
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control
+                                type="email"
+                                placeholder="Enter email"
+                                onChange={(e) => setUserData({...userData, email: e.target.value})}
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="Password"
+                                onChange={(e) => setUserData({...userData, password: e.target.value})}
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                            <Form.Check type="checkbox" label="Check me out"/>
+                        </Form.Group>
+
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
+                        {
+                            (isError) ??
+                            <Row>
+                                <Form.Text muted>
+                                    {error}
+                                </Form.Text>
+                            </Row>
+                        }
+                    </Col>
+                </Row>
+            </Form>
+        </Container>
+    );
 }
 
 export default SingUpScreen

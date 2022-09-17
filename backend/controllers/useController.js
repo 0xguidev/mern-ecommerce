@@ -28,7 +28,7 @@ const authUser = asyncHandler(async (req, res) => {
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
     const {name, email, password} = req.body
-
+    console.log(req.body)
     const userExists = await User.findOne({ email })
 
     if (userExists){
@@ -40,13 +40,13 @@ const registerUser = asyncHandler(async (req, res) => {
     })
 
     if(user) {
-        res.status(200).json({message: {
+        res.status(200).json({
                 _id: user._id,
                 name: user.name,
                 email: user.email,
                 isAdmin: user.isAdmin,
                 token: generateToken(user._id),
-            }})
+            })
     } else {
         res.status(401).json({message: 'Invalid email or password'})
     }
