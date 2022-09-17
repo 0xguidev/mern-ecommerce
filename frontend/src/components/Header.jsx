@@ -4,24 +4,25 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { LinkContainer } from 'react-router-bootstrap';
 import {useSelector} from "react-redux";
+import {NavDropdown} from "react-bootstrap";
 
 const Header = () => {
   const [loginStatus, setLoginStatus] = useState()
-  const loginState = useSelector((state) => state.userLogin.loginState)
+  const loginState = useSelector((state) => state.userLogin)
   useEffect(
       () => {
-        if (loginState === false) {
-          setLoginStatus(loginState)
+        if (loginState.loginState === false) {
+          setLoginStatus(loginState.loginState)
         }else {
-          setLoginStatus(loginState)
+          setLoginStatus(loginState.loginState)
         }
-      }, [loginState]
+      }, [loginState.loginState]
   )
 
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
-        <Container>
+        <Container >
           <LinkContainer to="/">
             <Navbar.Brand>ProShop</Navbar.Brand>
           </LinkContainer>
@@ -30,15 +31,23 @@ const Header = () => {
             <Nav className="m-auto">
               <LinkContainer to="/cart">
                 <Nav.Link>
-                  <i className="fas fa-shopping-cart"></i> Cart
+                  <i className="fas fa-shopping-cart"></i>  Cart
                 </Nav.Link>
               </LinkContainer>
               {(loginStatus) ?
-                    <LinkContainer to="/logout">
-                        <Nav.Link>
-                            <i className={"fas fa-sign-out-alt"}> Log Out </i>
-                        </Nav.Link>
-                    </LinkContainer>: null
+              <NavDropdown title={loginState.user.name} className="">
+                  <LinkContainer to="/profile">
+                      <Nav.Link>
+                          <i className={"fas fa-sign-out-alt nav-link"}>  Profile </i>
+                      </Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to="/logout">
+                      <Nav.Link>
+                          <i className={"fas fa-sign-out-alt nav-link"}>  Log Out </i>
+                      </Nav.Link>
+                  </LinkContainer>
+              </NavDropdown>
+                  : null
               }
               {!loginStatus ?
                   <LinkContainer to="/singup">

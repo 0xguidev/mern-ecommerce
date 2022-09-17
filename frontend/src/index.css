@@ -19,3 +19,14 @@ h3 {
 .rating span {
   margin: 0.1rem;
 }
+.dropdown-menu.show {
+  background-color: #aBbAbB;
+  padding-left: 10px;
+
+}
+
+.header-font-style {
+  font-family: Lato, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-size: 1rem;
+  font-weight: 600;
+}
