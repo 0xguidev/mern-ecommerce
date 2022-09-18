@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Button,
     Card,
@@ -8,16 +8,16 @@ import {
     ListGroup,
     Row,
 } from 'react-bootstrap';
-import {useDispatch, useSelector} from 'react-redux';
-import {Link, useParams, useNavigate} from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import Message from '../components/Message';
 import Loading from '../components/Loading';
 import Rating from '../components/Rating';
-import {asyncAddProduct} from '../redux/reducers/cartReducer';
-import {asyncSingleProduct} from '../redux/reducers/productReducer';
+import { asyncAddProduct } from '../redux/reducers/cartReducer';
+import { asyncSingleProduct } from '../redux/reducers/productReducer';
 
 const ProductScreen = () => {
-    const {id} = useParams();
+    const { id } = useParams();
     const product = useSelector((state) => state.productList.product);
     const error = useSelector((state) => state.productList.error);
     const dispatch = useDispatch();
@@ -35,13 +35,14 @@ const ProductScreen = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+
     const addtoCartHandler = () => {
         dispatch(asyncAddProduct(id, qty));
         navigate(`../cart/${id}?qty=${qty}`);
     };
 
     return !isLoad ? (
-        <Loading/>
+        <Loading />
     ) : error.length > 0 ? (
         <Message variant="danger">{error}</Message>
     ) : (
@@ -51,7 +52,7 @@ const ProductScreen = () => {
             </Link>
             <Row>
                 <Col md={6}>
-                    <Image src={product.image} alt={product.name} fluid/>
+                    <Image src={product.image} alt={product.name} fluid />
                 </Col>
                 <Col md={3}>
                     <ListGroup variant="flush">
@@ -59,7 +60,7 @@ const ProductScreen = () => {
                             <h2>{product.name}</h2>
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            <Rating value={product.rating} text={`${product.numReviews}`}/>
+                            <Rating value={product.rating} text={`${product.numReviews}`} />
                         </ListGroup.Item>
                         <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
                         <ListGroup.Item>Description: {product.description}</ListGroup.Item>
