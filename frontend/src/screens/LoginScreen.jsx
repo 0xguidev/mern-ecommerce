@@ -6,6 +6,7 @@ import {asyncUserLoginRequest} from "../redux/reducers/userLoginReducer";
 import {Link, useNavigate} from "react-router-dom"
 import Container from "react-bootstrap/Container";
 import {Col, Row} from "react-bootstrap";
+import Message from "../components/Message";
 
 function LoginScreen() {
     const [userData, setUserData] = useState({email: '', pass: ''});
@@ -40,7 +41,6 @@ function LoginScreen() {
                             <Form.Label>Email address</Form.Label>
                             <Form.Control
                                 type="email"
-                                placeholder="Enter email"
                                 required
                                 onChange={(e) => setUserData({...userData, email: e.target.value})}
                             />
@@ -61,7 +61,7 @@ function LoginScreen() {
                             variant="primary"
                             type="submit"
                         >
-                            Submit
+                            Login
                         </Button>
 
                             <Row className="py-3">
@@ -75,6 +75,7 @@ function LoginScreen() {
                         {
                             (isError) ??
                             <Row>
+                                <Message variant="danger">{error}</Message>
                                 <Form.Text muted>
                                     {error}
                                 </Form.Text>

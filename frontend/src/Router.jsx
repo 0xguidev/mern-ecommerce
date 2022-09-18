@@ -6,11 +6,7 @@ import CartScreen from './screens/CartScreen';
 import SingUpScreen from './screens/SingUpScreen';
 import LoginScreen from "./screens/LoginScreen";
 import LogoutScreen from "./screens/LogoutScreen";
-import EditPerfil from "./components/profile_components/EditPerfil";
-import OrdersUser from "./components/profile_components/OrdersUser";
 import ProfileScreen from "./screens/profileScreen";
-import MailUser from "./components/profile_components/MailUser";
-import AccountSettings from "./components/profile_components/AccountSettings";
 
 const Router = () => {
     return (
@@ -24,11 +20,7 @@ const Router = () => {
             </Route>
             <Route exact path="/logout" element={<LogoutScreen/>}/>
             <Route exact path="/singup" element={<SingUpScreen/>}/>
-            <Route exact path="/profile" element={<ProfileScreen/>}/>
-            <Route exact path="/profile/edit" element={<EditPerfil/>}/>
-            <Route exact path="/profile/orders" element={<OrdersUser/>}/>
-            <Route exact path="/profile/mail" element={<MailUser/>}/>
-            <Route exact path="/profile/settings" element={<AccountSettings/>}/>
+            <Route exact path="/profile" element={<ProfileScreen/>} />
         </Routes>
     );
 };

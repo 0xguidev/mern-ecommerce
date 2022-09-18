@@ -15,7 +15,6 @@ import Message from '../components/Message';
 import Loading from '../components/Loading';
 
 const CartScreen = () => {
-  // const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cartItems.cartItems);
   const { id } = useParams();
   const search = useLocation().search;

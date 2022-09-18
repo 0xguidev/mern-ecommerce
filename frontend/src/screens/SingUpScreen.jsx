@@ -5,6 +5,7 @@ import {Col, Container, Row} from "react-bootstrap";
 import {asyncRegisterRequest} from "../redux/reducers/registerReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import Message from "../components/Message";
 
 const SingUpScreen = () => {
     const [userData, setUserData] = useState({
@@ -103,15 +104,11 @@ const SingUpScreen = () => {
                             type="submit"
                             disabled={userData.isDisabled}
                         >
-                            Submit
+                            Register
                         </Button>
                         {
                             (isError) ??
-                            <Row>
-                                <Form.Text muted>
-                                    {error}
-                                </Form.Text>
-                            </Row>
+                                <Message variant="danger">{error}</Message>
                         }
                     </Col>
                 </Row>
