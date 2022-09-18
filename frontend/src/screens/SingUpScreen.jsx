@@ -7,7 +7,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
 const SingUpScreen = () => {
-    const [userData, setUserData] = useState({name: '', email: '', password: ''})
+    const [userData, setUserData] = useState({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassord: '',
+        isDisabled: true
+    })
     const [isError, setIsError] = useState('');
 
     const dispatch = useDispatch()
@@ -24,6 +30,22 @@ const SingUpScreen = () => {
                 navigate('/')
             }
         }, [error, loginState]
+    )
+
+    useEffect(
+        () => {
+            if(typeof userData.password === 'string') {
+                if (userData.password !== '') {
+                    if (userData.password.length >= 8) {
+                        if (userData.password === userData.confirmPassord) {
+                            setUserData({...userData, isDisabled: false})
+                        } else {
+                            setUserData({...userData, isDisabled: true})
+                        }
+                    }
+                }
+            }
+        }, [userData]
     )
 
     const handleSubmit = async (e) => {
@@ -63,11 +85,24 @@ const SingUpScreen = () => {
                             />
                         </Form.Group>
 
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Label>Confirm password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="Confirm password"
+                                onChange={(e) => setUserData({...userData, confirmPassord: e.target.value})}
+                            />
+                        </Form.Group>
+
                         <Form.Group className="mb-3" controlId="formBasicCheckbox">
                             <Form.Check type="checkbox" label="Check me out"/>
                         </Form.Group>
 
-                        <Button variant="primary" type="submit">
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            disabled={userData.isDisabled}
+                        >
                             Submit
                         </Button>
                         {
