@@ -1,21 +1,29 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
+import {Col, Container, Row} from 'react-bootstrap';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Router from './Router';
+import SideBarMenu from './components/SideBarMenu'
 
 const App = () => {
-  return (
-    <>
-      <Header />
-      <main className="py-3">
-        <Container>
-          <Router />
+    return (
+        <Container className="app-container">
+            <Header />
+            <Row className="main-page-row fixed-left">
+                <Col sm={2}>
+                    <SideBarMenu />
+                </Col>
+                <Col sm={10}>
+                    <main >
+                        <Container>
+                            <Router />
+                        </Container>
+                    </main>
+                </Col>
+            </Row>
+            <Footer />
         </Container>
-      </main>
-      <Footer />
-    </>
-  );
+    );
 };
 
 export default App;
