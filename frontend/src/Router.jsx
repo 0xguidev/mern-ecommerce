@@ -6,6 +6,7 @@ import CartScreen from './screens/CartScreen';
 import SingUpScreen from './screens/SingUpScreen';
 import LoginScreen from "./screens/LoginScreen";
 import LogoutScreen from "./screens/LogoutScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
 const Router = () => {
   return (
@@ -19,6 +20,7 @@ const Router = () => {
       </Route>
       <Route exact path="/logout" element={<LogoutScreen />} />
       <Route exact path="/singup" element={<SingUpScreen />} />
+        <Route exact path="/profile" element={<ProfileScreen />} />
     </Routes>
   );
 };
