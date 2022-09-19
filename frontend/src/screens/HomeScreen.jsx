@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loading from '../components/Loading';
 import Products from '../components/Products';
-import { asyncListProduct } from '../redux/reducers/ProductReducer';
+import { asyncListProduct } from '../redux/reducers/productReducer';
 
 const HomeScreen = () => {
   const products = useSelector((state) => state.productList.products);
