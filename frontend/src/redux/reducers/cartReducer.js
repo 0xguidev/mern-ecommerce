@@ -14,12 +14,17 @@ const shippingAddressFromStorage = localStorage.getItem('shippingAddress')
       postalCode: '',
     };
 
+const paymentMethodFromStorage = localStorage.getItem('paymentMethod')
+  ? JSON.parse(localStorage.getItem('paymentMethod'))
+  : '';
+
 const cartReducer = createSlice({
   name: 'cart',
   initialState: {
     loading: 'idle',
     cartItems: cartItemsFromStorage,
     shipping: shippingAddressFromStorage,
+    paymentMethod: paymentMethodFromStorage,
     error: '',
   },
   reducers: {
@@ -63,9 +68,16 @@ const cartReducer = createSlice({
 
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
-    SaveShippingAddress(state, action) {
+    saveShippingAddress(state, action) {
       state.shipping = action.payload;
       localStorage.setItem('shippingAddress', JSON.stringify(state.shipping));
+    },
+    savePaymentMethod(state, action) {
+      state.paymentMethod = action.payload;
+      // localStorage.setItem(
+      //   'paymentMethod',
+      //   JSON.stringify(state.paymentMethod)
+      // );
     },
   },
 });
@@ -76,7 +88,8 @@ export const {
   saveInLocalStorage,
   throwError,
   cartRemoveItem,
-  SaveShippingAddress,
+  saveShippingAddress,
+  savePaymentMethod,
 } = cartReducer.actions;
 export default cartReducer.reducer;
 

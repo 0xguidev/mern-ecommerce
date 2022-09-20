@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import { Button, Form, Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
-import { SaveShippingAddress } from '../redux/reducers/cartReducer';
+import { saveShippingAddress } from '../redux/reducers/cartReducer';
 
 function ShippingScreen() {
   const dispatch = useDispatch();
@@ -19,13 +17,13 @@ function ShippingScreen() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(SaveShippingAddress({ address, city, country, postalCode }));
+    dispatch(saveShippingAddress({ address, city, country, postalCode }));
     navigate('/payment');
   };
 
   return (
     <Container>
-      <CheckoutSteps step1 step2 />
+      <CheckoutSteps step1 step2 step3 />
       <Form onSubmit={handleSubmit}>
         <Row className="justify-content-center">
           <Col xs={6} md={3}>
