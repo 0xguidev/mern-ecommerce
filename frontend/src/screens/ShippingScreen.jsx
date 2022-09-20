@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import CheckoutSteps from '../components/CheckoutSteps';
 import { SaveShippingAddress } from '../redux/reducers/cartReducer';
 
 function ShippingScreen() {
@@ -24,6 +25,7 @@ function ShippingScreen() {
 
   return (
     <Container>
+      <CheckoutSteps step1 step2 />
       <Form onSubmit={handleSubmit}>
         <Row className="justify-content-center">
           <Col xs={6} md={3}>
