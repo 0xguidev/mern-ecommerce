@@ -4,11 +4,13 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector } from 'react-redux';
-import { NavDropdown } from 'react-bootstrap';
+import { Badge, NavDropdown } from 'react-bootstrap';
 
 const Header = () => {
   const [loginStatus, setLoginStatus] = useState();
   const loginState = useSelector((state) => state.user);
+  const { cartItems } = useSelector((state) => state.cart);
+
   useEffect(() => {
     if (loginState.loginState === false) {
       setLoginStatus(loginState.loginState);
@@ -29,11 +31,16 @@ const Header = () => {
             <Nav className="m-auto">
               <LinkContainer to="/cart">
                 <Nav.Link>
-                  <i className="fas fa-shopping-cart"></i> Cart
+                  <i className="fas fa-shopping-cart">
+                    <Badge bg="secondary">
+                      {cartItems.length > 0 ? cartItems.length : null}
+                    </Badge>
+                  </i>{' '}
+                  Cart
                 </Nav.Link>
               </LinkContainer>
               {loginStatus ? (
-                <NavDropdown title={loginState.user.name} className="">
+                <NavDropdown title={loginState.user.name}>
                   <LinkContainer to="/profile">
                     <Nav.Link>
                       <i className={'fas fa-sign-out-alt nav-link'}>
