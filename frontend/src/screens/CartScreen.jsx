@@ -15,7 +15,7 @@ import Message from '../components/Message';
 import Loading from '../components/Loading';
 
 const CartScreen = () => {
-  const cartItems = useSelector((state) => state.cartItems.cartItems);
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const { id } = useParams();
   const search = useLocation().search;
   const qty = new URLSearchParams(search).get('qty');

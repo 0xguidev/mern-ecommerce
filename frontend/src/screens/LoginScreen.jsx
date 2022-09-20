@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { asyncUserLoginRequest } from '../redux/reducers/userLoginReducer';
+import { asyncUserLoginRequest } from '../redux/reducers/userReducer';
 import { Link, useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import { Col, Row } from 'react-bootstrap';
@@ -13,8 +13,8 @@ function LoginScreen() {
   const [isError, setIsError] = useState('');
 
   const dispatch = useDispatch();
-  const error = useSelector((state) => state.userLogin.error);
-  const loginState = useSelector((state) => state.userLogin.loginState);
+  const error = useSelector((state) => state.user.error);
+  const loginState = useSelector((state) => state.user.loginState);
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -18,8 +18,8 @@ import { asyncSingleProduct } from '../redux/reducers/productReducer';
 
 const ProductScreen = () => {
   const { id } = useParams();
-  const product = useSelector((state) => state.productList.product);
-  const error = useSelector((state) => state.productList.error);
+  const product = useSelector((state) => state.product.product);
+  const error = useSelector((state) => state.product.error);
   const dispatch = useDispatch();
   const [isLoad, setIsLoad] = useState(false);
   const [qty, setQty] = useState(1);

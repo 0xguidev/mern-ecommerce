@@ -8,7 +8,7 @@ import { NavDropdown } from 'react-bootstrap';
 
 const Header = () => {
   const [loginStatus, setLoginStatus] = useState();
-  const loginState = useSelector((state) => state.userLogin);
+  const loginState = useSelector((state) => state.user);
   useEffect(() => {
     if (loginState.loginState === false) {
       setLoginStatus(loginState.loginState);

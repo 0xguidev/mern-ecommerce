@@ -5,14 +5,29 @@ const cartItemsFromStorage = localStorage.getItem('cartItems')
   ? JSON.parse(localStorage.getItem('cartItems'))
   : [];
 
+const shippingAddressFromStorage = localStorage.getItem('shippingAddress')
+  ? JSON.parse(localStorage.getItem('shippingAddress'))
+  : {
+      address: '',
+      city: '',
+      country: '',
+      postalCode: '',
+    };
+
 const cartReducer = createSlice({
   name: 'cart',
   initialState: {
     loading: 'idle',
     cartItems: cartItemsFromStorage,
+    shipping: shippingAddressFromStorage,
     error: '',
   },
   reducers: {
+    addProductsLoading(state) {
+      if (state.loading === 'idle') {
+        state.loading = 'pending';
+      }
+    },
     addItem(state, action) {
       if (state.loading === 'pending') {
         state.loading = 'idle';
@@ -22,6 +37,7 @@ const cartReducer = createSlice({
         const existItem = state.cartItems.find(
           (x) => x.product === item.product
         );
+
         if (existItem) {
           state.cartItems = state.cartItems.map((x) =>
             x.product === existItem.product ? item : x
@@ -37,11 +53,6 @@ const cartReducer = createSlice({
         state.error = action.payload;
       }
     },
-    addProductsLoading(state) {
-      if (state.loading === 'idle') {
-        state.loading = 'pending';
-      }
-    },
     saveInLocalStorage(state) {
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
@@ -52,6 +63,10 @@ const cartReducer = createSlice({
 
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
+    SaveShippingAddress(state, action) {
+      state.shipping = action.payload;
+      localStorage.setItem('shippingAddress', JSON.stringify(state.shipping));
+    },
   },
 });
 
@@ -61,6 +76,7 @@ export const {
   saveInLocalStorage,
   throwError,
   cartRemoveItem,
+  SaveShippingAddress,
 } = cartReducer.actions;
 export default cartReducer.reducer;
 

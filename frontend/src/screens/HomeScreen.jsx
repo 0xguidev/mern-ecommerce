@@ -7,8 +7,8 @@ import Products from '../components/Products';
 import { asyncListProduct } from '../redux/reducers/productReducer';
 
 const HomeScreen = () => {
-  const products = useSelector((state) => state.productList.products);
-  const error = useSelector((state) => state.productList.error);
+  const products = useSelector((state) => state.product.products);
+  const error = useSelector((state) => state.product.error);
   const dispatch = useDispatch();
   const [isLoad, setIsLoad] = useState(false);
 

@@ -8,6 +8,7 @@ import LoginScreen from './screens/LoginScreen';
 import LogoutScreen from './screens/LogoutScreen';
 import ShippingScreen from './screens/ShippingScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import PaymentScreen from './screens/PaymentScreen';
 
 const Router = () => {
   return (
@@ -23,6 +24,7 @@ const Router = () => {
       <Route exact path="/singup" element={<SingUpScreen />} />
       <Route exact path="/profile" element={<ProfileScreen />} />
       <Route exact path="/shipping" element={<ShippingScreen />} />
+      <Route exact path="/payment" element={<PaymentScreen />} />
     </Routes>
   );
 };
