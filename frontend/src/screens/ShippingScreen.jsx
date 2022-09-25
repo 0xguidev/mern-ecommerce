@@ -23,7 +23,7 @@ function ShippingScreen() {
 
   return (
     <Container>
-      <CheckoutSteps step1 step2 step3 />
+      <CheckoutSteps step1 step2 step3 step4 />
       <Form onSubmit={handleSubmit}>
         <Row className="justify-content-center">
           <Col xs={6} md={3}>

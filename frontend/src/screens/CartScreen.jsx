@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { asyncAddProduct, cartRemoveItem } from '../redux/reducers/cartReducer';
+import {
+  asyncAddProduct,
+  removeProductFromCart,
+} from '../redux/reducers/cartReducer';
 import {
   Button,
   Card,
@@ -35,7 +38,7 @@ const CartScreen = () => {
   }, []);
 
   const removeFromCartHandler = (productId) => {
-    dispatch(cartRemoveItem(productId));
+    dispatch(removeProductFromCart(productId));
   };
 
   const checkoutHandler = () => {
