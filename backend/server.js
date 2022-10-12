@@ -5,6 +5,7 @@ import 'colors';
 import connectDB from './config/db.js';
 import productRouter from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import ordersRoutes from './routes/orderRoutes.js';
 import { errorHandle, notFound } from './middleware/errorMiddleware.js';
 
 const app = express();
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/products', productRouter);
 app.use('/api/users', userRoutes);
+app.use('/api/orders', ordersRoutes);
 
 app.use(notFound);
 
