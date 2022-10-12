@@ -32,9 +32,10 @@ function LoginScreen() {
   };
 
   return (
-    <Container>
-      <Row className="justify-content-center">
-        <Col xs={6} md={3}>
+    <Container className="main_container">
+      <h1>Login Screen</h1>
+      <Row>
+        <Col>
           <Form onSubmit={(e) => handleSubmit(e)}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>

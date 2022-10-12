@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loading from '../components/Loading';
@@ -24,19 +24,21 @@ const HomeScreen = () => {
 
   return (
     <>
-      <h1>Latest Products</h1>
       {!isLoad ? (
         <Loading />
       ) : error.length > 0 ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Row>
-          {products.map((product) => (
-            <Col sm={12} md={6} lg={4} xl={3} key={product._id}>
-              <Products product={product}>{product.name}</Products>
-            </Col>
-          ))}
-        </Row>
+        <Container className="main_container">
+          <h1>Latest Products</h1>
+          <Row>
+            {products.map((product) => (
+              <Col sm={12} md={6} lg={4} xl={3} key={product._id}>
+                <Products product={product}>{product.name}</Products>
+              </Col>
+            ))}
+          </Row>
+        </Container>
       )}
     </>
   );

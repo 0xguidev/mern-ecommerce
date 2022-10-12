@@ -51,10 +51,11 @@ const SingUpScreen = () => {
   };
 
   return (
-    <Container>
+    <Container className="main_container">
+      <h1>Sign Up</h1>
       <Form onSubmit={handleSubmit}>
-        <Row className="justify-content-center">
-          <Col xs={6} md={3}>
+        <Row>
+          <Col>
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label>Full Name</Form.Label>
               <Form.Control

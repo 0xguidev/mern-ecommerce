@@ -7,6 +7,7 @@ import {
   Button,
   ListGroupItem,
   Row,
+  Container,
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -18,7 +19,7 @@ const PlaceOrderScreen = () => {
 
   const placeOrderHandle = () => {};
   return (
-    <>
+    <Container>
       <CheckoutSteps step1 step2 step3 step4 />
       <Row>
         <Col md={8}>
@@ -114,7 +115,7 @@ const PlaceOrderScreen = () => {
           </Card>
         </Col>
       </Row>
-    </>
+    </Container>
   );
 };
 

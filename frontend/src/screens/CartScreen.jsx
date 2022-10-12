@@ -9,6 +9,7 @@ import {
   Button,
   Card,
   Col,
+  Container,
   Form,
   Image,
   ListGroup,
@@ -47,11 +48,11 @@ const CartScreen = () => {
 
   return (
     <>
-      <h1>Shopping Cart</h1>
       {!isLoad ? (
         <Loading />
       ) : (
-        <>
+        <Container className="main_container">
+          <h1>Shopping Cart</h1>
           <Row>
             <Col md={8}>
               {cartItems.length === 0 ? (
@@ -142,7 +143,7 @@ const CartScreen = () => {
               </Card>
             </Col>
           </Row>
-        </>
+        </Container>
       )}
     </>
   );
