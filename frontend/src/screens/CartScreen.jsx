@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { asyncAddProduct, cartRemoveItem } from '../redux/reducers/cartReducer';
+import {
+  asyncAddProduct,
+  removeProductFromCart,
+} from '../redux/reducers/cartReducer';
 import {
   Button,
   Card,
   Col,
+  Container,
   Form,
   Image,
   ListGroup,
@@ -15,7 +19,7 @@ import Message from '../components/Message';
 import Loading from '../components/Loading';
 
 const CartScreen = () => {
-  const cartItems = useSelector((state) => state.cartItems.cartItems);
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const { id } = useParams();
   const search = useLocation().search;
   const qty = new URLSearchParams(search).get('qty');
@@ -35,20 +39,20 @@ const CartScreen = () => {
   }, []);
 
   const removeFromCartHandler = (productId) => {
-    dispatch(cartRemoveItem(productId));
+    dispatch(removeProductFromCart(productId));
   };
 
   const checkoutHandler = () => {
-    navigate('/');
+    navigate('/shipping');
   };
 
   return (
     <>
-      <h1>Shopping Cart</h1>
       {!isLoad ? (
         <Loading />
       ) : (
-        <>
+        <Container className="main_container">
+          <h1>Shopping Cart</h1>
           <Row>
             <Col md={8}>
               {cartItems.length === 0 ? (
@@ -139,7 +143,7 @@ const CartScreen = () => {
               </Card>
             </Col>
           </Row>
-        </>
+        </Container>
       )}
     </>
   );
