@@ -9,15 +9,33 @@ import {
   Row,
   Container,
 } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
 import Message from '../components/Message';
+import { asyncCreateOrder } from '../redux/reducers/ordersReducer';
 
 const PlaceOrderScreen = () => {
   const cart = useSelector((state) => state.cart);
+  const token = useSelector((state) => state.user.token);
+  const dispatch = useDispatch();
 
-  const placeOrderHandle = () => {};
+  const placeOrderHandle = () => {
+    dispatch(
+      asyncCreateOrder(
+        {
+          orderItems: cart.cartItems,
+          shippingAddress: cart.shipping,
+          paymentMethod: cart.paymentMethod,
+          itemsPrice: cart.checkout.itemsPrice,
+          shippingPrice: cart.checkout.shippingPrice,
+          taxPrice: cart.checkout.taxPrice,
+          totalPrice: cart.checkout.totalPrice,
+        },
+        token
+      )
+    );
+  };
   return (
     <Container>
       <CheckoutSteps step1 step2 step3 step4 />

@@ -23,7 +23,7 @@ export const addOrderItems = asyncHandler(async (req, res) => {
       orderItems,
       user: req.user._id,
       shippingAddress,
-      paymentMethod,
+      paymentMethod: false, // until paymentMethod is ready
       itemsPrice,
       taxPrice,
       shippingPrice,
