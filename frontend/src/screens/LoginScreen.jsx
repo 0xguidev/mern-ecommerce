@@ -16,7 +16,7 @@ function LoginScreen() {
   const error = useSelector((state) => state.user.error);
   const loginState = useSelector((state) => state.user.loginState);
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     if (error) {
       setIsError(error);
@@ -24,7 +24,7 @@ function LoginScreen() {
     if (loginState) {
       navigate('/');
     }
-  }, [error, loginState]);
+  }, [error, loginState, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

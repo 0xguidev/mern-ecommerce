@@ -31,7 +31,7 @@ function ProfileScreen() {
     if (!loginState) {
       navigate('/');
     }
-  }, [error, loginState]);
+  }, [error, loginState, navigate]);
 
   useEffect(() => {
     if (typeof userData.password === 'string') {

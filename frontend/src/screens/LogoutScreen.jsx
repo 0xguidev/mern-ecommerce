@@ -10,7 +10,7 @@ const LogoutScreen = () => {
   useEffect(() => {
     dispatch(logoutUser());
     navigate('/login');
-  }, []);
+  }, [dispatch, navigate]);
   return <Loading />;
 };
 
