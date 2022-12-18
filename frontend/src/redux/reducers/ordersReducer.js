@@ -5,7 +5,9 @@ const ordersReducer = createSlice({
   name: 'orders',
   initialState: {
     loading: 'idle',
+    load: 'true',
     error: '',
+    order: {}
   },
   reducers: {
     orderLoading(state) {
@@ -17,17 +19,21 @@ const ordersReducer = createSlice({
       if (state.loading === 'pending') {
         state.loading = 'idle';
         state.error = '';
+        state.order = action.payload
       }
     },
     orderByIdSucess(state, action) {
       if (state.loading === 'pending') {
         state.loading = 'idle';
+        state.load = 'false';
         state.error = '';
+        state.order = action.payload
       }
     },
     orderError(state, action) {
       if (state.loading === 'pending') {
         state.loading = 'idle';
+        state.load = 'false';
         state.error = action.payload;
       }
     },
@@ -40,7 +46,7 @@ export default ordersReducer.reducer;
 export const asyncCreateOrder = (orders, token) => async (dispatch) => {
   try {
     dispatch(orderLoading());
-    const data = await axios({
+    const { data } = await axios({
       method: 'post',
       url: 'http://localhost:3001/api/orders',
       headers: {
@@ -58,15 +64,14 @@ export const asyncCreateOrder = (orders, token) => async (dispatch) => {
 export const asyncGetOrderById = (id, token) => async (dispatch) => {
   try {
     dispatch(orderLoading());
-    const data = await axios({
+    const { data } = await axios({
       method: 'get',
       url: `http://localhost:3001/api/orders/${id}`,
       headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`
       }
     });
-    dispatch(orderSucess(data));
+    dispatch(orderByIdSucess(data));
   } catch (error) {
     dispatch(orderError(error.message));
   }

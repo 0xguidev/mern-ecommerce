@@ -10,6 +10,7 @@ import ShippingScreen from './screens/ShippingScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
+import OrderScreen from './screens/OrderScreen';
 
 const Router = () => {
   return (
@@ -27,6 +28,7 @@ const Router = () => {
       <Route exact path="/shipping" element={<ShippingScreen />} />
       <Route exact path="/payment" element={<PaymentScreen />} />
       <Route exact path="/placeOrder" element={<PlaceOrderScreen />} />
+      <Route exact path="/order/:id" element={<OrderScreen />} />
     </Routes>
   );
 };

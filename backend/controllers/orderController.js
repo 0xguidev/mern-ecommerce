@@ -16,8 +16,7 @@ export const addOrderItems = asyncHandler(async (req, res) => {
   } = req.body;
 
   if (orderItems && orderItems.length === 0) {
-    res.status(400).json({ message: 'No order items' });
-    return;
+    return res.status(400).json({ message: 'No order items' });
   } else {
     const order = new Order({
       orderItems,
@@ -32,7 +31,7 @@ export const addOrderItems = asyncHandler(async (req, res) => {
 
     const createdOrder = await order.save();
 
-    res.status(201).json(createdOrder);
+    return res.status(201).json(createdOrder);
   }
 });
 
@@ -42,14 +41,11 @@ export const addOrderItems = asyncHandler(async (req, res) => {
 export const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id).populate(
     'user',
-    'name',
-    'email'
+    'name email'
   );
 
   if (order) {
-    res.status(200).json(order);
-  } else {
-    res.status(404).json({ message: 'not found' });
+    return res.status(200).json(order);
   }
-  res.status(200).json({ message: order });
+  return res.status(404).json({ message: 'not found' });
 });
