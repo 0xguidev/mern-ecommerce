@@ -19,6 +19,12 @@ const ordersReducer = createSlice({
         state.error = '';
       }
     },
+    orderByIdSucess(state, action) {
+      if (state.loading === 'pending') {
+        state.loading = 'idle';
+        state.error = '';
+      }
+    },
     orderError(state, action) {
       if (state.loading === 'pending') {
         state.loading = 'idle';
@@ -28,7 +34,7 @@ const ordersReducer = createSlice({
   },
 });
 
-export const { orderSucess, orderLoading, orderError } = ordersReducer.actions;
+export const { orderSucess, orderLoading, orderByIdSucess, orderError } = ordersReducer.actions;
 export default ordersReducer.reducer;
 
 export const asyncCreateOrder = (orders, token) => async (dispatch) => {
@@ -43,8 +49,24 @@ export const asyncCreateOrder = (orders, token) => async (dispatch) => {
       },
       data: orders,
     });
-    // console.log('data', data);
-    dispatch(orderSucess());
+    dispatch(orderSucess(data));
+  } catch (error) {
+    dispatch(orderError(error.message));
+  }
+};
+
+export const asyncGetOrderById = (id, token) => async (dispatch) => {
+  try {
+    dispatch(orderLoading());
+    const data = await axios({
+      method: 'get',
+      url: `http://localhost:3001/api/orders/${id}`,
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+    dispatch(orderSucess(data));
   } catch (error) {
     dispatch(orderError(error.message));
   }
