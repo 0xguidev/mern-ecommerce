@@ -61,15 +61,13 @@ const OrderScreen = () => {
             )}
           </ListGroupItem>
           <ListGroupItem>
-            <Row>
-              <h2>Payment Method</h2>
-              <span>Method: {order.paymentMethod ? "PayPal" : "Cash"}</span>
-              {order.isPaid ? (
-                <Message variant="success">Paid on {order.PaidAt}</Message>
-              ) : (
-                <Message variant="danger">Not Paid</Message>
-              )}
-            </Row>
+            <h2>Payment Method</h2>
+            <span>Method: {order.paymentMethod ? "PayPal" : "Cash"}</span>
+            {order.isPaid ? (
+              <Message variant="success">Paid on {order.PaidAt}</Message>
+            ) : (
+              <Message variant="danger">Not Paid</Message>
+            )}
           </ListGroupItem>
           <ListGroupItem>
             <h2>Order Items</h2>
