@@ -17,7 +17,6 @@ import { asyncCreateOrder } from '../redux/reducers/ordersReducer';
 
 const PlaceOrderScreen = () => {
   const cart = useSelector((state) => state.cart);
-  const token = useSelector((state) => state.user.token);
   const dispatch = useDispatch();
 
   const placeOrderHandle = () => {
@@ -31,8 +30,7 @@ const PlaceOrderScreen = () => {
           shippingPrice: cart.checkout.shippingPrice,
           taxPrice: cart.checkout.taxPrice,
           totalPrice: cart.checkout.totalPrice,
-        },
-        token
+        }
       )
     );
   };

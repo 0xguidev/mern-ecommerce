@@ -44,15 +44,18 @@ export const { orderSucess, orderLoading, orderByIdSucess, orderError } =
   ordersReducer.actions;
 export default ordersReducer.reducer;
 
-export const asyncCreateOrder = (orders, token) => async (dispatch) => {
+export const asyncCreateOrder = (orders) => async (dispatch, getState) => {
   try {
     dispatch(orderLoading());
+
+    const { user } = getState();
+
     const { data } = await axios({
       method: 'post',
       url: 'http://localhost:3001/api/orders',
       headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
+        authorization: `Bearer ${user.token}`,
+        'Content-Type': 'application/json'
       },
       data: orders,
     });
@@ -62,15 +65,42 @@ export const asyncCreateOrder = (orders, token) => async (dispatch) => {
   }
 };
 
-export const asyncGetOrderById = (id, token) => async (dispatch) => {
+export const asyncGetOrderById = (id) => async (dispatch, getState) => {
   try {
     dispatch(orderLoading());
+
+    const { user } = getState();
+
     const { data } = await axios({
       method: 'get',
       url: `http://localhost:3001/api/orders/${id}`,
       headers: {
-        authorization: `Bearer ${token}`,
+        authorization: `Bearer ${user.token}`,
       },
+    });
+    dispatch(orderByIdSucess(data));
+  } catch (error) {
+    dispatch(orderError(error.message));
+  }
+};
+
+
+export const asyncPayOrder = (orderId, paymentResult) => async (dispatch, getState) => {
+  try {
+    dispatch(orderLoading());
+
+    const {
+      userLogin: { userInfo }
+    } = getState();
+
+    const { data } = await axios({
+      method: 'put',
+      url: `http://localhost:3001/api/orders/${orderId}/pay`,
+      headers: {
+        authorization: `Bearer ${userInfo.token}`,
+        'Content-Type': 'application/json'
+      },
+      data: paymentResult
     });
     dispatch(orderByIdSucess(data));
   } catch (error) {

@@ -18,15 +18,14 @@ import { asyncGetOrderById } from '../redux/reducers/ordersReducer';
 const OrderScreen = () => {
   const dispatch = useDispatch();
   const { order, load, error } = useSelector((state) => state.orders);
-  const token = useSelector((state) => state.user.token);
   const { id } = useParams();
 
   useEffect(() => {
     const getOrderById = async () => {
-      await dispatch(asyncGetOrderById(id, token));
+      await dispatch(asyncGetOrderById(id));
     };
     getOrderById();
-  }, [id, token, dispatch]);
+  }, [id, dispatch]);
 
   return load === 'true' ? (
     <Loading />
