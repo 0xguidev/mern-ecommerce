@@ -51,19 +51,19 @@ const CartScreen = () => {
       {!isLoad ? (
         <Loading />
       ) : (
-        <Container className="main_container">
+        <Container className='main_container'>
           <h1>Shopping Cart</h1>
           <Row>
             <Col md={8}>
               {cartItems.length === 0 ? (
                 <>
                   <Message>Your cart is empty Go Back</Message>
-                  <button type="button" onClick={() => navigate(-1)}>
+                  <button type='button' onClick={() => navigate(-1)}>
                     Go Back
                   </button>
                 </>
               ) : (
-                <ListGroup variant="flush">
+                <ListGroup variant='flush'>
                   {cartItems.map((item) => (
                     <ListGroup.Item key={item.product}>
                       <Row>
@@ -83,7 +83,7 @@ const CartScreen = () => {
                         <Col md={2}>${item.price}</Col>
                         <Col md={2}>
                           <Form.Control
-                            as="select"
+                            as='select'
                             value={item.qty}
                             onChange={(e) =>
                               dispatch(
@@ -103,11 +103,11 @@ const CartScreen = () => {
                         </Col>
                         <Col md={2}>
                           <Button
-                            type="button"
-                            variant="light"
+                            type='button'
+                            variant='light'
                             onClick={() => removeFromCartHandler(item.product)}
                           >
-                            <i className="fas fa-trash"></i>
+                            <i className='fas fa-trash'></i>
                           </Button>
                         </Col>
                       </Row>
@@ -118,7 +118,7 @@ const CartScreen = () => {
             </Col>
             <Col md={4}>
               <Card>
-                <ListGroup variant="flush">
+                <ListGroup variant='flush'>
                   <ListGroup.Item>
                     <h2>
                       Subtotal (
@@ -132,8 +132,8 @@ const CartScreen = () => {
                   </ListGroup.Item>
                   <ListGroup.Item>
                     <Button
-                      type="button"
-                      className="btn-block"
+                      type='button'
+                      className='btn-block'
                       onClick={checkoutHandler}
                     >
                       CHECKOUT

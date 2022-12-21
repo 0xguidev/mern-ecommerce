@@ -7,7 +7,7 @@ const ordersReducer = createSlice({
     loading: 'idle',
     load: 'true',
     error: '',
-    order: {}
+    order: {},
   },
   reducers: {
     orderLoading(state) {
@@ -19,7 +19,7 @@ const ordersReducer = createSlice({
       if (state.loading === 'pending') {
         state.loading = 'idle';
         state.error = '';
-        state.order = action.payload
+        state.order = action.payload;
       }
     },
     orderByIdSucess(state, action) {
@@ -27,7 +27,7 @@ const ordersReducer = createSlice({
         state.loading = 'idle';
         state.load = 'false';
         state.error = '';
-        state.order = action.payload
+        state.order = action.payload;
       }
     },
     orderError(state, action) {
@@ -40,7 +40,8 @@ const ordersReducer = createSlice({
   },
 });
 
-export const { orderSucess, orderLoading, orderByIdSucess, orderError } = ordersReducer.actions;
+export const { orderSucess, orderLoading, orderByIdSucess, orderError } =
+  ordersReducer.actions;
 export default ordersReducer.reducer;
 
 export const asyncCreateOrder = (orders, token) => async (dispatch) => {
@@ -68,8 +69,8 @@ export const asyncGetOrderById = (id, token) => async (dispatch) => {
       method: 'get',
       url: `http://localhost:3001/api/orders/${id}`,
       headers: {
-        authorization: `Bearer ${token}`
-      }
+        authorization: `Bearer ${token}`,
+      },
     });
     dispatch(orderByIdSucess(data));
   } catch (error) {

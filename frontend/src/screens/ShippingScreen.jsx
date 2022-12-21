@@ -25,50 +25,50 @@ function ShippingScreen() {
     <Container>
       <CheckoutSteps step1 step2 step3 step4 />
       <Form onSubmit={handleSubmit}>
-        <Row className="justify-content-center">
+        <Row className='justify-content-center'>
           <Col xs={6} md={3}>
             <h3>Shipping</h3>
-            <Form.Group className="mb-3" controlId="formControlAddress">
+            <Form.Group className='mb-3' controlId='formControlAddress'>
               <Form.Label>Address</Form.Label>
               <Form.Control
-                type="text"
-                placeholder="Address"
+                type='text'
+                placeholder='Address'
                 value={address}
                 onChange={(e) => setAdress(e.target.value)}
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formControlCity">
+            <Form.Group className='mb-3' controlId='formControlCity'>
               <Form.Label>City</Form.Label>
               <Form.Control
-                type="text"
-                placeholder="City"
+                type='text'
+                placeholder='City'
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formControlCountry">
+            <Form.Group className='mb-3' controlId='formControlCountry'>
               <Form.Label>Country</Form.Label>
               <Form.Control
-                type="text"
-                placeholder="country"
+                type='text'
+                placeholder='country'
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formControlPostalCode">
+            <Form.Group className='mb-3' controlId='formControlPostalCode'>
               <Form.Label>Postal Code</Form.Label>
               <Form.Control
-                type="text"
-                placeholder="Postal Code"
+                type='text'
+                placeholder='Postal Code'
                 value={postalCode}
                 onChange={(e) => setPostaCode(e.target.value)}
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant='primary' type='submit'>
               Continue
             </Button>
           </Col>

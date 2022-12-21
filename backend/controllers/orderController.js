@@ -1,5 +1,5 @@
-import Order from "../models/orderModel.js";
-import asyncHandler from "express-async-handler";
+import Order from '../models/orderModel.js';
+import asyncHandler from 'express-async-handler';
 
 // @desc    Create new order
 // @route   Get /api/orders
@@ -16,7 +16,7 @@ export const addOrderItems = asyncHandler(async (req, res) => {
   } = req.body;
 
   if (orderItems && orderItems.length === 0) {
-    return res.status(400).json({ message: "No order items" });
+    return res.status(400).json({ message: 'No order items' });
   } else {
     const order = new Order({
       orderItems,
@@ -40,14 +40,14 @@ export const addOrderItems = asyncHandler(async (req, res) => {
 // @acess   Private
 export const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id).populate(
-    "user",
-    "name email"
+    'user',
+    'name email'
   );
 
   if (order) {
     return res.status(200).json(order);
   }
-  return res.status(404).json({ message: "not found" });
+  return res.status(404).json({ message: 'not found' });
 });
 
 // @desc    Update Order to paid
@@ -68,6 +68,6 @@ export const updateOrderToPaid = asyncHandler(async (req, res) => {
     const updateOrder = await order.save();
     return res.status(200).json({ updateOrder });
   } else {
-    return res.status(404).json({ message: "Order not found" });
+    return res.status(404).json({ message: 'Order not found' });
   }
 });

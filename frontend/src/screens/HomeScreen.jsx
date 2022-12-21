@@ -27,9 +27,9 @@ const HomeScreen = () => {
       {!isLoad ? (
         <Loading />
       ) : error.length > 0 ? (
-        <Message variant="danger">{error}</Message>
+        <Message variant='danger'>{error}</Message>
       ) : (
-        <Container className="main_container">
+        <Container className='main_container'>
           <h1>Latest Products</h1>
           <Row>
             {products.map((product) => (

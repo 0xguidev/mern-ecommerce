@@ -1,5 +1,5 @@
-import React from "react";
-import { useEffect } from "react";
+import React from 'react';
+import { useEffect } from 'react';
 import {
   Card,
   Col,
@@ -8,12 +8,12 @@ import {
   ListGroupItem,
   Row,
   Container,
-} from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import Loading from "../components/Loading";
-import Message from "../components/Message";
-import { asyncGetOrderById } from "../redux/reducers/ordersReducer";
+} from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import Loading from '../components/Loading';
+import Message from '../components/Message';
+import { asyncGetOrderById } from '../redux/reducers/ordersReducer';
 
 const OrderScreen = () => {
   const dispatch = useDispatch();
@@ -28,10 +28,10 @@ const OrderScreen = () => {
     getOrderById();
   }, [id, token, dispatch]);
 
-  return load === "true" ? (
+  return load === 'true' ? (
     <Loading />
   ) : error ? (
-    <Message variant="danger">{error}</Message>
+    <Message variant='danger'>{error}</Message>
   ) : (
     <Container>
       <h1>Order Details</h1>
@@ -48,25 +48,25 @@ const OrderScreen = () => {
               <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
             </p>
             <p>
-              <strong>Address:</strong> {order.shippingAddress.address},{" "}
-              {order.shippingAddress.city}, {order.shippingAddress.postalCode},{" "}
+              <strong>Address:</strong> {order.shippingAddress.address},{' '}
+              {order.shippingAddress.city}, {order.shippingAddress.postalCode},{' '}
               {order.shippingAddress.country}
             </p>
             {order.isDelivered ? (
-              <Message variant="success">
+              <Message variant='success'>
                 Delivered on {order.deliveredAt}
               </Message>
             ) : (
-              <Message variant="danger">Not Delivered</Message>
+              <Message variant='danger'>Not Delivered</Message>
             )}
           </ListGroupItem>
           <ListGroupItem>
             <h2>Payment Method</h2>
-            <span>Method: {order.paymentMethod ? "PayPal" : "Cash"}</span>
+            <span>Method: {order.paymentMethod ? 'PayPal' : 'Cash'}</span>
             {order.isPaid ? (
-              <Message variant="success">Paid on {order.PaidAt}</Message>
+              <Message variant='success'>Paid on {order.PaidAt}</Message>
             ) : (
-              <Message variant="danger">Not Paid</Message>
+              <Message variant='danger'>Not Paid</Message>
             )}
           </ListGroupItem>
           <ListGroupItem>
@@ -74,7 +74,7 @@ const OrderScreen = () => {
             {order.orderItems.length === 0 ? (
               <Message> No Orders</Message>
             ) : (
-              <ListGroup variant="flush">
+              <ListGroup variant='flush'>
                 {order.orderItems.map((item, index) => (
                   <ListGroupItem key={index}>
                     <Row>
@@ -97,7 +97,7 @@ const OrderScreen = () => {
         </Col>
         <Col md={4}>
           <Card>
-            <ListGroup variant="flush">
+            <ListGroup variant='flush'>
               <ListGroupItem>
                 <h2>Order Summary</h2>
               </ListGroupItem>

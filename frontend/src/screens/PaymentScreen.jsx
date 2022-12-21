@@ -26,18 +26,18 @@ function PaymentScreen() {
     <Container>
       <CheckoutSteps step1 step2 step3 step4 />
       <Form onSubmit={handleSubmit}>
-        <Row className="justify-content-center">
+        <Row className='justify-content-center'>
           <Col xs={6} md={3}>
             <h3>PaymentMethod</h3>
             <Form.Group>
-              <Form.Label as="legend">Select Method</Form.Label>
+              <Form.Label as='legend'>Select Method</Form.Label>
               <Col>
                 <Form.Check
-                  type="radio"
-                  label="PayPal or Credit Card"
-                  id="PayPal"
-                  name="paymentMethod"
-                  value="PayPal"
+                  type='radio'
+                  label='PayPal or Credit Card'
+                  id='PayPal'
+                  name='paymentMethod'
+                  value='PayPal'
                   checked={
                     payment === '' || payment === 'PayPal' ? true : false
                   }
@@ -47,18 +47,18 @@ function PaymentScreen() {
 
               <Col>
                 <Form.Check
-                  type="radio"
-                  label="Stripe"
-                  id="Stripe"
-                  name="paymentMethod"
-                  value="Stripe"
+                  type='radio'
+                  label='Stripe'
+                  id='Stripe'
+                  name='paymentMethod'
+                  value='Stripe'
                   checked={payment === 'Stripe'}
                   onChange={(e) => setPayment(e.target.value)}
                 ></Form.Check>
               </Col>
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant='primary' type='submit'>
               Continue
             </Button>
           </Col>

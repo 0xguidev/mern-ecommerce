@@ -43,10 +43,10 @@ const ProductScreen = () => {
   return !isLoad ? (
     <Loading />
   ) : error.length > 0 ? (
-    <Message variant="danger">{error}</Message>
+    <Message variant='danger'>{error}</Message>
   ) : (
     <>
-      <Link className="btn btn-dark my-3" to="/">
+      <Link className='btn btn-dark my-3' to='/'>
         Go Back
       </Link>
       <Row>
@@ -54,7 +54,7 @@ const ProductScreen = () => {
           <Image src={product.image} alt={product.name} fluid />
         </Col>
         <Col md={3}>
-          <ListGroup variant="flush">
+          <ListGroup variant='flush'>
             <ListGroup.Item>
               <h2>{product.name}</h2>
             </ListGroup.Item>
@@ -67,7 +67,7 @@ const ProductScreen = () => {
         </Col>
         <Col md={3}>
           <Card>
-            <ListGroup variant="flush">
+            <ListGroup variant='flush'>
               <ListGroup.Item>
                 <Row>
                   <Col>Price:</Col>
@@ -91,7 +91,7 @@ const ProductScreen = () => {
                     <Col>Qty</Col>
                     <Col>
                       <Form.Control
-                        as="select"
+                        as='select'
                         value={qty}
                         onChange={(e) => setQty(e.target.value)}
                       >
@@ -106,11 +106,11 @@ const ProductScreen = () => {
                 </ListGroup.Item>
               )}
 
-              <ListGroup.Item className="d-grid gap-2">
+              <ListGroup.Item className='d-grid gap-2'>
                 <Button
                   onClick={addtoCartHandler}
-                  className="btn btn-lg btn-primary"
-                  type="button"
+                  className='btn btn-lg btn-primary'
+                  type='button'
                   disabled={product.countInStock === 0}
                 >
                   {' '}

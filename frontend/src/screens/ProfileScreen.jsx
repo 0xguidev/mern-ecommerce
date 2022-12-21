@@ -54,61 +54,61 @@ function ProfileScreen() {
   };
 
   return (
-    <Container className="main_container">
+    <Container className='main_container'>
       <Container>
         <Row>
           <Col md={3}>
             <Form onSubmit={handleSubmit}>
               <h2>Edit Profile</h2>
-              <Form.Group className="mb-3" controlId="updateName">
+              <Form.Group className='mb-3' controlId='updateName'>
                 <Form.Label>Full Name</Form.Label>
                 <Form.Control
-                  type="text"
-                  placeholder="Enter name"
+                  type='text'
+                  placeholder='Enter name'
                   value={user.name}
                   disabled={true}
                 />
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="updateEmail">
+              <Form.Group className='mb-3' controlId='updateEmail'>
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
-                  type="email"
-                  placeholder="Enter email"
+                  type='email'
+                  placeholder='Enter email'
                   value={user.email}
                   disabled={true}
                 />
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="updatePassword">
+              <Form.Group className='mb-3' controlId='updatePassword'>
                 <Form.Label>New password</Form.Label>
                 <Form.Control
-                  type="password"
-                  placeholder="Password"
+                  type='password'
+                  placeholder='Password'
                   onChange={(e) =>
                     setUserData({ ...userData, password: e.target.value })
                   }
                 />
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="updateConfirmPassword">
+              <Form.Group className='mb-3' controlId='updateConfirmPassword'>
                 <Form.Label>Confirm password</Form.Label>
                 <Form.Control
-                  type="password"
-                  placeholder="Confirm password"
+                  type='password'
+                  placeholder='Confirm password'
                   onChange={(e) =>
                     setUserData({ ...userData, confirmPassord: e.target.value })
                   }
                 />
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Check me out" />
+              <Form.Group className='mb-3' controlId='formBasicCheckbox'>
+                <Form.Check type='checkbox' label='Check me out' />
               </Form.Group>
 
               <Button
-                variant="primary"
-                type="submit"
+                variant='primary'
+                type='submit'
                 disabled={userData.isDisabled}
               >
                 Update

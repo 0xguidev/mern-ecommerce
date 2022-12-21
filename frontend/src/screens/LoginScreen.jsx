@@ -16,7 +16,7 @@ function LoginScreen() {
   const error = useSelector((state) => state.user.error);
   const loginState = useSelector((state) => state.user.loginState);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     if (error) {
       setIsError(error);
@@ -32,15 +32,15 @@ function LoginScreen() {
   };
 
   return (
-    <Container className="main_container">
+    <Container className='main_container'>
       <h1>Login Screen</h1>
       <Row>
         <Col>
           <Form onSubmit={(e) => handleSubmit(e)}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className='mb-3' controlId='formBasicEmail'>
               <Form.Label>Email address</Form.Label>
               <Form.Control
-                type="email"
+                type='email'
                 required
                 onChange={(e) =>
                   setUserData({ ...userData, email: e.target.value })
@@ -48,11 +48,11 @@ function LoginScreen() {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className='mb-3' controlId='formBasicPassword'>
               <Form.Label>Password</Form.Label>
               <Form.Control
-                type="password"
-                placeholder="Password"
+                type='password'
+                placeholder='Password'
                 required
                 onChange={(e) =>
                   setUserData({ ...userData, pass: e.target.value })
@@ -60,18 +60,18 @@ function LoginScreen() {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant='primary' type='submit'>
               Login
             </Button>
 
-            <Row className="py-3">
+            <Row className='py-3'>
               <Col>
                 New Customer? <Link to={'/singup'}>Register</Link>
               </Col>
             </Row>
             {isError ?? (
               <Row>
-                <Message variant="danger">{error}</Message>
+                <Message variant='danger'>{error}</Message>
                 <Form.Text muted>{error}</Form.Text>
               </Row>
             )}
