@@ -15,67 +15,88 @@ const ordersReducer = createSlice({
     errorOrderPay: '',
   },
   reducers: {
-    orderLoading(state) {
+    orderLoading: (state) => {
       if (state.loadingOrder === 'idle') {
-        state.loadingOrder = 'pending';
+        return {
+          ...state,
+          loadingOrder: 'pending',
+        };
       }
+      return state;
     },
-    orderSucess(state, action) {
+    orderSucess: (state, action) => {
       if (state.loadingOrder === 'pending') {
-        state.loadingOrder = 'idle';
-        state.errorOrder = '';
-        state.order = action.payload;
+        return {
+          ...state,
+          loadingOrder: 'idle',
+          errorOrder: '',
+          order: action.payload,
+        };
       }
+      return state;
     },
-    orderError(state, action) {
+    orderError: (state, action) => {
       if (state.loadingOrder === 'pending') {
-        state.loadingOrder = 'idle';
-        state.order = {};
-        state.errorOrder = action.payload;
+        return {
+          ...state,
+          loadingOrder: 'idle',
+          order: {},
+          errorOrder: action.payload,
+        };
       }
+      return state;
     },
-    orderDetailsLoading(state, action) {
-      if (state.loadingOrderDetails === 'idle') {
-        state.loadingOrderDetails = 'pending';
-      }
+    orderDetailsLoading: (state) => {
+      return {
+        ...state,
+        loadingOrderDetails: 'pending',
+      };
     },
-    orderDetailsSucess(state, action) {
-      if (state.loadingOrderDetails === 'pending') {
-        state.loadingOrderDetails = 'idle';
-        state.orderDetails = action.payload;
-        state.errorOrderDetails = '';
-      }
+    orderDetailsSucess: (state, action) => {
+      return {
+        ...state,
+        loadingOrderDetails: 'idle',
+        orderDetails: action.payload,
+        errorOrderDetails: '',
+      };
     },
-    orderDetailsError(state, action) {
-      if (state.loadingOrderDetails === 'pending') {
-        state.loadingOrderDetails = 'idle';
-        state.orderDetails = {};
-        state.errorOrderDetails = action.payload;
-      }
+    orderDetailsError: (state, action) => {
+      return {
+        ...state,
+        loadingOrderDetails: 'idle',
+        orderDetails: {},
+        errorOrderDetails: action.payload,
+      };
     },
-    orderPayLoad(state, action) {
-      if (state.loadingOrderPay === 'idle') {
-        state.loadingOrderPay = 'pending';
-      }
+    orderPayLoad: (state) => {
+      return {
+        ...state,
+        loadingOrderPay: 'pending',
+      };
     },
-    orderPaySucess(state, action) {
-      if (state.loadingOrderPay === 'pending') {
-        state.loadingOrderPay = 'idle';
-        state.orderPay = action.payload;
-        state.errorOrderPay = '';
-      }
+    orderPaySuccess: (state, action) => {
+      return {
+        ...state,
+        loadingOrderPay: 'idle',
+        orderPay: action.payload,
+        errorOrderPay: '',
+      };
     },
-    orderPayReset(state) {
-      state.loadingOrderPay = 'idle';
-      state.orderPay = {};
-      state.errorOrderPay = '';
+    orderPayReset: (state) => {
+      return {
+        ...state,
+        loadingOrderPay: 'idle',
+        orderPay: {},
+        errorOrderPay: '',
+      };
     },
-    orderPayError(state, action) {
-      if (state.loadingOrderPay === 'pending') {
-        state.loadingOrderPay = 'idle';
-        state.orderPay = {};
-        state.errorOrderPay = action.payload;
-      }
+    orderPayError: (state, action) => {
+      return {
+        ...state,
+        loadingOrderPay: 'idle',
+        orderPay: {},
+        errorOrderPay: action.payload,
+      };
     },
   },
 });
@@ -90,7 +111,7 @@ export const {
   orderPayLoad,
   orderPaySucess,
   orderPayReset,
-  orderPayError
+  orderPayError,
 } = ordersReducer.actions;
 export default ordersReducer.reducer;
 
