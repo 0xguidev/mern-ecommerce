@@ -4,44 +4,94 @@ import axios from 'axios';
 const ordersReducer = createSlice({
   name: 'orders',
   initialState: {
-    loading: 'idle',
-    load: 'true',
-    error: '',
-    order: {},
+    loadingOrder: 'idle',
+    loadingOrderDetails: 'idle',
+    loadingOrderPay: 'idle',
+    order: '',
+    orderDetails: '',
+    orderPay: '',
+    errorOrder: '',
+    errorOrderDetails: '',
+    errorOrderPay: '',
   },
   reducers: {
     orderLoading(state) {
-      if (state.loading === 'idle') {
-        state.loading = 'pending';
+      if (state.loadingOrder === 'idle') {
+        state.loadingOrder = 'pending';
       }
     },
     orderSucess(state, action) {
-      if (state.loading === 'pending') {
-        state.loading = 'idle';
-        state.error = '';
-        state.order = action.payload;
-      }
-    },
-    orderByIdSucess(state, action) {
-      if (state.loading === 'pending') {
-        state.loading = 'idle';
-        state.load = 'false';
-        state.error = '';
+      if (state.loadingOrder === 'pending') {
+        state.loadingOrder = 'idle';
+        state.errorOrder = '';
         state.order = action.payload;
       }
     },
     orderError(state, action) {
-      if (state.loading === 'pending') {
-        state.loading = 'idle';
-        state.load = 'false';
-        state.error = action.payload;
+      if (state.loadingOrder === 'pending') {
+        state.loadingOrder = 'idle';
+        state.order = {};
+        state.errorOrder = action.payload;
+      }
+    },
+    orderDetailsLoading(state, action) {
+      if (state.loadingOrderDetails === 'idle') {
+        state.loadingOrderDetails = 'pending';
+      }
+    },
+    orderDetailsSucess(state, action) {
+      if (state.loadingOrderDetails === 'pending') {
+        state.loadingOrderDetails = 'idle';
+        state.orderDetails = action.payload;
+        state.errorOrderDetails = '';
+      }
+    },
+    orderDetailsError(state, action) {
+      if (state.loadingOrderDetails === 'pending') {
+        state.loadingOrderDetails = 'idle';
+        state.orderDetails = {};
+        state.errorOrderDetails = action.payload;
+      }
+    },
+    orderPayLoad(state, action) {
+      if (state.loadingOrderPay === 'idle') {
+        state.loadingOrderPay = 'pending';
+      }
+    },
+    orderPaySucess(state, action) {
+      if (state.loadingOrderPay === 'pending') {
+        state.loadingOrderPay = 'idle';
+        state.orderPay = action.payload;
+        state.errorOrderPay = '';
+      }
+    },
+    orderPayReset(state) {
+      state.loadingOrderPay = 'idle';
+      state.orderPay = {};
+      state.errorOrderPay = '';
+    },
+    orderPayError(state, action) {
+      if (state.loadingOrderPay === 'pending') {
+        state.loadingOrderPay = 'idle';
+        state.orderPay = {};
+        state.errorOrderPay = action.payload;
       }
     },
   },
 });
 
-export const { orderSucess, orderLoading, orderByIdSucess, orderError } =
-  ordersReducer.actions;
+export const {
+  orderLoading,
+  orderSucess,
+  orderError,
+  orderDetailsLoading,
+  orderDetailsSucess,
+  orderDetailsError,
+  orderPayLoad,
+  orderPaySucess,
+  orderPayReset,
+  orderPayError
+} = ordersReducer.actions;
 export default ordersReducer.reducer;
 
 export const asyncCreateOrder = (orders) => async (dispatch, getState) => {
@@ -55,7 +105,7 @@ export const asyncCreateOrder = (orders) => async (dispatch, getState) => {
       url: 'http://localhost:3001/api/orders',
       headers: {
         authorization: `Bearer ${user.token}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       data: orders,
     });
@@ -65,9 +115,9 @@ export const asyncCreateOrder = (orders) => async (dispatch, getState) => {
   }
 };
 
-export const asyncGetOrderById = (id) => async (dispatch, getState) => {
+export const asyncOrderDetails = (id) => async (dispatch, getState) => {
   try {
-    dispatch(orderLoading());
+    dispatch(orderDetailsLoading());
 
     const { user } = getState();
 
@@ -78,32 +128,32 @@ export const asyncGetOrderById = (id) => async (dispatch, getState) => {
         authorization: `Bearer ${user.token}`,
       },
     });
-    dispatch(orderByIdSucess(data));
+    dispatch(orderDetailsSucess(data));
   } catch (error) {
-    dispatch(orderError(error.message));
+    dispatch(orderDetailsError(error.message));
   }
 };
 
+export const asyncPayOrder =
+  (orderId, paymentResult) => async (dispatch, getState) => {
+    try {
+      dispatch(orderPayLoad());
 
-export const asyncPayOrder = (orderId, paymentResult) => async (dispatch, getState) => {
-  try {
-    dispatch(orderLoading());
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const {
-      userLogin: { userInfo }
-    } = getState();
-
-    const { data } = await axios({
-      method: 'put',
-      url: `http://localhost:3001/api/orders/${orderId}/pay`,
-      headers: {
-        authorization: `Bearer ${userInfo.token}`,
-        'Content-Type': 'application/json'
-      },
-      data: paymentResult
-    });
-    dispatch(orderByIdSucess(data));
-  } catch (error) {
-    dispatch(orderError(error.message));
-  }
-};
+      const { data } = await axios({
+        method: 'put',
+        url: `http://localhost:3001/api/orders/${orderId}/pay`,
+        headers: {
+          authorization: `Bearer ${userInfo.token}`,
+          'Content-Type': 'application/json',
+        },
+        data: paymentResult,
+      });
+      dispatch(orderPaySucess(data));
+    } catch (error) {
+      dispatch(orderPayError(error.message));
+    }
+  };

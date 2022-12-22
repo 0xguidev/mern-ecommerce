@@ -10,14 +10,16 @@ import {
   Container,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
 import Message from '../components/Message';
 import { asyncCreateOrder } from '../redux/reducers/ordersReducer';
 
 const PlaceOrderScreen = () => {
   const cart = useSelector((state) => state.cart);
+  const { order } = useSelector((state) => state.orders)
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const placeOrderHandle = () => {
     dispatch(
@@ -33,6 +35,8 @@ const PlaceOrderScreen = () => {
         }
       )
     );
+
+    navigate(`/order/${order._id}`);
   };
   return (
     <Container>
