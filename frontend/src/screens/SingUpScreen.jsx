@@ -18,8 +18,7 @@ const SingUpScreen = () => {
   const [isError, setIsError] = useState('');
 
   const dispatch = useDispatch();
-  const loginState = useSelector((state) => state.user.loginState);
-  const error = useSelector((state) => state.user.error);
+  const {loginState, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   useEffect(() => {

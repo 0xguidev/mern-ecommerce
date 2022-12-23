@@ -50,21 +50,14 @@ const OrderScreen = () => {
     };
 
     addPayPalScript();
-
     if (!orderDetails || orderPay) {
       dispatch(orderPayReset())
       dispatch(asyncOrderDetails(id));
-    } else if (!orderDetails.isPaid) {
-      if (!window.paypal) {
-        addPayPalScript();
-      } else {
-        setSdkReady(true);
-      }
-    }
-  }, [id, dispatch, orderPay, orderDetails]);
+    } 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const successPaymentHandler = (paymentResult) => {
-    console.log(paymentResult);
     dispatch(asyncPayOrder(id, paymentResult));
   };
 
@@ -182,7 +175,7 @@ const OrderScreen = () => {
                     <Loading />
                   ) : (
                     <PayPalButton
-                      amount={orderDetails.totalPrice}
+                      amount={orderDetails.totalPrice.toFixed(2)}
                       onSuccess={successPaymentHandler}
                     />
                   )}

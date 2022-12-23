@@ -18,10 +18,7 @@ function ProfileScreen() {
   const [isError, setIsError] = useState('');
 
   const dispatch = useDispatch();
-  const loginState = useSelector((state) => state.user.loginState);
-  const error = useSelector((state) => state.user.error);
-  const user = useSelector((state) => state.user.user);
-  const token = useSelector((state) => state.user.token);
+  const {loginState, error, user, user: { token }, } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   useEffect(() => {

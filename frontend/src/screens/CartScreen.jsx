@@ -19,7 +19,7 @@ import Message from '../components/Message';
 import Loading from '../components/Loading';
 
 const CartScreen = () => {
-  const cartItems = useSelector((state) => state.cart.cartItems);
+  const { cartItems } = useSelector((state) => state.cart);
   const { id } = useParams();
   const search = useLocation().search;
   const qty = new URLSearchParams(search).get('qty');
@@ -28,14 +28,14 @@ const CartScreen = () => {
   const [isLoad, setIsLoad] = useState(false);
 
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchProduct = () => {
       if (id && qty) {
-        await dispatch(asyncAddProduct(id, qty));
+        dispatch(asyncAddProduct(id, qty));
       }
       setIsLoad(true);
     };
     fetchProduct();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const removeFromCartHandler = (productId) => {

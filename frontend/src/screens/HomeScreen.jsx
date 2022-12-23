@@ -13,14 +13,9 @@ const HomeScreen = () => {
   const [isLoad, setIsLoad] = useState(false);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      await dispatch(asyncListProduct());
-
-      setIsLoad(true);
-    };
-    fetchProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    dispatch(asyncListProduct());
+    setIsLoad(true);
+  }, [dispatch]);
 
   return (
     <>
