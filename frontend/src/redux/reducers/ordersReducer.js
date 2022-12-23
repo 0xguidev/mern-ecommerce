@@ -119,7 +119,7 @@ export const asyncCreateOrder = (orders) => async (dispatch, getState) => {
   try {
     dispatch(orderLoading());
 
-    const { user } = getState();
+    const { user: { user } } = getState();
 
     const { data } = await axios({
       method: 'post',
@@ -140,7 +140,7 @@ export const asyncOrderDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch(orderDetailsLoading());
 
-    const { user } = getState();
+    const { user: { user } } = getState();
 
     const { data } = await axios({
       method: 'get',
@@ -160,15 +160,13 @@ export const asyncPayOrder =
     try {
       dispatch(orderPayLoad());
 
-      const {
-        userLogin: { userInfo },
-      } = getState();
+      const { user: { user } } = getState();
 
       const { data } = await axios({
         method: 'put',
         url: `http://localhost:3001/api/orders/${orderId}/pay`,
         headers: {
-          authorization: `Bearer ${userInfo.token}`,
+          authorization: `Bearer ${user.token}`,
           'Content-Type': 'application/json',
         },
         data: paymentResult,

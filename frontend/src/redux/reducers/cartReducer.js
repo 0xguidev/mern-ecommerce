@@ -38,15 +38,17 @@ const cartReducer = createSlice({
     error: '',
   },
   reducers: {
-    addProductsLoading(state) {
+    addProductsLoading: (state) => {
       if (state.loading === 'idle') {
-        state.loading = 'pending';
+        return {
+          ...state,
+          loading: 'pending',
+        };
       }
+      return state;
     },
-    addItem(state, action) {
+    addItem: (state, action) => {
       if (state.loading === 'pending') {
-        state.loading = 'idle';
-        state.error = '';
         const item = action.payload;
 
         const existItem = state.cartItems.find(
@@ -54,56 +56,80 @@ const cartReducer = createSlice({
         );
 
         if (existItem) {
-          state.cartItems = state.cartItems.map((x) =>
-            x.product === existItem.product ? item : x
-          );
+          return {
+            ...state,
+            loading: 'idle',
+            error: '',
+            cartItems: state.cartItems.map((x) =>
+              x.product === existItem.product ? item : x
+            ),
+          };
         } else {
-          state.cartItems = [...state.cartItems, item];
+          return {
+            ...state,
+            loading: 'idle',
+            error: '',
+            cartItems: [...state.cartItems, item],
+          };
         }
       }
+      return state;
     },
-    throwError(state, action) {
+    throwError: (state, action) => {
       if (state.loading === 'pending') {
-        state.loading = 'idle';
-        state.error = action.payload;
+        return {
+          ...state,
+          loading: 'idle',
+          error: action.payload,
+        };
       }
     },
-    saveInLocalStorage(state) {
-      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+    saveInLocalStorage: (state) => {
+      return localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
-    cartRemoveItem(state, action) {
-      state.cartItems = [
-        ...state.cartItems.filter((x) => x.product !== action.payload),
-      ];
+    cartRemoveItem: (state, action) => {
       saveItemsPrice();
       saveShippingPrice();
       saveTaxPrice();
       saveTotalPrice();
       saveCheckout();
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+      return {
+        ...state,
+        cartItems: [
+          ...state.cartItems.filter((x) => x.product !== action.payload),
+        ]
+      }
     },
-    saveShippingAddress(state, action) {
-      state.shipping = action.payload;
-      localStorage.setItem('shippingAddress', JSON.stringify(state.shipping));
+    saveShippingAddress: (state, action) => {
+      localStorage.setItem('shippingAddress', JSON.stringify({ shipping: action.payload }));
+      return {
+        ...state,
+        shipping: action.payload,
+
+      }
     },
     savePaymentMethod(state, action) {
-      state.paymentMethod = action.payload;
-      localStorage.setItem(
-        'paymentMethod',
-        JSON.stringify(state.paymentMethod)
-      );
+      return {
+        ...state,
+        paymentMethod: action.payload,
+      };
     },
     saveItemsPrice(state) {
-      state.checkout = {
+      const checkout = {
         ...state.checkout,
         itemsPrice: state.cartItems.reduce(
           (acc, item) => Number(acc + item.price * item.qty),
           0
         ),
       };
+      return {
+        ...state,
+        checkout,
+      };
     },
     saveShippingPrice(state) {
-      state.checkout = {
+      const checkout = {
         ...state.checkout,
         shippingPrice:
           state.checkout.itemsPrice > 100
@@ -112,18 +138,26 @@ const cartReducer = createSlice({
             ? 0
             : 100,
       };
+      return {
+        ...state,
+        checkout,
+      };
     },
     saveTaxPrice(state) {
-      state.checkout = {
+      const checkout = {
         ...state.checkout,
         taxPrice:
           state.checkout.itemsPrice > 0
             ? Number(0.15 * state.checkout.itemsPrice)
             : 0,
       };
+      return {
+        ...state,
+        checkout,
+      };
     },
     saveTotalPrice(state) {
-      state.checkout = {
+      const checkout = {
         ...state.checkout,
         totalPrice:
           state.checkout.itemsPrice > 0
@@ -133,6 +167,10 @@ const cartReducer = createSlice({
                   state.checkout.taxPrice
               )
             : 0,
+      };
+      return {
+        ...state,
+        checkout,
       };
     },
     saveCheckout(state) {
