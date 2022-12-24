@@ -13,23 +13,18 @@ const HomeScreen = () => {
   const [isLoad, setIsLoad] = useState(false);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      await dispatch(asyncListProduct());
-
-      setIsLoad(true);
-    };
-    fetchProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    dispatch(asyncListProduct());
+    setIsLoad(true);
+  }, [dispatch]);
 
   return (
     <>
       {!isLoad ? (
         <Loading />
       ) : error.length > 0 ? (
-        <Message variant="danger">{error}</Message>
+        <Message variant='danger'>{error}</Message>
       ) : (
-        <Container className="main_container">
+        <Container className='main_container'>
           <h1>Latest Products</h1>
           <Row>
             {products.map((product) => (

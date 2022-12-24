@@ -10,23 +10,25 @@ import ShippingScreen from './screens/ShippingScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
+import OrderScreen from './screens/OrderScreen';
 
 const Router = () => {
   return (
     <Routes>
-      <Route exact path="/" element={<HomeScreen />} />
-      <Route exact path="/login" element={<LoginScreen />} />
-      <Route exact path="/product/:id" element={<ProductScreen />} />
-      <Route path="/cart">
-        <Route path=":id" element={<CartScreen />} />
-        <Route path="" element={<CartScreen />} />
+      <Route exact path='/' element={<HomeScreen />} />
+      <Route exact path='/login' element={<LoginScreen />} />
+      <Route exact path='/product/:id' element={<ProductScreen />} />
+      <Route path='/cart'>
+        <Route path=':id' element={<CartScreen />} />
+        <Route path='' element={<CartScreen />} />
       </Route>
-      <Route exact path="/logout" element={<LogoutScreen />} />
-      <Route exact path="/singup" element={<SingUpScreen />} />
-      <Route exact path="/profile" element={<ProfileScreen />} />
-      <Route exact path="/shipping" element={<ShippingScreen />} />
-      <Route exact path="/payment" element={<PaymentScreen />} />
-      <Route exact path="/placeOrder" element={<PlaceOrderScreen />} />
+      <Route exact path='/logout' element={<LogoutScreen />} />
+      <Route exact path='/singup' element={<SingUpScreen />} />
+      <Route exact path='/profile' element={<ProfileScreen />} />
+      <Route exact path='/shipping' element={<ShippingScreen />} />
+      <Route exact path='/payment' element={<PaymentScreen />} />
+      <Route exact path='/placeOrder' element={<PlaceOrderScreen />} />
+      <Route exact path='/order/:id' element={<OrderScreen />} />
     </Routes>
   );
 };

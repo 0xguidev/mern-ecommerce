@@ -21,18 +21,18 @@ const Header = () => {
 
   return (
     <header>
-      <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+      <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
         <Container>
-          <LinkContainer to="/">
+          <LinkContainer to='/'>
             <Navbar.Brand>ProShop</Navbar.Brand>
           </LinkContainer>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="m-auto">
-              <LinkContainer to="/cart">
+          <Navbar.Toggle aria-controls='basic-navbar-nav' />
+          <Navbar.Collapse id='basic-navbar-nav'>
+            <Nav className='m-auto'>
+              <LinkContainer to='/cart'>
                 <Nav.Link>
-                  <i className="fas fa-shopping-cart">
-                    <Badge bg="secondary">
+                  <i className='fas fa-shopping-cart'>
+                    <Badge bg='secondary'>
                       {cartItems.length > 0 ? cartItems.length : null}
                     </Badge>
                   </i>{' '}
@@ -41,7 +41,7 @@ const Header = () => {
               </LinkContainer>
               {loginStatus ? (
                 <NavDropdown title={loginState.user.name}>
-                  <LinkContainer to="/profile">
+                  <LinkContainer to='/profile'>
                     <Nav.Link>
                       <i className={'fas fa-sign-out-alt nav-link'}>
                         {' '}
@@ -49,7 +49,7 @@ const Header = () => {
                       </i>
                     </Nav.Link>
                   </LinkContainer>
-                  <LinkContainer to="/logout">
+                  <LinkContainer to='/logout'>
                     <Nav.Link>
                       <i className={'fas fa-sign-out-alt nav-link'}>
                         {' '}
@@ -60,16 +60,16 @@ const Header = () => {
                 </NavDropdown>
               ) : null}
               {!loginStatus ? (
-                <LinkContainer to="/singup">
+                <LinkContainer to='/singup'>
                   <Nav.Link>
-                    <i className="fas fa-user"></i> Sign In
+                    <i className='fas fa-user'></i> Sign In
                   </Nav.Link>
                 </LinkContainer>
               ) : null}
               {!loginStatus ? (
-                <LinkContainer to="/login">
+                <LinkContainer to='/login'>
                   <Nav.Link>
-                    <i className="fas fa-sign-in-alt"></i> Log In
+                    <i className='fas fa-sign-in-alt'></i> Log In
                   </Nav.Link>
                 </LinkContainer>
               ) : null}

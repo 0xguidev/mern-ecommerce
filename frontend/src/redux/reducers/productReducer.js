@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const productReducer = createSlice({
+const productSlice = createSlice({
   name: 'product',
   initialState: {
     loading: 'idle',
@@ -10,39 +10,44 @@ const productReducer = createSlice({
     error: '',
   },
   reducers: {
-    listProductReceived(state, action) {
-      if (state.loading === 'pending') {
-        state.loading = 'idle';
-        state.products = [...action.payload];
-      }
+    listProductReceived: (state, action) => {
+      return {
+        ...state,
+        loading: 'idle',
+        products: [...action.payload],
+      };
     },
-    singleProductReceived(state, action) {
-      if (state.loading === 'pending') {
-        state.loading = 'idle';
-        state.product = action.payload;
-      }
+    singleProductReceived: (state, action) => {
+      return {
+        ...state,
+        loading: 'idle',
+        product: action.payload,
+      };
     },
-    throwErrorProduct(state, action) {
-      if (state.loading === 'pending') {
-        state.loading = 'idle';
-        state.error = action.payload;
-      }
+    throwErrorProduct: (state, action) => {
+      return {
+        ...state,
+        loading: 'idle',
+        error: action.payload,
+      };
     },
-    productsLoading(state) {
-      if (state.loading === 'idle') {
-        state.loading = 'pending';
-      }
+    productsLoading: (state) => {
+      return {
+        ...state,
+        loading: 'pending',
+      };
     },
   },
 });
 
 export const {
   listProductReceived,
-  productsLoading,
   singleProductReceived,
   throwErrorProduct,
-} = productReducer.actions;
-export default productReducer.reducer;
+  productsLoading,
+} = productSlice.actions;
+
+export default productSlice.reducer;
 
 export const asyncListProduct = () => async (dispatch) => {
   try {

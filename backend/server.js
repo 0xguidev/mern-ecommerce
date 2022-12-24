@@ -10,6 +10,7 @@ import { errorHandle, notFound } from './middleware/errorMiddleware.js';
 
 const app = express();
 const port = process.env.PORT;
+const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
 
 connectDB();
 
@@ -18,6 +19,10 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('API is running...');
+});
+
+app.get('/api/config/paypal', (req, res) => {
+  res.send(PAYPAL_CLIENT_ID);
 });
 
 app.use('/api/products', productRouter);

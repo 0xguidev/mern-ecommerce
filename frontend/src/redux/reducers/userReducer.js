@@ -3,77 +3,98 @@ import axios from 'axios';
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
-  : { user: {}, token: '', isLoged: false };
+  : { user: {}, isLoged: false };
 
 const userReducer = createSlice({
   name: 'login',
   initialState: {
     loading: 'idle',
     loginState: userInfoFromStorage.isLoged,
-    token: userInfoFromStorage.token,
     user: userInfoFromStorage.user,
     error: '',
   },
   reducers: {
-    userRequest(state) {
+    userRequest: (state) => {
       if (state.loading === 'idle') {
-        state.loading = 'pending';
+        return {
+          ...state,
+          loading: 'pending',
+          error: '',
+          loginState: false,
+        };
       }
-      if (state.error) {
-        state.error = '';
-      }
-      if (state.loginState) {
-        state.loginState = false;
-      }
-      if (state.token) {
-        state.token = '';
-      }
+      return state;
     },
-    userLoginSucess(state, action) {
+    userLoginSuccess: (state, action) => {
       if (state.loading === 'pending') {
-        state.loading = 'idle';
-        state.token = action.payload.token;
-        state.user = action.payload;
-        state.loginState = true;
+        return {
+          ...state,
+          loading: 'idle',
+          user: action.payload,
+          loginState: true,
+        };
       }
+      return state;
     },
-    userLoginFail(state, action) {
+    userLoginFail: (state, action) => {
       if (state.loading === 'pending') {
-        state.loading = 'idle';
-        state.error = action.payload;
+        return {
+          ...state,
+          loading: 'idle',
+          error: action.payload,
+        };
       }
+      return state;
     },
-    updateSuccess(state, action) {
+    updateSuccess: (state, action) => {
       if (state.loading === 'pending') {
-        state.loading = 'idle';
-        state.user = action.payload;
+        return {
+          ...state,
+          loading: 'idle',
+          user: action.payload,
+        };
       }
+      return state;
     },
-    updateFail(state, action) {
+    updateFail: (state, action) => {
       if (state.loading === 'pending') {
-        state.loading = 'idle';
-        state.error = action.payload;
+        return {
+          ...state,
+          loading: 'idle',
+          error: action.payload,
+        };
       }
+      return state;
     },
-    registerSuccess(state, action) {
+    registerSuccess: (state, action) => {
       if (state.loading === 'pending') {
-        state.loading = 'idle';
-        state.token = action.payload.token;
-        state.user = action.payload;
-        state.loginState = true;
+        return {
+          ...state,
+          loading: 'idle',
+          user: action.payload,
+          loginState: true,
+        };
       }
+      return state;
     },
-    registerFail(state, action) {
+    registerFail: (state, action) => {
       if (state.loading === 'pending') {
-        state.loading = 'idle';
-        state.error = action.payload;
+        return {
+          ...state,
+          loading: 'idle',
+          error: action.payload,
+        };
       }
+      return state;
     },
-    userLogout(state) {
-      state.loading = 'idle';
-      state.loginState = false;
-      state.user = {};
-      state.token = '';
+    userLogout: (state) => {
+      return {
+        ...state,
+        loading: 'idle',
+        loginState: false,
+        user: {},
+        token: '',
+      };
     },
   },
 });
@@ -81,7 +102,7 @@ const userReducer = createSlice({
 export const {
   userRequest,
   userLoginFail,
-  userLoginSucess,
+  userLoginSuccess,
   userLogout,
   updateFail,
   updateSuccess,
@@ -90,57 +111,70 @@ export const {
 } = userReducer.actions;
 export default userReducer.reducer;
 
-export const asyncUserLoginRequest = (email, password) => async (dispatch) => {
-  try {
-    dispatch(userRequest());
-    const { status, data } = await axios.post(
-      'http://localhost:3001/api/users/login',
-      {
-        email,
-        password,
+export const asyncUserLoginRequest =
+  (email, password) => async (dispatch, getState) => {
+    try {
+      dispatch(userRequest());
+
+      const { user: { user } } = getState();
+
+      const { data, status } = await axios({
+        method: 'post',
+        url: 'http://localhost:3001/api/users/login',
+        headers: {
+          authorization: `Bearer ${user.token}`,
+          'Content-Type': 'application/json',
+        },
+        data: {
+          email,
+          password,
+        },
+      });
+
+      if (status === 200) {
+        dispatch(userLoginSuccess(data));
+        localStorage.setItem(
+          'userInfo',
+          JSON.stringify({ user: data, token: data.token, isLoged: true })
+        );
       }
-    );
-    if (status === 200) {
-      dispatch(userLoginSucess(data));
-      localStorage.setItem(
-        'userInfo',
-        JSON.stringify({ user: data, token: data.token, isLoged: true })
-      );
+    } catch (e) {
+      dispatch(userLoginFail(e.response.data.message));
     }
-  } catch (e) {
-    dispatch(userLoginFail(e.response.data.message));
-  }
-};
+  };
 
 export const logoutUser = () => (dispatch) => {
-  localStorage.setItem(
-    'userInfo',
-    JSON.stringify({ user: {}, token: '', isLoged: false })
-  );
+  localStorage.removeItem('userInfo');
+  localStorage.removeItem('checkout');
+  localStorage.removeItem('__paypal_storage__');
+  localStorage.removeItem('cartItems');
+  localStorage.removeItem('shippingAddress');
   dispatch(userLogout());
 };
 
-export const asyncUserUpdateRequest = (password, token) => async (dispatch) => {
-  try {
-    dispatch(userRequest());
-    const { data, status } = await axios({
-      method: 'put',
-      url: 'http://localhost:3001/api/users/profile',
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      data: JSON.stringify({
-        password: `${password}`,
-      }),
-    });
-    if (status === 200) {
-      dispatch(updateSuccess(data));
+export const asyncUserUpdateRequest =
+  (password) => async (dispatch, getState) => {
+    try {
+      dispatch(userRequest());
+      const { user: { user } } = getState();
+      const { data, status } = await axios({
+        method: 'put',
+        url: 'http://localhost:3001/api/users/profile',
+        headers: {
+          authorization: `Bearer ${user.token}`,
+          'Content-Type': 'application/json',
+        },
+        data: JSON.stringify({
+          password: `${password}`,
+        }),
+      });
+      if (status === 200) {
+        dispatch(updateSuccess(data));
+      }
+    } catch (e) {
+      dispatch(updateFail(e.response.data.message));
     }
-  } catch (e) {
-    dispatch(updateFail(e.response.data.message));
-  }
-};
+  };
 
 export const asyncRegisterRequest =
   ({ name, email, password }) =>
@@ -159,7 +193,7 @@ export const asyncRegisterRequest =
         dispatch(registerSuccess(data));
         localStorage.setItem(
           'userInfo',
-          JSON.stringify({ user: data, token: data.token, isLoged: true })
+          JSON.stringify({ user: data, isLoged: true })
         );
       }
     } catch (e) {

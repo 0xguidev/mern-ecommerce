@@ -1,4 +1,6 @@
 import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 import {
   Card,
   Col,
@@ -10,38 +12,53 @@ import {
   Container,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
+import Loading from '../components/Loading';
 import Message from '../components/Message';
 import { asyncCreateOrder } from '../redux/reducers/ordersReducer';
 
 const PlaceOrderScreen = () => {
   const cart = useSelector((state) => state.cart);
-  const token = useSelector((state) => state.user.token);
+  const { order } = useSelector((state) => state.orders);
+  const [orderStatus, setOrderStatus] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const placeOrderHandle = () => {
     dispatch(
-      asyncCreateOrder(
-        {
-          orderItems: cart.cartItems,
-          shippingAddress: cart.shipping,
-          paymentMethod: cart.paymentMethod,
-          itemsPrice: cart.checkout.itemsPrice,
-          shippingPrice: cart.checkout.shippingPrice,
-          taxPrice: cart.checkout.taxPrice,
-          totalPrice: cart.checkout.totalPrice,
-        },
-        token
-      )
+      asyncCreateOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shipping,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.checkout.itemsPrice,
+        shippingPrice: cart.checkout.shippingPrice,
+        taxPrice: cart.checkout.taxPrice,
+        totalPrice: cart.checkout.totalPrice,
+      })
     );
+
+    setOrderStatus(true)
   };
-  return (
+
+  useEffect(() => {
+    const verifyStatus = () => {
+      if(order._id) {
+        navigate(`/order/${order._id}`);
+        setOrderStatus(false)
+      } 
+    }
+    verifyStatus()
+  }, [order]);
+
+  return orderStatus ?
+    <Loading />
+    : (
     <Container>
       <CheckoutSteps step1 step2 step3 step4 />
       <Row>
         <Col md={8}>
-          <ListGroup variant="flush">
+          <ListGroup variant='flush'>
             <ListGroupItem>
               <h2>Shipping</h2>
               <p>
@@ -60,7 +77,7 @@ const PlaceOrderScreen = () => {
               {cart.cartItems.length === 0 ? (
                 <Message> Your cart is empty</Message>
               ) : (
-                <ListGroup variant="flush">
+                <ListGroup variant='flush'>
                   {cart.cartItems.map((item, index) => (
                     <ListGroupItem key={index}>
                       <Row>
@@ -91,7 +108,7 @@ const PlaceOrderScreen = () => {
         </Col>
         <Col md={4}>
           <Card>
-            <ListGroup variant="flush">
+            <ListGroup variant='flush'>
               <ListGroupItem>
                 <h2>Order Summary</h2>
               </ListGroupItem>
@@ -121,8 +138,8 @@ const PlaceOrderScreen = () => {
               </ListGroupItem>
               <ListGroupItem>
                 <Button
-                  type="button"
-                  className="btn-block"
+                  type='button'
+                  className='btn-block'
                   disabled={cart.cartItems === 0}
                   onClick={placeOrderHandle}
                 >
