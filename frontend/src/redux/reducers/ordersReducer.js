@@ -7,12 +7,15 @@ const ordersReducer = createSlice({
     loadingOrder: 'idle',
     loadingOrderDetails: 'idle',
     loadingOrderPay: 'idle',
+    loadingUserOrders: 'idle',
     order: '',
     orderDetails: '',
     orderPay: '',
+    userOrders: '',
     errorOrder: '',
     errorOrderDetails: '',
     errorOrderPay: '',
+    errorUserOrders: '',
   },
   reducers: {
     orderLoading: (state) => {
@@ -98,6 +101,28 @@ const ordersReducer = createSlice({
         errorOrderPay: action.payload,
       };
     },
+    userOrderLoading: (state) => {
+      return {
+        ...state,
+        loadingUserOrders: 'pending',
+      };
+    },
+    userOrdersSuccess: (state, action) => {
+      return {
+        ...state,
+        loadingUserOrders: 'idle',
+        userOrders: action.payload,
+        errorUserOrders: '',
+      };
+    },
+    userOdersError: (state, action) => {
+      return {
+        ...state,
+        loadingUserOrders: 'idle',
+        userOrders: '',
+        errorUserOrders: action.payload,
+      };
+    },
   },
 });
 
@@ -112,6 +137,9 @@ export const {
   orderPaySuccess,
   orderPayReset,
   orderPayError,
+  userOrderLoading,
+  userOrdersSuccess,
+  userOdersError,
 } = ordersReducer.actions;
 export default ordersReducer.reducer;
 
@@ -176,3 +204,23 @@ export const asyncPayOrder =
       dispatch(orderPayError(error.message));
     }
   };
+
+
+  export const getUserOrders = () => async (
+    dispatch, getState
+  ) => {
+    try {
+      dispatch(userOrderLoading())
+      const { user: { user } } = getState();
+      const { data } = await axios({
+        method: 'get',
+        url: `http://localhost:3001/api/orders/ordersUser`,
+        headers: {
+          authorization: `Bearer ${user.token}`,
+        },
+      });
+      dispatch(userOrdersSuccess(data))
+    } catch {
+      dispatch(userOdersError())
+    }
+  }

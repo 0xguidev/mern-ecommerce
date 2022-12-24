@@ -1,4 +1,5 @@
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row, Table } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
@@ -6,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Message from '../components/Message';
 import { useNavigate } from 'react-router-dom';
 import { asyncUserUpdateRequest } from '../redux/reducers/userReducer';
+import { getUserOrders } from '../redux/reducers/ordersReducer';
 
 function ProfileScreen() {
   const [userData, setUserData] = useState({
@@ -18,17 +20,27 @@ function ProfileScreen() {
   const [isError, setIsError] = useState('');
 
   const dispatch = useDispatch();
-  const {loginState, error, user, user: { token }, } = useSelector((state) => state.user);
+  const {
+    loginState,
+    error,
+    user,
+  } = useSelector((state) => state.user);
+  const { userOrders} = useSelector(
+    (state) => state.orders
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
     if (error) {
       setIsError(error);
     }
+    if (!userOrders) {
+      dispatch(getUserOrders());
+    }
     if (!loginState) {
       navigate('/');
     }
-  }, [error, loginState, navigate]);
+  }, [error, loginState, navigate, dispatch, userOrders]);
 
   useEffect(() => {
     if (typeof userData.password === 'string') {
@@ -44,10 +56,9 @@ function ProfileScreen() {
     }
   }, [userData]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    await dispatch(asyncUserUpdateRequest(userData.password, token));
+    dispatch(asyncUserUpdateRequest(userData.password));
   };
 
   return (
@@ -115,6 +126,54 @@ function ProfileScreen() {
           </Col>
           <Col md={9}>
             <h1>My Orders</h1>
+              <Table striped bordered hover responsive className='table-sm'>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>DATE</th>
+                    <th>TOTAL</th>
+                    <th>PAID</th>
+                    <th>DELIVERED</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {!userOrders ? 
+                  null
+                  : userOrders.map((order) => (
+                    <tr key={order._id}>
+                      <td>{order._id}</td>
+                      <td>{order.createdAt.substring(0, 10)}</td>
+                      <td>{order.totalPrice.toFixed(2)}</td>
+                      <td>
+                        {order.isPaid ? (
+                          order.paidAt.substring(0, 10)
+                        ) : (
+                          <i
+                            className='fas fa-times'
+                            style={{ color: 'red' }}
+                          ></i>
+                        )}
+                      </td>
+                      <td>
+                        {order.isDelivery ? (
+                          order.deliveryAt.substring(0, 10)
+                        ) : (
+                          <i
+                            className='fas fa-times'
+                            style={{ color: 'red' }}
+                          ></i>
+                        )}
+                      </td> 
+                      <td>
+                        <LinkContainer to={`/order/${order._id}`}>
+                          <Button variant='light'>Details</Button>
+                      </LinkContainer>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
           </Col>
         </Row>
       </Container>
