@@ -144,10 +144,11 @@ export const asyncUserLoginRequest =
   };
 
 export const logoutUser = () => (dispatch) => {
-  localStorage.setItem(
-    'userInfo',
-    JSON.stringify({ user: {}, isLoged: false })
-  );
+  localStorage.removeItem('userInfo');
+  localStorage.removeItem('checkout');
+  localStorage.removeItem('__paypal_storage__');
+  localStorage.removeItem('cartItems');
+  localStorage.removeItem('shippingAddress');
   dispatch(userLogout());
 };
 

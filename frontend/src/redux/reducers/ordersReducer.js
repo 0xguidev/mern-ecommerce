@@ -109,7 +109,7 @@ export const {
   orderDetailsSucess,
   orderDetailsError,
   orderPayLoad,
-  orderPaySucess,
+  orderPaySuccess,
   orderPayReset,
   orderPayError,
 } = ordersReducer.actions;
@@ -171,7 +171,7 @@ export const asyncPayOrder =
         },
         data: paymentResult,
       });
-      dispatch(orderPaySucess(data));
+      dispatch(orderPaySuccess(data));
     } catch (error) {
       dispatch(orderPayError(error.message));
     }
