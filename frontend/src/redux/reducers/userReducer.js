@@ -9,9 +9,12 @@ const userReducer = createSlice({
   name: 'login',
   initialState: {
     loading: 'idle',
+    loadingListUsers: 'idle',
+    listUsers: '',
     loginState: userInfoFromStorage.isLoged,
     user: userInfoFromStorage.user,
     error: '',
+    errorListUsers: '',
   },
   reducers: {
     userRequest: (state) => {
@@ -96,6 +99,26 @@ const userReducer = createSlice({
         token: '',
       };
     },
+    listUsersLoading: (state, action) => {
+      return {
+        ...state,
+        loading: 'pending',
+      };
+    },
+    listUsersSuccess: (state, action) => {
+      return {
+        ...state,
+        loadingListUsers: 'idle',
+        listUsers: action.payload,
+      };
+    },
+    listUsersError: (state, action) => {
+      return {
+        ...state,
+        loadingListUsers: 'idle',
+        errorListUsers: action.payload,
+      };
+    },
   },
 });
 
@@ -108,6 +131,9 @@ export const {
   updateSuccess,
   registerSuccess,
   registerFail,
+  listUsersError,
+  listUsersSuccess,
+  listUsersLoading,
 } = userReducer.actions;
 export default userReducer.reducer;
 
@@ -116,7 +142,9 @@ export const asyncUserLoginRequest =
     try {
       dispatch(userRequest());
 
-      const { user: { user } } = getState();
+      const {
+        user: { user },
+      } = getState();
 
       const { data, status } = await axios({
         method: 'post',
@@ -132,14 +160,14 @@ export const asyncUserLoginRequest =
       });
 
       if (status === 200) {
-        dispatch(userLoginSuccess(data));
         localStorage.setItem(
           'userInfo',
           JSON.stringify({ user: data, token: data.token, isLoged: true })
         );
+        return dispatch(userLoginSuccess(data));
       }
     } catch (e) {
-      dispatch(userLoginFail(e.response.data.message));
+      return dispatch(userLoginFail(e.response.data.message));
     }
   };
 
@@ -149,14 +177,16 @@ export const logoutUser = () => (dispatch) => {
   localStorage.removeItem('__paypal_storage__');
   localStorage.removeItem('cartItems');
   localStorage.removeItem('shippingAddress');
-  dispatch(userLogout());
+  return dispatch(userLogout());
 };
 
 export const asyncUserUpdateRequest =
   (password) => async (dispatch, getState) => {
     try {
       dispatch(userRequest());
-      const { user: { user } } = getState();
+      const {
+        user: { user },
+      } = getState();
       const { data, status } = await axios({
         method: 'put',
         url: 'http://localhost:3001/api/users/profile',
@@ -169,34 +199,65 @@ export const asyncUserUpdateRequest =
         }),
       });
       if (status === 200) {
-        dispatch(updateSuccess(data));
+        return dispatch(updateSuccess(data));
       }
     } catch (e) {
-      dispatch(updateFail(e.response.data.message));
+      return dispatch(updateFail(e.response.data.message));
     }
   };
 
 export const asyncRegisterRequest =
   ({ name, email, password }) =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     try {
       dispatch(userRequest());
-      const { status, data } = await axios.post(
-        'http://localhost:3001/api/users',
-        {
+      const {
+        user: { user },
+      } = getState();
+      const { data, status } = await axios({
+        method: 'post',
+        url: 'http://localhost:3001/api/users',
+        headers: {
+          authorization: `Bearer ${user.token}`,
+          'Content-Type': 'application/json',
+        },
+        data: {
           name,
           email,
           password,
-        }
-      );
+        },
+      });
+
       if (status === 200) {
-        dispatch(registerSuccess(data));
         localStorage.setItem(
           'userInfo',
           JSON.stringify({ user: data, isLoged: true })
-        );
-      }
+          );
+          return dispatch(registerSuccess(data));
+        }
     } catch (e) {
-      dispatch(registerFail(e.response.data.message));
+      return dispatch(registerFail(e.response.data.message));
     }
   };
+
+export const getListUsers = () => async (dispatch, getState) => {
+  try {
+    dispatch(listUsersLoading());
+    const {
+      user: { user },
+    } = getState();
+    const { data, status } = await axios({
+      method: 'get',
+      url: 'http://localhost:3001/api/users',
+      headers: {
+        authorization: `Bearer ${user.token}`,
+      },
+    });
+    if(status === 200){
+      return dispatch(listUsersSuccess(data));
+
+    }
+  } catch (e){
+    return dispatch(listUsersError(e.response.data.message));
+  }
+};
