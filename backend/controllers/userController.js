@@ -5,13 +5,13 @@ import generateToken from '../utils/generateToken.js';
 // @desc Auth user & get token
 // @route POST /api/users/login
 // @access Public
-const authUser = asyncHandler(async (req, res) => {
+export const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
-    res.json({
+    return res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -19,19 +19,19 @@ const authUser = asyncHandler(async (req, res) => {
       token: generateToken(user._id),
     });
   } else {
-    res.status(401).json({ message: 'Invalid email or password' });
+    return res.status(401).json({ message: 'Invalid email or password' });
   }
 });
 
 // @desc register user
 // @route POST /api/users
 // @access Public
-const registerUser = asyncHandler(async (req, res) => {
+export const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
   const userExists = await User.findOne({ email });
 
   if (userExists) {
-    res.status(400).json({ message: 'Email already exists' });
+    return res.status(400).json({ message: 'Email already exists' });
   }
 
   const user = await User.create({
@@ -41,7 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    res.status(200).json({
+    return res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -49,18 +49,18 @@ const registerUser = asyncHandler(async (req, res) => {
       token: generateToken(user._id),
     });
   } else {
-    res.status(401).json({ message: 'Invalid email or password' });
+    return res.status(401).json({ message: 'Invalid email or password' });
   }
 });
 
 // @desc    GET user profile
 // @route   POST /api/users/profile
 // @access  Private
-const getUserProfile = asyncHandler(async (req, res) => {
+export const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
-    res.json({
+    return res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -68,14 +68,14 @@ const getUserProfile = asyncHandler(async (req, res) => {
       token: generateToken(user._id),
     });
   } else {
-    res.status(404).json({ message: 'Invalid email or password' });
+    return res.status(404).json({ message: 'Invalid email or password' });
   }
 });
 
 // @desc    Update user profile
 // @route   PUT /api/users/profile
 // @access  Private
-const updateUserProfile = asyncHandler(async (req, res) => {
+export const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
@@ -87,7 +87,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 
     const updatedUser = await user.save();
 
-    res.json({
+    return res.json({
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
@@ -95,8 +95,19 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       token: generateToken(updatedUser._id),
     });
   } else {
-    res.status(404).json({ message: 'Invalid email or password' });
+    return res.status(404).json({ message: 'Invalid email or password' });
   }
 });
 
-export { authUser, getUserProfile, registerUser, updateUserProfile };
+// @desc    GET all user 
+// @route   Get /api/users
+// @access  Private/Admin
+export const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+
+  if (users) {
+    return res.json(users);
+  } else {
+    return res.status(404).json({ message: 'Invalid email or password' });
+  }
+});
