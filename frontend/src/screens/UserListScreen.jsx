@@ -28,7 +28,7 @@ export default function UserListScreen() {
       ) : errorListUsers ? (
         <Message variant='danger'>{errorListUsers}</Message>
       ) : (
-        <Table stripped bordered hover responsive  className='table-sm'>
+        <Table stripped='true' bordered hover responsive  className='table-sm'>
           <thead>
             <tr>
               <th>ID</th>
@@ -45,7 +45,7 @@ export default function UserListScreen() {
                 <td>{user.name}</td>
                 <td><a href={`mailto:${user.email}`}>{user.email}</a></td>
                 <td>{
-                user.idAdmin ?
+                user.isAdmin ?
                   (<i className='fas fa-check' style={{ color: 'green' }}></i>) :
                   (<i className='fas fa-times' style={{ color: 'red '}}></i>)
               }</td>
