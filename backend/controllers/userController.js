@@ -11,7 +11,7 @@ export const authUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
-    return res.json({
+    return res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -23,7 +23,7 @@ export const authUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc register user
+// @desc Register a new user
 // @route POST /api/users
 // @access Public
 export const registerUser = asyncHandler(async (req, res) => {
@@ -54,13 +54,13 @@ export const registerUser = asyncHandler(async (req, res) => {
 });
 
 // @desc    GET user profile
-// @route   POST /api/users/profile
+// @route   GET /api/users/profile
 // @access  Private
 export const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
-    return res.json({
+    return res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -87,7 +87,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 
     const updatedUser = await user.save();
 
-    return res.json({
+    return res.status(200).json({
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
@@ -99,29 +99,69 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    GET all user 
+// @desc    GET all user
 // @route   Get /api/users
 // @access  Private/Admin
 export const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({});
 
   if (users) {
-    return res.json(users);
+    return res.status(200).json(users);
   } else {
     return res.status(404).json({ message: 'Invalid email or password' });
   }
 });
 
-// @desc    Remove user 
+// @desc    Remove user
 // @route   DELETE /api/users/:id
-// @access  Private/Adminerror
+// @access  Private/Admin
 export const deleteUser = asyncHandler(async (req, res) => {
   const users = await User.findById(req.params.id);
 
   if (users) {
-    await users.remove()
-    return res.status(200).json({ message: 'User removed'});
+    await users.remove();
+    return res.status(200).json({ message: 'User removed' });
   } else {
     return res.status(404).json({ message: 'User not found' });
+  }
+});
+
+// @desc    GET user by id
+// @route   GET /api/users/:id
+// @access  Private/admin
+export const getUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select('-password');
+
+  if (user) {
+    return res.status(200).json(user);
+  }
+  return res.status(404).json({ message: 'User not found' });
+});
+
+// @desc    Update user by admin
+// @route   PUT /api/users/:id
+// @access  Private/admin
+export const updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+ 
+
+  if(!req.body){
+    return res.status(404).json({ message: 'Invalid informations' });
+  }
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+
+    const updatedUser = await user.save();
+
+    return res.status(200).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    });
+  } else {
+    return res.status(404).json({ message: 'User Invalid' });
   }
 });
