@@ -19,22 +19,22 @@ import { asyncSingleProduct } from '../redux/reducers/productReducer';
 
 const ProductScreen = () => {
   const { id } = useParams();
-  const product = useSelector((state) => state.product.product);
-  const error = useSelector((state) => state.product.error);
+  const { product, error } = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const [isLoad, setIsLoad] = useState(false);
   const [qty, setQty] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProd = async () => {
-      await dispatch(asyncSingleProduct(id));
-
-      setIsLoad(true);
-    };
-    fetchProd();
+    dispatch(asyncSingleProduct(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if(product){
+      setIsLoad(true);
+    }
+  }, [product])
 
   const addtoCartHandler = () => {
     dispatch(asyncAddProduct(id, qty));

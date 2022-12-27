@@ -18,17 +18,17 @@ const SingUpScreen = () => {
   const [isError, setIsError] = useState('');
 
   const dispatch = useDispatch();
-  const {loginState, error } = useSelector((state) => state.user);
+  const {loginState, errorLogin } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (error) {
-      setIsError(error);
+    if (errorLogin) {
+      setIsError(errorLogin);
     }
     if (loginState) {
       navigate('/');
     }
-  }, [error, loginState, navigate]);
+  }, [errorLogin, loginState, navigate]);
 
   useEffect(() => {
     if (typeof userData.password === 'string') {
@@ -110,7 +110,7 @@ const SingUpScreen = () => {
             >
               Register
             </Button>
-            {isError ? <Message variant='danger'>{error}</Message> : null}
+            {isError ? <Message variant='danger'>{errorLogin}</Message> : null}
           </Col>
         </Row>
       </Form>

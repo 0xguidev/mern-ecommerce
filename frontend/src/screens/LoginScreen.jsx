@@ -13,18 +13,17 @@ function LoginScreen() {
   const [isError, setIsError] = useState('');
 
   const dispatch = useDispatch();
-  const { error } = useSelector((state) => state.user);
-  const { loginState } = useSelector((state) => state.user);
+  const { errorLogin, loginState } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (error) {
-      setIsError(error);
+    if (errorLogin) {
+      setIsError(errorLogin);
     }
     if (loginState) {
       navigate('/');
     }
-  }, [error, loginState, navigate]);
+  }, [errorLogin, loginState, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,7 +33,7 @@ function LoginScreen() {
   return (
     <Container className='container-form'>
       <h1>Login Screen</h1>
-      <Row >
+      <Row>
         <Col>
           <Form onSubmit={(e) => handleSubmit(e)}>
             <Form.Group className='mb-3' controlId='formBasicEmail'>
@@ -71,8 +70,8 @@ function LoginScreen() {
             </Row>
             {isError ? (
               <Row>
-                <Message variant='danger'>{error}</Message>
-                <Form.Text muted>{error}</Form.Text>
+                <Message variant='danger'>{errorLogin}</Message>
+                <Form.Text muted>{errorLogin}</Form.Text>
               </Row>
             ) : null}
           </Form>

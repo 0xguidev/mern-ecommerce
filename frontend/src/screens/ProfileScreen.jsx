@@ -20,13 +20,13 @@ function ProfileScreen() {
   const [isError, setIsError] = useState('');
 
   const dispatch = useDispatch();
-  const { loginState, error, user } = useSelector((state) => state.user);
+  const { loginState, errorLogin, user } = useSelector((state) => state.user);
   const { userOrders } = useSelector((state) => state.orders);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (error) {
-      setIsError(error);
+    if (errorLogin) {
+      setIsError(errorLogin);
     }
     if (!userOrders) {
       dispatch(getUserOrders());
@@ -34,7 +34,7 @@ function ProfileScreen() {
     if (!loginState) {
       navigate('/');
     }
-  }, [error, loginState, navigate, dispatch, userOrders]);
+  }, [errorLogin, loginState, navigate, dispatch, userOrders]);
 
   useEffect(() => {
     if (typeof userData.password === 'string') {
@@ -115,7 +115,7 @@ function ProfileScreen() {
               >
                 Update
               </Button>
-              {isError ? <Message varaiant={'danger'}>{error}</Message> : null}
+              {isError ? <Message varaiant={'danger'}>{errorLogin}</Message> : null}
             </Form>
           </Col>
           <Col md={7}>

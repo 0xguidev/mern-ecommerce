@@ -9,87 +9,89 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
 const userReducer = createSlice({
   name: 'login',
   initialState: {
-    loading: 'idle',
-    loadingListUsers: 'idle',
+    loadingLogin: 'idle',
+    loadingList: 'idle',
+    loadingDelete: 'idle',
+    loadingUpdate: 'idle',
+    loadingRegister: 'idle',
     listUsers: '',
     loginState: userInfoFromStorage.isLoged,
     user: userInfoFromStorage.user,
-    error: '',
-    errorListUsers: '',
+    deleteSuccess: false,
+    errorLogin: '',
+    errorList: '',
+    errorDelete: '',
+    errorUpdate: '',
+    errorRegister: '',
+    
   },
   reducers: {
-    userRequest: (state) => {
-      if (state.loading === 'idle') {
-        return {
-          ...state,
-          loading: 'pending',
-          error: '',
-          loginState: false,
-        };
-      }
-      return state;
+    loginRequest: (state) => {
+      return {
+        ...state,
+        loadingLogin: 'pending',
+        errorLogin: '',
+        loginState: false,
+      };
     },
-    userLoginSuccess: (state, action) => {
-      if (state.loading === 'pending') {
-        return {
-          ...state,
-          loading: 'idle',
-          user: action.payload,
-          loginState: true,
-        };
-      }
-      return state;
+    loginSuccess: (state, action) => {
+      return {
+        ...state,
+        loadingLogin: 'idle',
+        user: action.payload,
+        loginState: true,
+      };
     },
-    userLoginFail: (state, action) => {
-      if (state.loading === 'pending') {
-        return {
-          ...state,
-          loading: 'idle',
-          error: action.payload,
-        };
-      }
-      return state;
+    loginFail: (state, action) => {
+      return {
+        ...state,
+        loadingLogin: 'idle',
+        errorLogin: action.payload,
+      };
+    },
+    updateRequest: (state) => {
+      return {
+        ...state,
+        loadingUpdate: 'pending',
+        errorUpdate: '',
+        loginState: false,
+      };
     },
     updateSuccess: (state, action) => {
-      if (state.loading === 'pending') {
-        return {
-          ...state,
-          loading: 'idle',
-          user: action.payload,
-        };
-      }
-      return state;
+      return {
+        ...state,
+        loadingUpdate: 'idle',
+        user: action.payload,
+      };
     },
     updateFail: (state, action) => {
-      if (state.loading === 'pending') {
-        return {
-          ...state,
-          loading: 'idle',
-          error: action.payload,
-        };
-      }
-      return state;
+      return {
+        ...state,
+        loadingUpdate: 'idle',
+        errorUpdate: action.payload,
+      };
+    },
+    registerRequest: (state) => {
+      return {
+        ...state,
+        loadingRegister: 'pending',
+        loginState: false,
+      };
     },
     registerSuccess: (state, action) => {
-      if (state.loading === 'pending') {
-        return {
-          ...state,
-          loading: 'idle',
-          user: action.payload,
-          loginState: true,
-        };
-      }
-      return state;
+      return {
+        ...state,
+        loadingRegister: 'idle',
+        user: action.payload,
+        loginState: true,
+      };
     },
     registerFail: (state, action) => {
-      if (state.loading === 'pending') {
-        return {
-          ...state,
-          loading: 'idle',
-          error: action.payload,
-        };
-      }
-      return state;
+      return {
+        ...state,
+        loadingRegister: 'idle',
+        errorRegister: action.payload,
+      };
     },
     userLogout: (state) => {
       return {
@@ -101,49 +103,76 @@ const userReducer = createSlice({
         token: '',
       };
     },
-    listUsersLoading: (state, action) => {
+    listUsersRequest: (state) => {
+
       return {
         ...state,
-        loading: 'pending',
+        loadingList: 'pending',
       };
     },
     listUsersSuccess: (state, action) => {
       return {
         ...state,
-        loadingListUsers: 'idle',
+        loadingList: 'idle',
         listUsers: action.payload,
       };
     },
     listUsersError: (state, action) => {
       return {
         ...state,
-        loadingListUsers: 'idle',
-        errorListUsers: action.payload,
+        loadingList: 'idle',
+        errorList: action.payload,
       };
-    }
+    },
+    deleteUserRequest: (state) => {
+      return {
+        ...state,
+        loadingDelete: 'pending',
+        deleteSuccess: false,
+      };
+    },
+    deleteUserSuccess: (state) => {
+      return {
+        ...state,
+        loadingDelete: 'idle',
+        deleteSuccess: true,
+      };
+    },
+    deleteUserFail: (state, action) => {
+      return {
+        ...state,
+        loadingDelete: 'idle',
+        errorDelete: action.payload,
+      };
+    },
   },
 });
 
 export const {
-  userRequest,
-  userLoginFail,
-  userLoginSuccess,
+  loginRequest,
+  loginFail,
+  loginSuccess,
   userLogout,
+  updateRequest,
   updateFail,
   updateSuccess,
+  registerRequest,
   registerSuccess,
   registerFail,
   listUsersError,
   listUsersSuccess,
-  listUsersLoading,
-  listUsersReset
+  listUsersRequest,
+  listUsersReset,
+  deleteUserRequest,
+  deleteUserSuccess,
+  deleteUserFail,
 } = userReducer.actions;
 export default userReducer.reducer;
 
 export const asyncUserLoginRequest =
   (email, password) => async (dispatch, getState) => {
     try {
-      dispatch(userRequest());
+      dispatch(loginRequest());
 
       const {
         user: { user },
@@ -167,10 +196,10 @@ export const asyncUserLoginRequest =
           'userInfo',
           JSON.stringify({ user: data, token: data.token, isLoged: true })
         );
-        return dispatch(userLoginSuccess(data));
+        return dispatch(loginSuccess(data));
       }
     } catch (e) {
-      return dispatch(userLoginFail(e.response.data.message));
+      return dispatch(loginFail(e.response.data.message));
     }
   };
 
@@ -180,14 +209,14 @@ export const logoutUser = () => (dispatch) => {
   localStorage.removeItem('__paypal_storage__');
   localStorage.removeItem('cartItems');
   localStorage.removeItem('shippingAddress');
-  dispatch(ordersReset())
+  dispatch(ordersReset());
   return dispatch(userLogout());
 };
 
 export const asyncUserUpdateRequest =
   (password) => async (dispatch, getState) => {
     try {
-      dispatch(userRequest());
+      dispatch(updateRequest());
       const {
         user: { user },
       } = getState();
@@ -214,7 +243,7 @@ export const asyncRegisterRequest =
   ({ name, email, password }) =>
   async (dispatch, getState) => {
     try {
-      dispatch(userRequest());
+      dispatch(registerRequest());
       const {
         user: { user },
       } = getState();
@@ -236,9 +265,9 @@ export const asyncRegisterRequest =
         localStorage.setItem(
           'userInfo',
           JSON.stringify({ user: data, isLoged: true })
-          );
-          return dispatch(registerSuccess(data));
-        }
+        );
+        return dispatch(registerSuccess(data));
+      }
     } catch (e) {
       return dispatch(registerFail(e.response.data.message));
     }
@@ -246,7 +275,7 @@ export const asyncRegisterRequest =
 
 export const getListUsers = () => async (dispatch, getState) => {
   try {
-    dispatch(listUsersLoading());
+    dispatch(listUsersRequest());
     const {
       user: { user },
     } = getState();
@@ -257,11 +286,31 @@ export const getListUsers = () => async (dispatch, getState) => {
         authorization: `Bearer ${user.token}`,
       },
     });
-    if(status === 200){
+    if (status === 200) {
       return dispatch(listUsersSuccess(data));
-
     }
-  } catch (e){
+  } catch (e) {
     return dispatch(listUsersError(e.response.data.message));
+  }
+};
+
+export const deleteUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch(deleteUserRequest());
+    const {
+      user: { user },
+    } = getState();
+    const { status } = await axios({
+      method: 'delete',
+      url: `http://localhost:3001/api/users/${id}`,
+      headers: {
+        authorization: `Bearer ${user.token}`,
+      },
+    });
+    if (status === 200) {
+      return dispatch(deleteUserSuccess());
+    }
+  } catch (e) {
+    return dispatch(deleteUserFail(e.message));
   }
 };
