@@ -12,70 +12,77 @@ const Header = () => {
 
   return (
     <header>
-      <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
+      <Navbar bg='dark' variant='dark' expand='md' collapseOnSelect>
         <Container>
-          <LinkContainer to='/'>
+          <LinkContainer to='/' className={'fas nav-link'}>
             <Navbar.Brand>ProShop</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
-            <Nav className='m-auto'>
+            <Nav className='fas nav-link'>
               <LinkContainer to='/cart'>
                 <Nav.Link>
-                  <i className='fas fa-shopping-cart'>
+                  <i className='fa fa-shopping-cart'>
                     <Badge bg='secondary'>
                       {cartItems.length > 0 ? cartItems.length : null}
                     </Badge>
-                  </i>{' '}
+                  </i>
                   Cart
                 </Nav.Link>
               </LinkContainer>
-              {loginState ?? (
-                <NavDropdown title={user.name}>
-                  <LinkContainer to='/profile'>
-                    <Nav.Link>
-                      <i className={'fas fa-sign-out-alt nav-link'}>
-                        {' '}
-                        Profile{' '}
-                      </i>
-                    </Nav.Link>
+              {loginState && user.isAdmin ? (
+                <NavDropdown
+                  title='Admin'
+                  id='adminmenu'
+                  className='fas nav-link'
+                >
+                  <LinkContainer
+                    to='/admin/userlist'
+                    className={'fas fa-address-card'}
+                  >
+                    <NavDropdown.Item> Users</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to='/logout'>
-                    <Nav.Link>
-                      <i className={'fas fa-sign-out-alt nav-link'}>
-                        {' '}
-                        Log Out{' '}
-                      </i>
-                    </Nav.Link>
+                  <LinkContainer
+                    to='/admin/productlist'
+                    className={'fas fa-bookmark'}
+                  >
+                    <NavDropdown.Item> Products</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer
+                    to='/admin/orderlist'
+                    className={'fas fa-credit-card'}
+                  >
+                    <NavDropdown.Item> Orders</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
-              )}
+              ) : null}
+              {loginState ? (
+                <NavDropdown title={user.name} className={'fas nav-link'}>
+                  <LinkContainer to='/profile'>
+                    <NavDropdown.Item>
+                      <i className={'fas fa-sign-out-alt'}> Profile</i>
+                    </NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to='/logout'>
+                    <NavDropdown.Item>
+                      <i className={'fas fa-sign-out-alt light'}> Log Out</i>
+                    </NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+              ) : null}
               {!loginState ? (
-                <LinkContainer to='/singup'>
+                <LinkContainer to='/singup' className={'fas nav-link'}>
                   <Nav.Link>
                     <i className='fas fa-user'></i> Sign In
                   </Nav.Link>
                 </LinkContainer>
               ) : null}
               {!loginState ? (
-                <LinkContainer to='/login'>
+                <LinkContainer to='/login' className={'fas nav-link'}>
                   <Nav.Link>
                     <i className='fas fa-sign-in-alt'></i> Log In
                   </Nav.Link>
                 </LinkContainer>
-              ) : null}
-              {loginState && user.isAdmin ? (
-                <NavDropdown title='Admin' id='adminmenu'>
-                  <LinkContainer to='/admin/userlist'>
-                    <NavDropdown.Item>Users</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to='/admin/productlist'>
-                    <NavDropdown.Item>Products</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to='/admin/orderlist'>
-                    <NavDropdown.Item>Orders</NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown>
               ) : null}
             </Nav>
           </Navbar.Collapse>

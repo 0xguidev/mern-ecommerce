@@ -20,14 +20,8 @@ function ProfileScreen() {
   const [isError, setIsError] = useState('');
 
   const dispatch = useDispatch();
-  const {
-    loginState,
-    error,
-    user,
-  } = useSelector((state) => state.user);
-  const { userOrders} = useSelector(
-    (state) => state.orders
-  );
+  const { loginState, error, user } = useSelector((state) => state.user);
+  const { userOrders } = useSelector((state) => state.orders);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -62,12 +56,12 @@ function ProfileScreen() {
   };
 
   return (
-    <Container className='main_container'>
+    <Container>
       <Container>
-        <Row>
-          <Col md={3}>
+        <Row className='profile-row'>
+          <Col md={4} xs={10}>
             <Form onSubmit={handleSubmit}>
-              <h2>Edit Profile</h2>
+              <h1>Edit Profile</h1>
               <Form.Group className='mb-3' controlId='updateName'>
                 <Form.Label>Full Name</Form.Label>
                 <Form.Control
@@ -121,11 +115,11 @@ function ProfileScreen() {
               >
                 Update
               </Button>
-              {isError ?? <Message varaiant={'danger'}>{error}</Message>}
+              {isError ? <Message varaiant={'danger'}>{error}</Message> : null}
             </Form>
           </Col>
-          <Col md={9}>
-            <h1>My Orders</h1>
+          <Col md={7}>
+              <h1>My Orders</h1>
               <Table striped bordered hover responsive className='table-sm'>
                 <thead>
                   <tr>
@@ -138,40 +132,40 @@ function ProfileScreen() {
                   </tr>
                 </thead>
                 <tbody>
-                  {!userOrders ? 
-                  null
-                  : userOrders.map((order) => (
-                    <tr key={order._id}>
-                      <td>{order._id}</td>
-                      <td>{order.createdAt.substring(0, 10)}</td>
-                      <td>{order.totalPrice.toFixed(2)}</td>
-                      <td>
-                        {order.isPaid ? (
-                          order.paidAt.substring(0, 10)
-                        ) : (
-                          <i
-                            className='fas fa-times'
-                            style={{ color: 'red' }}
-                          ></i>
-                        )}
-                      </td>
-                      <td>
-                        {order.isDelivery ? (
-                          order.deliveryAt.substring(0, 10)
-                        ) : (
-                          <i
-                            className='fas fa-times'
-                            style={{ color: 'red' }}
-                          ></i>
-                        )}
-                      </td> 
-                      <td>
-                        <LinkContainer to={`/order/${order._id}`}>
-                          <Button variant='light'>Details</Button>
-                      </LinkContainer>
-                      </td>
-                    </tr>
-                  ))}
+                  {!userOrders
+                    ? null
+                    : userOrders.map((order) => (
+                        <tr key={order._id}>
+                          <td>{order._id}</td>
+                          <td>{order.createdAt.substring(0, 10)}</td>
+                          <td>{order.totalPrice.toFixed(2)}</td>
+                          <td>
+                            {order.isPaid ? (
+                              order.paidAt.substring(0, 10)
+                            ) : (
+                              <i
+                                className='fas fa-times'
+                                style={{ color: 'red' }}
+                              ></i>
+                            )}
+                          </td>
+                          <td>
+                            {order.isDelivery ? (
+                              order.deliveryAt.substring(0, 10)
+                            ) : (
+                              <i
+                                className='fas fa-times'
+                                style={{ color: 'red' }}
+                              ></i>
+                            )}
+                          </td>
+                          <td>
+                            <LinkContainer to={`/order/${order._id}`}>
+                              <Button variant='light'>Details</Button>
+                            </LinkContainer>
+                          </td>
+                        </tr>
+                      ))}
                 </tbody>
               </Table>
           </Col>

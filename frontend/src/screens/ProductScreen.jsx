@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Col,
+  Container,
   Form,
   Image,
   ListGroup,
@@ -45,11 +46,11 @@ const ProductScreen = () => {
   ) : error.length > 0 ? (
     <Message variant='danger'>{error}</Message>
   ) : (
-    <>
+    <Container>
       <Link className='btn btn-dark my-3' to='/'>
         Go Back
       </Link>
-      <Row>
+      <Row className='row-product-details'>
         <Col md={6}>
           <Image src={product.image} alt={product.name} fluid />
         </Col>
@@ -121,7 +122,7 @@ const ProductScreen = () => {
           </Card>
         </Col>
       </Row>
-    </>
+    </Container>
   );
 };
 

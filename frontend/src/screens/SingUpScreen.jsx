@@ -50,9 +50,9 @@ const SingUpScreen = () => {
   };
 
   return (
-    <Container className='main_container'>
+    <Container className='container-form'>
       <h1>Sign Up</h1>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} >
         <Row>
           <Col>
             <Form.Group className='mb-3' controlId='formBasicName'>
@@ -110,7 +110,7 @@ const SingUpScreen = () => {
             >
               Register
             </Button>
-            {isError ?? <Message variant='danger'>{error}</Message>}
+            {isError ? <Message variant='danger'>{error}</Message> : null}
           </Col>
         </Row>
       </Form>

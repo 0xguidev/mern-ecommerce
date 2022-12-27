@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { ordersReset } from './ordersReducer';
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
@@ -96,6 +97,7 @@ const userReducer = createSlice({
         loading: 'idle',
         loginState: false,
         user: {},
+        listUsers: '',
         token: '',
       };
     },
@@ -118,7 +120,7 @@ const userReducer = createSlice({
         loadingListUsers: 'idle',
         errorListUsers: action.payload,
       };
-    },
+    }
   },
 });
 
@@ -134,6 +136,7 @@ export const {
   listUsersError,
   listUsersSuccess,
   listUsersLoading,
+  listUsersReset
 } = userReducer.actions;
 export default userReducer.reducer;
 
@@ -177,6 +180,7 @@ export const logoutUser = () => (dispatch) => {
   localStorage.removeItem('__paypal_storage__');
   localStorage.removeItem('cartItems');
   localStorage.removeItem('shippingAddress');
+  dispatch(ordersReset())
   return dispatch(userLogout());
 };
 

@@ -24,7 +24,7 @@ const HomeScreen = () => {
       ) : error.length > 0 ? (
         <Message variant='danger'>{error}</Message>
       ) : (
-        <Container className='main_container'>
+        <Container>
           <h1>Latest Products</h1>
           <Row>
             {products.map((product) => (

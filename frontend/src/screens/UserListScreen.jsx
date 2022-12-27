@@ -1,27 +1,34 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getListUsers } from '../redux/reducers/userReducer';
 import Loading from '../components/Loading';
 import Message from '../components/Message';
-import { Button, Table } from 'react-bootstrap';
+import { Button, Container, Table } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 export default function UserListScreen() {
   const dispatch = useDispatch();
-  const { listUsers, loadingListUsers, errorListUsers } = useSelector(
+  const { listUsers, loadingListUsers, errorListUsers, loginState, user: { isAdmin} } = useSelector(
     (state) => state.user
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getListUsers());
+    if(loginState && isAdmin) {
+      dispatch(getListUsers());
+    } else {
+      navigate('/login');
+    }
   }, [dispatch]);
 
   const deleteHandler = (id) => {
     console.log(id)
   }
   return (
-    <>
+    <Container>
       <h1>Users</h1>
       {!listUsers && loadingListUsers ? (
         <Loading />
@@ -64,6 +71,6 @@ export default function UserListScreen() {
           </tbody>
         </Table>
       )}
-    </>
+    </Container>
   );
 }

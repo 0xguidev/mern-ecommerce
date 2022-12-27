@@ -32,9 +32,9 @@ function LoginScreen() {
   };
 
   return (
-    <Container className='main_container'>
+    <Container className='container-form'>
       <h1>Login Screen</h1>
-      <Row>
+      <Row >
         <Col>
           <Form onSubmit={(e) => handleSubmit(e)}>
             <Form.Group className='mb-3' controlId='formBasicEmail'>
@@ -69,12 +69,12 @@ function LoginScreen() {
                 New Customer? <Link to={'/singup'}>Register</Link>
               </Col>
             </Row>
-            {isError ?? (
+            {isError ? (
               <Row>
                 <Message variant='danger'>{error}</Message>
                 <Form.Text muted>{error}</Form.Text>
               </Row>
-            )}
+            ) : null}
           </Form>
         </Col>
       </Row>
