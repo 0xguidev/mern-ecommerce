@@ -11,6 +11,8 @@ import ProfileScreen from './screens/ProfileScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
+import UserListScreen from './screens/UserListScreen';
+import UserEditSreen from './screens/UserEditScreen';
 
 const Router = () => {
   return (
@@ -29,6 +31,8 @@ const Router = () => {
       <Route exact path='/payment' element={<PaymentScreen />} />
       <Route exact path='/placeOrder' element={<PlaceOrderScreen />} />
       <Route exact path='/order/:id' element={<OrderScreen />} />
+      <Route exact path='/admin/userlist' element={<UserListScreen />} />
+      <Route exact path='/admin/user/:id/edit' element={<UserEditSreen />} />
     </Routes>
   );
 };

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { ordersReset } from './ordersReducer';
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
@@ -8,84 +9,94 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
 const userReducer = createSlice({
   name: 'login',
   initialState: {
-    loading: 'idle',
+    loadingLogin: 'idle',
+    loadingList: 'idle',
+    loadingDelete: 'idle',
+    loadingUpdate: 'idle',
+    loadingRegister: 'idle',
+    loadingDetails: 'idle',
+    loadingAdminUpdate: 'idle',
+    listUsers: '',
     loginState: userInfoFromStorage.isLoged,
     user: userInfoFromStorage.user,
-    error: '',
+    userDetails: '',
+    deleteSuccess: false,
+    errorLogin: '',
+    errorList: '',
+    errorDelete: '',
+    errorUpdate: '',
+    errorRegister: '',
+    errorDetails: '',
+    errorAdminUpdate: '',
+    stateUpdateUser: false,
   },
   reducers: {
-    userRequest: (state) => {
-      if (state.loading === 'idle') {
-        return {
-          ...state,
-          loading: 'pending',
-          error: '',
-          loginState: false,
-        };
-      }
-      return state;
+    loginRequest: (state) => {
+      return {
+        ...state,
+        loadingLogin: 'pending',
+        errorLogin: '',
+        loginState: false,
+      };
     },
-    userLoginSuccess: (state, action) => {
-      if (state.loading === 'pending') {
-        return {
-          ...state,
-          loading: 'idle',
-          user: action.payload,
-          loginState: true,
-        };
-      }
-      return state;
+    loginSuccess: (state, action) => {
+      return {
+        ...state,
+        loadingLogin: 'idle',
+        user: action.payload,
+        loginState: true,
+      };
     },
-    userLoginFail: (state, action) => {
-      if (state.loading === 'pending') {
-        return {
-          ...state,
-          loading: 'idle',
-          error: action.payload,
-        };
-      }
-      return state;
+    loginFail: (state, action) => {
+      return {
+        ...state,
+        loadingLogin: 'idle',
+        errorLogin: action.payload,
+      };
+    },
+    updateRequest: (state) => {
+      return {
+        ...state,
+        loadingUpdate: 'pending',
+        errorUpdate: '',
+        loginState: false,
+      };
     },
     updateSuccess: (state, action) => {
-      if (state.loading === 'pending') {
-        return {
-          ...state,
-          loading: 'idle',
-          user: action.payload,
-        };
-      }
-      return state;
+      return {
+        ...state,
+        loadingUpdate: 'idle',
+        user: action.payload,
+      };
     },
     updateFail: (state, action) => {
-      if (state.loading === 'pending') {
-        return {
-          ...state,
-          loading: 'idle',
-          error: action.payload,
-        };
-      }
-      return state;
+      return {
+        ...state,
+        loadingUpdate: 'idle',
+        errorUpdate: action.payload,
+      };
+    },
+    registerRequest: (state) => {
+      return {
+        ...state,
+        loadingRegister: 'pending',
+        loginState: false,
+      };
     },
     registerSuccess: (state, action) => {
-      if (state.loading === 'pending') {
-        return {
-          ...state,
-          loading: 'idle',
-          user: action.payload,
-          loginState: true,
-        };
-      }
-      return state;
+      return {
+        ...state,
+        loadingRegister: 'idle',
+        user: action.payload,
+        loginState: true,
+      };
     },
     registerFail: (state, action) => {
-      if (state.loading === 'pending') {
-        return {
-          ...state,
-          loading: 'idle',
-          error: action.payload,
-        };
-      }
-      return state;
+      return {
+        ...state,
+        loadingRegister: 'idle',
+        errorRegister: action.payload,
+      };
     },
     userLogout: (state) => {
       return {
@@ -93,30 +104,136 @@ const userReducer = createSlice({
         loading: 'idle',
         loginState: false,
         user: {},
+        listUsers: '',
         token: '',
+      };
+    },
+    listUsersRequest: (state) => {
+      return {
+        ...state,
+        loadingList: 'pending',
+        stateUpdateUser: false
+      };
+    },
+    listUsersSuccess: (state, action) => {
+      return {
+        ...state,
+        loadingList: 'idle',
+        listUsers: action.payload,
+      };
+    },
+    listUsersError: (state, action) => {
+      return {
+        ...state,
+        loadingList: 'idle',
+        errorList: action.payload,
+      };
+    },
+    deleteUserRequest: (state) => {
+      return {
+        ...state,
+        loadingDelete: 'pending',
+        deleteSuccess: false,
+      };
+    },
+    deleteUserSuccess: (state) => {
+      return {
+        ...state,
+        loadingDelete: 'idle',
+        deleteSuccess: true,
+      };
+    },
+    deleteUserFail: (state, action) => {
+      return {
+        ...state,
+        loadingDelete: 'idle',
+        errorDelete: action.payload,
+      };
+    },
+    detailsUserRequest: (state) => {
+      return {
+        ...state,
+        loadingDetails: 'pending',
+        userDetails: '',
+        stateUpdateUser: false
+      };
+    },
+    detailsUserSuccess: (state, action) => {
+      return {
+        ...state,
+        loadingDetails: 'idle',
+        userDetails: action.payload,
+      };
+    },
+    detailsUserFail: (state, action) => {
+      return {
+        ...state,
+        loadingDetails: 'idle',
+        errorDetails: action.payload,
+      };
+    },
+    updateAdminRequest: (state) => {
+      return {
+        ...state,
+        loadingAdminUpdate: 'pending',
+        errorUpdate: '',
+        userDetails: '',
+        stateUpdateUser: false
+      };
+    },
+    updateAdminSuccess: (state, action) => {
+      return {
+        ...state,
+        loadingAdminUpdate: 'idle',
+        userDetails: action.payload,
+        stateUpdateUser: true
+      };
+    },
+    updateAdminFail: (state, action) => {
+      return {
+        ...state,
+        loadingAdminUpdate: 'idle',
+        errorAdminUpdate: action.payload,
       };
     },
   },
 });
 
 export const {
-  userRequest,
-  userLoginFail,
-  userLoginSuccess,
+  loginRequest,
+  loginFail,
+  loginSuccess,
   userLogout,
+  updateRequest,
   updateFail,
   updateSuccess,
+  registerRequest,
   registerSuccess,
   registerFail,
+  listUsersError,
+  listUsersSuccess,
+  listUsersRequest,
+  listUsersReset,
+  deleteUserRequest,
+  deleteUserSuccess,
+  deleteUserFail,
+  detailsUserRequest,
+  detailsUserSuccess,
+  detailsUserFail,
+  updateAdminRequest,
+  updateAdminSuccess,
+  updateAdminFail,
 } = userReducer.actions;
 export default userReducer.reducer;
 
 export const asyncUserLoginRequest =
   (email, password) => async (dispatch, getState) => {
     try {
-      dispatch(userRequest());
+      dispatch(loginRequest());
 
-      const { user: { user } } = getState();
+      const {
+        user: { user },
+      } = getState();
 
       const { data, status } = await axios({
         method: 'post',
@@ -132,14 +249,14 @@ export const asyncUserLoginRequest =
       });
 
       if (status === 200) {
-        dispatch(userLoginSuccess(data));
         localStorage.setItem(
           'userInfo',
           JSON.stringify({ user: data, token: data.token, isLoged: true })
         );
+        return dispatch(loginSuccess(data));
       }
     } catch (e) {
-      dispatch(userLoginFail(e.response.data.message));
+      return dispatch(loginFail(e.response.data.message));
     }
   };
 
@@ -149,14 +266,17 @@ export const logoutUser = () => (dispatch) => {
   localStorage.removeItem('__paypal_storage__');
   localStorage.removeItem('cartItems');
   localStorage.removeItem('shippingAddress');
-  dispatch(userLogout());
+  dispatch(ordersReset());
+  return dispatch(userLogout());
 };
 
 export const asyncUserUpdateRequest =
   (password) => async (dispatch, getState) => {
     try {
-      dispatch(userRequest());
-      const { user: { user } } = getState();
+      dispatch(updateRequest());
+      const {
+        user: { user },
+      } = getState();
       const { data, status } = await axios({
         method: 'put',
         url: 'http://localhost:3001/api/users/profile',
@@ -169,34 +289,131 @@ export const asyncUserUpdateRequest =
         }),
       });
       if (status === 200) {
-        dispatch(updateSuccess(data));
+        return dispatch(updateSuccess(data));
       }
     } catch (e) {
-      dispatch(updateFail(e.response.data.message));
+      return dispatch(updateFail(e.response.data.message));
     }
   };
 
 export const asyncRegisterRequest =
   ({ name, email, password }) =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     try {
-      dispatch(userRequest());
-      const { status, data } = await axios.post(
-        'http://localhost:3001/api/users',
-        {
+      dispatch(registerRequest());
+      const {
+        user: { user },
+      } = getState();
+      const { data, status } = await axios({
+        method: 'post',
+        url: 'http://localhost:3001/api/users',
+        headers: {
+          authorization: `Bearer ${user.token}`,
+          'Content-Type': 'application/json',
+        },
+        data: {
           name,
           email,
           password,
-        }
-      );
+        },
+      });
+
       if (status === 200) {
-        dispatch(registerSuccess(data));
         localStorage.setItem(
           'userInfo',
           JSON.stringify({ user: data, isLoged: true })
         );
+        return dispatch(registerSuccess(data));
       }
     } catch (e) {
-      dispatch(registerFail(e.response.data.message));
+      return dispatch(registerFail(e.response.data.message));
+    }
+  };
+
+export const getListUsers = () => async (dispatch, getState) => {
+  try {
+    dispatch(listUsersRequest());
+    const {
+      user: { user },
+    } = getState();
+    const { data, status } = await axios({
+      method: 'get',
+      url: 'http://localhost:3001/api/users',
+      headers: {
+        authorization: `Bearer ${user.token}`,
+      },
+    });
+    if (status === 200) {
+      return dispatch(listUsersSuccess(data));
+    }
+  } catch (e) {
+    return dispatch(listUsersError(e.response.data.message));
+  }
+};
+
+export const deleteUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch(deleteUserRequest());
+    const {
+      user: { user },
+    } = getState();
+    const { status } = await axios({
+      method: 'delete',
+      url: `http://localhost:3001/api/users/${id}`,
+      headers: {
+        authorization: `Bearer ${user.token}`,
+      },
+    });
+    if (status === 200) {
+      return dispatch(deleteUserSuccess());
+    }
+  } catch (e) {
+    return dispatch(deleteUserFail(e.message));
+  }
+};
+
+export const getUserDetails = (id) => async (dispatch, getState) => {
+  try {
+    dispatch(detailsUserRequest());
+    const {
+      user: { user },
+    } = getState();
+    const { data, status } = await axios({
+      method: 'get',
+      url: `http://localhost:3001/api/users/${id}`,
+      headers: {
+        authorization: `Bearer ${user.token}`,
+      },
+    });
+    if (status === 200) {
+      return dispatch(detailsUserSuccess(data));
+    }
+  } catch (e) {
+    return dispatch(detailsUserFail(e.message));
+  }
+};
+
+export const updateUser =
+  (id, userData) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch(updateAdminRequest());
+      const {
+        user: { user },
+      } = getState();
+      const { data, status } = await axios({
+        method: 'put',
+        url: `http://localhost:3001/api/users/${id}`,
+        headers: {
+          authorization: `Bearer ${user.token}`,
+          'Content-Type': 'application/json',
+        },
+        data: userData,
+      });
+      if (status === 200) {
+        return dispatch(updateAdminSuccess(data));
+      }
+    } catch (e) {
+      return dispatch(updateAdminFail(e.response.data.message));
     }
   };

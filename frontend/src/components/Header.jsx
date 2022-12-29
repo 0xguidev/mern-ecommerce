@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -7,67 +7,78 @@ import { useSelector } from 'react-redux';
 import { Badge, NavDropdown } from 'react-bootstrap';
 
 const Header = () => {
-  const [loginStatus, setLoginStatus] = useState();
-  const loginState = useSelector((state) => state.user);
+  const { loginState, user } = useSelector((state) => state.user);
   const { cartItems } = useSelector((state) => state.cart);
-
-  useEffect(() => {
-    if (loginState.loginState === false) {
-      setLoginStatus(loginState.loginState);
-    } else {
-      setLoginStatus(loginState.loginState);
-    }
-  }, [loginState.loginState]);
 
   return (
     <header>
-      <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
+      <Navbar bg='dark' variant='dark' expand='md' collapseOnSelect>
         <Container>
-          <LinkContainer to='/'>
+          <LinkContainer to='/' className={'fas nav-link'}>
             <Navbar.Brand>ProShop</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
-            <Nav className='m-auto'>
+            <Nav className='fas nav-link'>
               <LinkContainer to='/cart'>
                 <Nav.Link>
-                  <i className='fas fa-shopping-cart'>
+                  <i className='fa fa-shopping-cart'>
                     <Badge bg='secondary'>
                       {cartItems.length > 0 ? cartItems.length : null}
                     </Badge>
-                  </i>{' '}
+                  </i>
                   Cart
                 </Nav.Link>
               </LinkContainer>
-              {loginStatus ? (
-                <NavDropdown title={loginState.user.name}>
-                  <LinkContainer to='/profile'>
-                    <Nav.Link>
-                      <i className={'fas fa-sign-out-alt nav-link'}>
-                        {' '}
-                        Profile{' '}
-                      </i>
-                    </Nav.Link>
+              {loginState && user.isAdmin ? (
+                <NavDropdown
+                  title='Admin'
+                  id='adminmenu'
+                  className='fas nav-link'
+                >
+                  <LinkContainer
+                    to='/admin/userlist'
+                    className={'fas fa-address-card'}
+                  >
+                    <NavDropdown.Item> Users</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to='/logout'>
-                    <Nav.Link>
-                      <i className={'fas fa-sign-out-alt nav-link'}>
-                        {' '}
-                        Log Out{' '}
-                      </i>
-                    </Nav.Link>
+                  <LinkContainer
+                    to='/admin/productlist'
+                    className={'fas fa-bookmark'}
+                  >
+                    <NavDropdown.Item> Products</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer
+                    to='/admin/orderlist'
+                    className={'fas fa-credit-card'}
+                  >
+                    <NavDropdown.Item> Orders</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
               ) : null}
-              {!loginStatus ? (
-                <LinkContainer to='/singup'>
+              {loginState ? (
+                <NavDropdown title={user.name} className={'fas nav-link'}>
+                  <LinkContainer to='/profile'>
+                    <NavDropdown.Item>
+                      <i className={'fas fa-sign-out-alt'}> Profile</i>
+                    </NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to='/logout'>
+                    <NavDropdown.Item>
+                      <i className={'fas fa-sign-out-alt light'}> Log Out</i>
+                    </NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+              ) : null}
+              {!loginState ? (
+                <LinkContainer to='/singup' className={'fas nav-link'}>
                   <Nav.Link>
                     <i className='fas fa-user'></i> Sign In
                   </Nav.Link>
                 </LinkContainer>
               ) : null}
-              {!loginStatus ? (
-                <LinkContainer to='/login'>
+              {!loginState ? (
+                <LinkContainer to='/login' className={'fas nav-link'}>
                   <Nav.Link>
                     <i className='fas fa-sign-in-alt'></i> Log In
                   </Nav.Link>

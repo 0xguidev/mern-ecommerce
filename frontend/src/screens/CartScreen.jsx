@@ -51,9 +51,9 @@ const CartScreen = () => {
       {!isLoad ? (
         <Loading />
       ) : (
-        <Container className='main_container'>
+        <Container>
           <h1>Shopping Cart</h1>
-          <Row>
+          <Row className='row-cart'>
             <Col md={8}>
               {cartItems.length === 0 ? (
                 <>

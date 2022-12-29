@@ -7,8 +7,7 @@ import Products from '../components/Products';
 import { asyncListProduct } from '../redux/reducers/productReducer';
 
 const HomeScreen = () => {
-  const products = useSelector((state) => state.product.products);
-  const error = useSelector((state) => state.product.error);
+  const { products, error } = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const [isLoad, setIsLoad] = useState(false);
 
@@ -24,7 +23,7 @@ const HomeScreen = () => {
       ) : error.length > 0 ? (
         <Message variant='danger'>{error}</Message>
       ) : (
-        <Container className='main_container'>
+        <Container>
           <h1>Latest Products</h1>
           <Row>
             {products.map((product) => (

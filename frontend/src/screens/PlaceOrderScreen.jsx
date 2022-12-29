@@ -49,7 +49,7 @@ const PlaceOrderScreen = () => {
       } 
     }
     verifyStatus()
-  }, [order]);
+  }, [order, navigate]);
 
   return orderStatus ?
     <Loading />

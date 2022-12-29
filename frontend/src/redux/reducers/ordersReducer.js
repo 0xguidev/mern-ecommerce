@@ -123,6 +123,23 @@ const ordersReducer = createSlice({
         errorUserOrders: action.payload,
       };
     },
+    ordersReset: (state) => {
+      return {
+        ...state,
+        loadingOrder: 'idle',
+        loadingOrderDetails: 'idle',
+        loadingOrderPay: 'idle',
+        loadingUserOrders: 'idle',
+        order: '',
+        orderDetails: '',
+        orderPay: '',
+        userOrders: '',
+        errorOrder: '',
+        errorOrderDetails: '',
+        errorOrderPay: '',
+        errorUserOrders: '',
+      }
+    }
   },
 });
 
@@ -140,6 +157,7 @@ export const {
   userOrderLoading,
   userOrdersSuccess,
   userOdersError,
+  ordersReset
 } = ordersReducer.actions;
 export default ordersReducer.reducer;
 

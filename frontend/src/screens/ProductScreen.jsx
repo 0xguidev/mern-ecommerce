@@ -3,37 +3,39 @@ import {
   Button,
   Card,
   Col,
+  Container,
   Form,
   Image,
   ListGroup,
   Row,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Message from '../components/Message';
 import Loading from '../components/Loading';
 import Rating from '../components/Rating';
 import { asyncAddProduct } from '../redux/reducers/cartReducer';
 import { asyncSingleProduct } from '../redux/reducers/productReducer';
+import BackButton from '../components/BackButton';
 
 const ProductScreen = () => {
   const { id } = useParams();
-  const product = useSelector((state) => state.product.product);
-  const error = useSelector((state) => state.product.error);
+  const { product, error } = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const [isLoad, setIsLoad] = useState(false);
   const [qty, setQty] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProd = async () => {
-      await dispatch(asyncSingleProduct(id));
-
-      setIsLoad(true);
-    };
-    fetchProd();
+    dispatch(asyncSingleProduct(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if(product){
+      setIsLoad(true);
+    }
+  }, [product])
 
   const addtoCartHandler = () => {
     dispatch(asyncAddProduct(id, qty));
@@ -45,11 +47,9 @@ const ProductScreen = () => {
   ) : error.length > 0 ? (
     <Message variant='danger'>{error}</Message>
   ) : (
-    <>
-      <Link className='btn btn-dark my-3' to='/'>
-        Go Back
-      </Link>
-      <Row>
+    <Container>
+      <BackButton />
+      <Row className='row-product-details'>
         <Col md={6}>
           <Image src={product.image} alt={product.name} fluid />
         </Col>
@@ -121,7 +121,7 @@ const ProductScreen = () => {
           </Card>
         </Col>
       </Row>
-    </>
+    </Container>
   );
 };
 
