@@ -144,7 +144,6 @@ export const getUserById = asyncHandler(async (req, res) => {
 export const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
  
-
   if(!req.body){
     return res.status(404).json({ message: 'Invalid informations' });
   }

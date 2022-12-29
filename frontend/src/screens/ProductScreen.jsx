@@ -10,12 +10,13 @@ import {
   Row,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Message from '../components/Message';
 import Loading from '../components/Loading';
 import Rating from '../components/Rating';
 import { asyncAddProduct } from '../redux/reducers/cartReducer';
 import { asyncSingleProduct } from '../redux/reducers/productReducer';
+import BackButton from '../components/BackButton';
 
 const ProductScreen = () => {
   const { id } = useParams();
@@ -47,9 +48,7 @@ const ProductScreen = () => {
     <Message variant='danger'>{error}</Message>
   ) : (
     <Container>
-      <Link className='btn btn-dark my-3' to='/'>
-        Go Back
-      </Link>
+      <BackButton />
       <Row className='row-product-details'>
         <Col md={6}>
           <Image src={product.image} alt={product.name} fluid />

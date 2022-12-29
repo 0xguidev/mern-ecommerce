@@ -14,16 +14,21 @@ const userReducer = createSlice({
     loadingDelete: 'idle',
     loadingUpdate: 'idle',
     loadingRegister: 'idle',
+    loadingDetails: 'idle',
+    loadingAdminUpdate: 'idle',
     listUsers: '',
     loginState: userInfoFromStorage.isLoged,
     user: userInfoFromStorage.user,
+    userDetails: '',
     deleteSuccess: false,
     errorLogin: '',
     errorList: '',
     errorDelete: '',
     errorUpdate: '',
     errorRegister: '',
-    
+    errorDetails: '',
+    errorAdminUpdate: '',
+    stateUpdateUser: false,
   },
   reducers: {
     loginRequest: (state) => {
@@ -104,10 +109,10 @@ const userReducer = createSlice({
       };
     },
     listUsersRequest: (state) => {
-
       return {
         ...state,
         loadingList: 'pending',
+        stateUpdateUser: false
       };
     },
     listUsersSuccess: (state, action) => {
@@ -145,6 +150,52 @@ const userReducer = createSlice({
         errorDelete: action.payload,
       };
     },
+    detailsUserRequest: (state) => {
+      return {
+        ...state,
+        loadingDetails: 'pending',
+        userDetails: '',
+        stateUpdateUser: false
+      };
+    },
+    detailsUserSuccess: (state, action) => {
+      return {
+        ...state,
+        loadingDetails: 'idle',
+        userDetails: action.payload,
+      };
+    },
+    detailsUserFail: (state, action) => {
+      return {
+        ...state,
+        loadingDetails: 'idle',
+        errorDetails: action.payload,
+      };
+    },
+    updateAdminRequest: (state) => {
+      return {
+        ...state,
+        loadingAdminUpdate: 'pending',
+        errorUpdate: '',
+        userDetails: '',
+        stateUpdateUser: false
+      };
+    },
+    updateAdminSuccess: (state, action) => {
+      return {
+        ...state,
+        loadingAdminUpdate: 'idle',
+        userDetails: action.payload,
+        stateUpdateUser: true
+      };
+    },
+    updateAdminFail: (state, action) => {
+      return {
+        ...state,
+        loadingAdminUpdate: 'idle',
+        errorAdminUpdate: action.payload,
+      };
+    },
   },
 });
 
@@ -166,6 +217,12 @@ export const {
   deleteUserRequest,
   deleteUserSuccess,
   deleteUserFail,
+  detailsUserRequest,
+  detailsUserSuccess,
+  detailsUserFail,
+  updateAdminRequest,
+  updateAdminSuccess,
+  updateAdminFail,
 } = userReducer.actions;
 export default userReducer.reducer;
 
@@ -314,3 +371,49 @@ export const deleteUser = (id) => async (dispatch, getState) => {
     return dispatch(deleteUserFail(e.message));
   }
 };
+
+export const getUserDetails = (id) => async (dispatch, getState) => {
+  try {
+    dispatch(detailsUserRequest());
+    const {
+      user: { user },
+    } = getState();
+    const { data, status } = await axios({
+      method: 'get',
+      url: `http://localhost:3001/api/users/${id}`,
+      headers: {
+        authorization: `Bearer ${user.token}`,
+      },
+    });
+    if (status === 200) {
+      return dispatch(detailsUserSuccess(data));
+    }
+  } catch (e) {
+    return dispatch(detailsUserFail(e.message));
+  }
+};
+
+export const updateUser =
+  (id, userData) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch(updateAdminRequest());
+      const {
+        user: { user },
+      } = getState();
+      const { data, status } = await axios({
+        method: 'put',
+        url: `http://localhost:3001/api/users/${id}`,
+        headers: {
+          authorization: `Bearer ${user.token}`,
+          'Content-Type': 'application/json',
+        },
+        data: userData,
+      });
+      if (status === 200) {
+        return dispatch(updateAdminSuccess(data));
+      }
+    } catch (e) {
+      return dispatch(updateAdminFail(e.response.data.message));
+    }
+  };

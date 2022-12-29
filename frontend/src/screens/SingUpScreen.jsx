@@ -6,6 +6,7 @@ import { asyncRegisterRequest } from '../redux/reducers/userReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Message from '../components/Message';
+import { Link } from 'react-router-dom';
 
 const SingUpScreen = () => {
   const [userData, setUserData] = useState({
@@ -15,44 +16,36 @@ const SingUpScreen = () => {
     confirmPassord: '',
     isDisabled: true,
   });
-  const [isError, setIsError] = useState('');
 
   const dispatch = useDispatch();
-  const {loginState, errorLogin } = useSelector((state) => state.user);
+  const { loginState, errorLogin } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (errorLogin) {
-      setIsError(errorLogin);
-    }
     if (loginState) {
       navigate('/');
     }
   }, [errorLogin, loginState, navigate]);
 
   useEffect(() => {
-    if (typeof userData.password === 'string') {
-      if (userData.password !== '') {
-        if (userData.password.length >= 8) {
-          if (userData.password === userData.confirmPassord) {
-            setUserData({ ...userData, isDisabled: false });
-          } else {
-            setUserData({ ...userData, isDisabled: true });
-          }
-        }
+    if (userData.password !== '' && userData.password.length >= 8) {
+      if (userData.password === userData.confirmPassord) {
+        setUserData({ ...userData, isDisabled: false });
+      } else {
+        setUserData({ ...userData, isDisabled: true });
       }
     }
   }, [userData]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    await dispatch(asyncRegisterRequest(userData));
+    dispatch(asyncRegisterRequest(userData));
   };
 
   return (
     <Container className='container-form'>
       <h1>Sign Up</h1>
-      <Form onSubmit={handleSubmit} >
+      <Form onSubmit={handleSubmit}>
         <Row>
           <Col>
             <Form.Group className='mb-3' controlId='formBasicName'>
@@ -60,9 +53,9 @@ const SingUpScreen = () => {
               <Form.Control
                 type='text'
                 placeholder='Enter name'
-                onChange={(e) =>
-                  setUserData({ ...userData, name: e.target.value })
-                }
+                onChange={(e) => {
+                  setUserData({ ...userData, name: e.target.value });
+                }}
               />
             </Form.Group>
 
@@ -86,9 +79,14 @@ const SingUpScreen = () => {
                   setUserData({ ...userData, password: e.target.value })
                 }
               />
+              {userData.password.length < 8 && userData.password !== '' ? (
+                <Message variant='warning'>
+                  Password do not less than 8 charcteres
+                </Message>
+              ) : null}
             </Form.Group>
 
-            <Form.Group className='mb-3' controlId='formBasicPassword'>
+            <Form.Group className='mb-3' controlId='formBasicConfirmPassword'>
               <Form.Label>Confirm password</Form.Label>
               <Form.Control
                 type='password'
@@ -97,10 +95,14 @@ const SingUpScreen = () => {
                   setUserData({ ...userData, confirmPassord: e.target.value })
                 }
               />
+              {userData.password !== userData.confirmPassord &&
+              userData.confirmPassord !== '' ? (
+                <Message variant='warning'>Password do not match</Message>
+              ) : null}
             </Form.Group>
 
             <Form.Group className='mb-3' controlId='formBasicCheckbox'>
-              <Form.Check type='checkbox' label='Check me out' />
+              <Form.Check type='checkbox' label='I agree with terms of usage' />
             </Form.Group>
 
             <Button
@@ -110,7 +112,15 @@ const SingUpScreen = () => {
             >
               Register
             </Button>
-            {isError ? <Message variant='danger'>{errorLogin}</Message> : null}
+            {errorLogin ? (
+              <Message variant='danger'>{errorLogin}</Message>
+            ) : null}
+          </Col>
+        </Row>
+        <Row className='py-3'>
+          <Col>
+            Have an account?
+            <Link to={'/login'}> Login</Link>
           </Col>
         </Row>
       </Form>
