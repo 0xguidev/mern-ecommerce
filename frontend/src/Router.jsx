@@ -13,6 +13,7 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
 import UserListScreen from './screens/UserListScreen';
 import UserEditSreen from './screens/UserEditScreen';
+import ProductListScreen from './screens/ProductListScreen';
 
 const Router = () => {
   return (
@@ -33,6 +34,7 @@ const Router = () => {
       <Route exact path='/order/:id' element={<OrderScreen />} />
       <Route exact path='/admin/userlist' element={<UserListScreen />} />
       <Route exact path='/admin/user/:id/edit' element={<UserEditSreen />} />
+      <Route exact path='/admin/productslist/' element={<ProductListScreen />} />
     </Routes>
   );
 };
