@@ -11,10 +11,10 @@ import { asyncListProduct, deleteProduct } from '../redux/reducers/productReduce
 
 export default function ProductListScreen() {
   const dispatch = useDispatch();
-  const { products, error } = useSelector((state) => state.product);
+  const { products, error, successDelete } = useSelector((state) => state.product);
   const {
     loginState,
-    user: { isAdmin },
+    user: { isAdmin }
   } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ export default function ProductListScreen() {
     } else {
       navigate('/login');
     }
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, successDelete]);
 
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure?')) {
@@ -44,8 +44,8 @@ export default function ProductListScreen() {
           <thead>
             <tr>
               <th>ID</th>
-              <th>USER</th>
-              <th>NAME</th>
+              <th>Name</th>
+              <th>PRICE</th>
               <th>BRAND</th>
               <th>CATEGORY</th>
               <th></th>
@@ -56,6 +56,7 @@ export default function ProductListScreen() {
               <tr key={product._id}>
                 <td>{product._id}</td>
                 <td>{product.name}</td>
+                <td>${product.price}</td>
                 <td>{product.brand}</td>
                 <td>{product.category}</td>
                 <td>

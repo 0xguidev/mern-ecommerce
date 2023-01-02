@@ -17,11 +17,11 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.send('API is running...');
 });
 
-app.get('/api/config/paypal', (req, res) => {
+app.get('/api/config/paypal', (_req, res) => {
   res.send(PAYPAL_CLIENT_ID);
 });
 

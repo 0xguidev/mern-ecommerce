@@ -9,7 +9,7 @@ const productSlice = createSlice({
     product: {},
     error: '',
     loadingDelete: 'idle',
-    successDelete: '',
+    successDelete: false,
     errorDelete: '',
     loadingUpdate: 'idle',
     successUpdate: '',
@@ -41,6 +41,7 @@ const productSlice = createSlice({
       return {
         ...state,
         loading: 'pending',
+        successDelete: false
       };
     },
     deleteProductRequest: (state) => {
@@ -53,7 +54,7 @@ const productSlice = createSlice({
       return {
         ...state,
         loadingDelete: 'idle',
-        successDelete: action.payload
+        successDelete: true
       }
     },
     deleteProductError: (state, action) => {
