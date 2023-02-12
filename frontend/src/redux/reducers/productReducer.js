@@ -14,6 +14,9 @@ const productSlice = createSlice({
     loadingUpdate: 'idle',
     successUpdate: '',
     errorUpdate: '',
+    loadingCreate: 'idle',
+    successCreate: '',
+    errorCreate: '',
   },
   reducers: {
     listProductReceived: (state, action) => {
@@ -41,53 +44,76 @@ const productSlice = createSlice({
       return {
         ...state,
         loading: 'pending',
-        successDelete: false
+        successDelete: false,
       };
     },
     deleteProductRequest: (state) => {
       return {
         ...state,
-        loadingDelete: 'pending'
-      }
+        loadingDelete: 'pending',
+      };
     },
     deleteProductReceived: (state, action) => {
       return {
         ...state,
         loadingDelete: 'idle',
-        successDelete: true
-      }
+        successDelete: true,
+      };
     },
     deleteProductError: (state, action) => {
       return {
         ...state,
         loadingDelete: 'idle',
-        errorDelete: action.payload
-      }
+        errorDelete: action.payload,
+      };
     },
     updateProductRequest: (state) => {
       return {
         ...state,
-        loadingUpdate: 'pending'
-      }
+        loadingUpdate: 'pending',
+      };
     },
     updateProductReceived: (state, action) => {
       return {
         ...state,
         loadingUpdate: 'idle',
-        successUpdate: action.payload
-      }
+        successUpdate: action.payload,
+      };
     },
     updateProductError: (state, action) => {
       return {
         ...state,
         loadingUpdate: 'idle',
-        errorUpdate: action.payload
-      }
-    }
+        errorUpdate: action.payload,
+      };
+    },
+    loadCreateProducts: (state, action) => {
+      return {
+        ...state,
+        loadingCreate: 'load',
+      };
+    },
+    succesCreateProduct: (state, action) => {
+      return {
+        ...state,
+        loadingCreate: 'idle',
+        successCreate: action.payload,
+      };
+    },
+    errorCreateProduct: (state, action) => {
+      return {
+        ...state,
+        loadingCreate: 'idle',
+        errorCreate: action.payload,
+      };
+    },
   },
 });
 
 export const {
+  loadCreateProducts,
+  succesCreateProduct,
+  errorCreateProduct,
   listProductReceived,
   singleProductReceived,
   throwErrorProduct,
@@ -97,7 +123,7 @@ export const {
   deleteProductError,
   updateProductRequest,
   updateProductReceived,
-  updateProductError
+  updateProductError,
 } = productSlice.actions;
 
 export default productSlice.reducer;
@@ -176,5 +202,28 @@ export const updateProduct = (product) => async (dispatch, getState) => {
     }
   } catch (e) {
     return dispatch(updateProductError(e.response.data.message));
+  }
+};
+
+export const createProductRequest = () => async (dispatch, getState) => {
+  try {
+    dispatch(loadCreateProducts());
+    const {
+      user: { user },
+    } = getState();
+    const { data, status } = await axios({
+      method: 'post',
+      url: 'http://localhost:3001/api/products',
+      headers: {
+        authorization: `Bearer ${user.token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (status === 201) {
+      return dispatch(succesCreateProduct(data));
+    }
+  } catch ({ message }) {
+    return dispatch(errorCreateProduct(message));
   }
 };
