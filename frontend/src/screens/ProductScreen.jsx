@@ -10,13 +10,13 @@ import {
   Row,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
-import Message from '../components/Message';
-import Loading from '../components/Loading';
-import Rating from '../components/Rating';
-import { asyncAddProduct } from '../redux/reducers/cartReducer';
-import { asyncSingleProduct } from '../redux/reducers/productReducer';
+import { useNavigate, useParams } from 'react-router-dom';
 import BackButton from '../components/BackButton';
+import Loading from '../components/Loading';
+import Message from '../components/Message';
+import Rating from '../components/Rating';
+import { asyncAddProduct } from '../redux/reducers/cart';
+import { asyncSingleProduct } from '../redux/reducers/product/ProductDetails';
 
 const ProductScreen = () => {
   const { id } = useParams();

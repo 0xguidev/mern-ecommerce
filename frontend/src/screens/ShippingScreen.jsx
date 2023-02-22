@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Button, Form, Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
-import { saveShippingAddress } from '../redux/reducers/cartReducer';
+import { saveShippingAddress } from '../redux/reducers/cart';
 
 function ShippingScreen() {
   const dispatch = useDispatch();

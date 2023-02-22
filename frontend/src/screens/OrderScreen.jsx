@@ -1,16 +1,15 @@
 import axios from 'axios';
-import { PayPalButton } from 'react-paypal-button-v2';
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   Col,
+  Container,
   Image,
   ListGroup,
   ListGroupItem,
   Row,
-  Container,
 } from 'react-bootstrap';
+import { PayPalButton } from 'react-paypal-button-v2';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import Loading from '../components/Loading';
@@ -19,7 +18,7 @@ import {
   asyncOrderDetails,
   asyncPayOrder,
   orderPayReset,
-} from '../redux/reducers/ordersReducer';
+} from '../redux/reducers/order';
 
 const OrderScreen = () => {
   const dispatch = useDispatch();

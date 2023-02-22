@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { ordersReset } from './ordersReducer';
+import { ordersReset } from '../order';
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
@@ -112,7 +112,7 @@ const userReducer = createSlice({
       return {
         ...state,
         loadingList: 'pending',
-        stateUpdateUser: false
+        stateUpdateUser: false,
       };
     },
     listUsersSuccess: (state, action) => {
@@ -155,7 +155,7 @@ const userReducer = createSlice({
         ...state,
         loadingDetails: 'pending',
         userDetails: '',
-        stateUpdateUser: false
+        stateUpdateUser: false,
       };
     },
     detailsUserSuccess: (state, action) => {
@@ -178,7 +178,7 @@ const userReducer = createSlice({
         loadingAdminUpdate: 'pending',
         errorUpdate: '',
         userDetails: '',
-        stateUpdateUser: false
+        stateUpdateUser: false,
       };
     },
     updateAdminSuccess: (state, action) => {
@@ -186,7 +186,7 @@ const userReducer = createSlice({
         ...state,
         loadingAdminUpdate: 'idle',
         userDetails: action.payload,
-        stateUpdateUser: true
+        stateUpdateUser: true,
       };
     },
     updateAdminFail: (state, action) => {
@@ -393,27 +393,25 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
   }
 };
 
-export const updateUser =
-  (id, userData) =>
-  async (dispatch, getState) => {
-    try {
-      dispatch(updateAdminRequest());
-      const {
-        user: { user },
-      } = getState();
-      const { data, status } = await axios({
-        method: 'put',
-        url: `http://localhost:3001/api/users/${id}`,
-        headers: {
-          authorization: `Bearer ${user.token}`,
-          'Content-Type': 'application/json',
-        },
-        data: userData,
-      });
-      if (status === 200) {
-        return dispatch(updateAdminSuccess(data));
-      }
-    } catch (e) {
-      return dispatch(updateAdminFail(e.response.data.message));
+export const updateUser = (id, userData) => async (dispatch, getState) => {
+  try {
+    dispatch(updateAdminRequest());
+    const {
+      user: { user },
+    } = getState();
+    const { data, status } = await axios({
+      method: 'put',
+      url: `http://localhost:3001/api/users/${id}`,
+      headers: {
+        authorization: `Bearer ${user.token}`,
+        'Content-Type': 'application/json',
+      },
+      data: userData,
+    });
+    if (status === 200) {
+      return dispatch(updateAdminSuccess(data));
     }
-  };
+  } catch (e) {
+    return dispatch(updateAdminFail(e.response.data.message));
+  }
+};

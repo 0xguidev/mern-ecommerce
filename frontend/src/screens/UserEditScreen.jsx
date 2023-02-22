@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Container, Row, Button, Form } from 'react-bootstrap';
-import { getUserDetails, updateUser } from '../redux/reducers/userReducer';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import Message from '../components/Message';
 import { useParams } from 'react-router-dom';
-import Loading from '../components/Loading';
 import BackButton from '../components/BackButton';
+import Loading from '../components/Loading';
+import Message from '../components/Message';
+import { getUserDetails, updateUser } from '../redux/reducers/user';
 
 const UserEditSreen = () => {
   const { id } = useParams();

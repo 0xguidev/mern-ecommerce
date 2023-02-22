@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { logoutUser } from '../redux/reducers/userReducer';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../components/Loading';
-import { useDispatch } from 'react-redux';
+import { logoutUser } from '../redux/reducers/user';
 
 const LogoutScreen = () => {
   const navigate = useNavigate();

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import Message from '../components/Message';
 import Loading from '../components/Loading';
+import Message from '../components/Message';
 import Products from '../components/Products';
-import { asyncListProduct } from '../redux/reducers/productReducer';
+import { asyncListProduct } from '../redux/reducers/product/ListProduct';
 
 const HomeScreen = () => {
-  const { products, error } = useSelector((state) => state.product);
+  const { products, error } = useSelector((state) => state.listProduct);
   const dispatch = useDispatch();
   const [isLoad, setIsLoad] = useState(false);
 

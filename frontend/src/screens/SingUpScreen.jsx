@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Col, Container, Row } from 'react-bootstrap';
-import { asyncRegisterRequest } from '../redux/reducers/userReducer';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Message from '../components/Message';
-import { Link } from 'react-router-dom';
+import { asyncRegisterRequest } from '../redux/reducers/user';
 
 const SingUpScreen = () => {
   const [userData, setUserData] = useState({

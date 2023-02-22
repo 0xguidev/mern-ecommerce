@@ -1,13 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteUser, getListUsers } from '../redux/reducers/userReducer';
-import Loading from '../components/Loading';
-import Message from '../components/Message';
+import React, { useEffect } from 'react';
 import { Button, Container, Table } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../components/Loading';
+import Message from '../components/Message';
+import { deleteUser, getListUsers } from '../redux/reducers/user';
 
 export default function UserListScreen() {
   const dispatch = useDispatch();

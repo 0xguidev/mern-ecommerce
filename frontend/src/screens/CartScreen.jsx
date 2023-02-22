@@ -1,10 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import {
-  asyncAddProduct,
-  removeProductFromCart,
-} from '../redux/reducers/cartReducer';
 import {
   Button,
   Card,
@@ -15,8 +9,11 @@ import {
   ListGroup,
   Row,
 } from 'react-bootstrap';
-import Message from '../components/Message';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import Loading from '../components/Loading';
+import Message from '../components/Message';
+import { asyncAddProduct, removeProductFromCart } from '../redux/reducers/cart';
 
 const CartScreen = () => {
   const { cartItems } = useSelector((state) => state.cart);
@@ -35,7 +32,7 @@ const CartScreen = () => {
       setIsLoad(true);
     };
     fetchProduct();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const removeFromCartHandler = (productId) => {

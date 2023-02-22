@@ -1,12 +1,12 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { asyncUserLoginRequest } from '../redux/reducers/userReducer';
-import { Link, useNavigate } from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
 import { Col, Row } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import Message from '../components/Message';
+import { asyncUserLoginRequest } from '../redux/reducers/user';
 
 function LoginScreen() {
   const [userData, setUserData] = useState({ email: '', pass: '' });

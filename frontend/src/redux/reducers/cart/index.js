@@ -98,16 +98,18 @@ const cartReducer = createSlice({
         ...state,
         cartItems: [
           ...state.cartItems.filter((x) => x.product !== action.payload),
-        ]
-      }
+        ],
+      };
     },
     saveShippingAddress: (state, action) => {
-      localStorage.setItem('shippingAddress', JSON.stringify({ shipping: action.payload }));
+      localStorage.setItem(
+        'shippingAddress',
+        JSON.stringify({ shipping: action.payload })
+      );
       return {
         ...state,
         shipping: action.payload,
-
-      }
+      };
     },
     savePaymentMethod(state, action) {
       return {

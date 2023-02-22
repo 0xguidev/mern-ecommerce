@@ -1,22 +1,20 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  Button,
   Card,
   Col,
+  Container,
   Image,
   ListGroup,
-  Button,
   ListGroupItem,
   Row,
-  Container,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
 import Loading from '../components/Loading';
 import Message from '../components/Message';
-import { asyncCreateOrder } from '../redux/reducers/ordersReducer';
+import { asyncCreateOrder } from '../redux/reducers/order';
 
 const PlaceOrderScreen = () => {
   const cart = useSelector((state) => state.cart);
@@ -38,22 +36,22 @@ const PlaceOrderScreen = () => {
       })
     );
 
-    setOrderStatus(true)
+    setOrderStatus(true);
   };
 
   useEffect(() => {
     const verifyStatus = () => {
-      if(order._id) {
+      if (order._id) {
         navigate(`/order/${order._id}`);
-        setOrderStatus(false)
-      } 
-    }
-    verifyStatus()
+        setOrderStatus(false);
+      }
+    };
+    verifyStatus();
   }, [order, navigate]);
 
-  return orderStatus ?
+  return orderStatus ? (
     <Loading />
-    : (
+  ) : (
     <Container>
       <CheckoutSteps step1 step2 step3 step4 />
       <Row>

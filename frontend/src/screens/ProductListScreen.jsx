@@ -6,16 +6,18 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../components/Loading';
 import Message from '../components/Message';
-import {
-  asyncListProduct,
-  createProductRequest,
-  deleteProduct,
-} from '../redux/reducers/productReducer';
+import { createProductRequest } from '../redux/reducers/product/CreateProduct';
+import { deleteProduct } from '../redux/reducers/product/DeleteProduct';
+import { asyncListProduct } from '../redux/reducers/product/ListProduct';
 
 export default function ProductListScreen() {
   const dispatch = useDispatch();
-  const { products, error, successDelete, successCreate } = useSelector(
-    (state) => state.product
+  const { products, error } = useSelector((state) => state.listProduct);
+  const { createdSuccess, createdError } = useSelector(
+    (state) => state.createProduct
+  );
+  const { successDelete, deleteError } = useSelector(
+    (state) => state.deleteProduct
   );
   const {
     loginState,
@@ -29,7 +31,7 @@ export default function ProductListScreen() {
     } else {
       navigate('/login');
     }
-  }, [dispatch, navigate, successDelete, successCreate]);
+  }, [dispatch, navigate, successDelete, createdSuccess]);
 
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure?')) {
@@ -43,8 +45,8 @@ export default function ProductListScreen() {
   return (
     <Container>
       <h1>PRODUCTS</h1>
-      {error ? (
-        <Message variant='danger'>{error}</Message>
+      {error || deleteError ? (
+        <Message variant='danger'>{error || deleteError}</Message>
       ) : !products ? (
         <Loading />
       ) : (

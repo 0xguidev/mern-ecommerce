@@ -138,8 +138,8 @@ const ordersReducer = createSlice({
         errorOrderDetails: '',
         errorOrderPay: '',
         errorUserOrders: '',
-      }
-    }
+      };
+    },
   },
 });
 
@@ -157,7 +157,7 @@ export const {
   userOrderLoading,
   userOrdersSuccess,
   userOdersError,
-  ordersReset
+  ordersReset,
 } = ordersReducer.actions;
 export default ordersReducer.reducer;
 
@@ -165,7 +165,9 @@ export const asyncCreateOrder = (orders) => async (dispatch, getState) => {
   try {
     dispatch(orderLoading());
 
-    const { user: { user } } = getState();
+    const {
+      user: { user },
+    } = getState();
 
     const { data } = await axios({
       method: 'post',
@@ -186,7 +188,9 @@ export const asyncOrderDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch(orderDetailsLoading());
 
-    const { user: { user } } = getState();
+    const {
+      user: { user },
+    } = getState();
 
     const { data } = await axios({
       method: 'get',
@@ -206,7 +210,9 @@ export const asyncPayOrder =
     try {
       dispatch(orderPayLoad());
 
-      const { user: { user } } = getState();
+      const {
+        user: { user },
+      } = getState();
 
       const { data } = await axios({
         method: 'put',
@@ -223,22 +229,21 @@ export const asyncPayOrder =
     }
   };
 
-
-  export const getUserOrders = () => async (
-    dispatch, getState
-  ) => {
-    try {
-      dispatch(userOrderLoading())
-      const { user: { user } } = getState();
-      const { data } = await axios({
-        method: 'get',
-        url: `http://localhost:3001/api/orders/ordersUser`,
-        headers: {
-          authorization: `Bearer ${user.token}`,
-        },
-      });
-      dispatch(userOrdersSuccess(data))
-    } catch {
-      dispatch(userOdersError())
-    }
+export const getUserOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch(userOrderLoading());
+    const {
+      user: { user },
+    } = getState();
+    const { data } = await axios({
+      method: 'get',
+      url: `http://localhost:3001/api/orders/ordersUser`,
+      headers: {
+        authorization: `Bearer ${user.token}`,
+      },
+    });
+    dispatch(userOrdersSuccess(data));
+  } catch {
+    dispatch(userOdersError());
   }
+};
