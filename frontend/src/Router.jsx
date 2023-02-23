@@ -1,19 +1,20 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import ProductScreen from './screens/ProductScreen';
-import HomeScreen from './screens/HomeScreen';
 import CartScreen from './screens/CartScreen';
-import SingUpScreen from './screens/SingUpScreen';
+import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import LogoutScreen from './screens/LogoutScreen';
-import ShippingScreen from './screens/ShippingScreen';
-import ProfileScreen from './screens/ProfileScreen';
+import OrderScreen from './screens/OrderScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
-import OrderScreen from './screens/OrderScreen';
-import UserListScreen from './screens/UserListScreen';
-import UserEditSreen from './screens/UserEditScreen';
+import ProductEditSreen from './screens/ProductEditScreen';
 import ProductListScreen from './screens/ProductListScreen';
+import ProductScreen from './screens/ProductScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import ShippingScreen from './screens/ShippingScreen';
+import SingUpScreen from './screens/SingUpScreen';
+import UserEditSreen from './screens/UserEditScreen';
+import UserListScreen from './screens/UserListScreen';
 
 const Router = () => {
   return (
@@ -34,7 +35,16 @@ const Router = () => {
       <Route exact path='/order/:id' element={<OrderScreen />} />
       <Route exact path='/admin/userlist' element={<UserListScreen />} />
       <Route exact path='/admin/user/:id/edit' element={<UserEditSreen />} />
-      <Route exact path='/admin/productslist/' element={<ProductListScreen />} />
+      <Route
+        exact
+        path='/admin/productslist/'
+        element={<ProductListScreen />}
+      />
+      <Route
+        exact
+        path='/admin/product/:id/edit'
+        element={<ProductEditSreen />}
+      />
     </Routes>
   );
 };

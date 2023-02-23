@@ -4,29 +4,29 @@ import axios from 'axios';
 const ProductDetailSlice = createSlice({
   name: 'ProductDetailSlice',
   initialState: {
-    loading: 'idle',
-    success: '',
-    error: '',
+    detailLoading: 'idle',
+    detailSuccess: '',
+    detailError: '',
   },
   reducers: {
     ProductDetailsLoading: (state) => {
       return {
         ...state,
-        loading: 'pending',
+        detailLoading: 'pending',
       };
     },
     ProductDetailsSuccess: (state, action) => {
       return {
         ...state,
-        loading: 'idle',
-        products: [...action.payload],
+        detailLoading: 'idle',
+        detailSuccess: action.payload,
       };
     },
     ProductDetailsError: (state, action) => {
       return {
         ...state,
-        loading: 'idle',
-        error: action.payload,
+        detailLoading: 'idle',
+        detailError: action.payload,
       };
     },
   },

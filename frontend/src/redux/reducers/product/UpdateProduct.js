@@ -4,29 +4,29 @@ import axios from 'axios';
 const UpdateProductSlice = createSlice({
   name: 'product',
   initialState: {
-    loading: 'idle',
-    product: {},
-    error: '',
+    updateLoading: 'idle',
+    updatedProduct: false,
+    updatedError: '',
   },
   reducers: {
     updateProductLoading: (state) => {
       return {
         ...state,
-        loading: 'pending',
+        updateLoading: 'pending',
       };
     },
-    updateProductSuccess: (state, action) => {
+    updateProductSuccess: (state) => {
       return {
         ...state,
-        loading: 'idle',
-        product: action.payload,
+        updateLoading: 'idle',
+        updatedProduct: true,
       };
     },
     updateProductError: (state, action) => {
       return {
         ...state,
-        loading: 'idle',
-        error: action.payload,
+        updateLoading: 'idle',
+        updatedError: action.payload,
       };
     },
   },
@@ -46,9 +46,9 @@ export const updateProduct = (product) => async (dispatch, getState) => {
     const {
       user: { user },
     } = getState();
-    const { data, status } = await axios({
+    const { status } = await axios({
       method: 'put',
-      url: `http://localhost:3001/api/produtcs/${product._id}`,
+      url: `http://localhost:3001/api/products/${product._id}`,
       headers: {
         authorization: `Bearer ${user.token}`,
         'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
       data: product,
     });
     if (status === 200) {
-      return dispatch(updateProductSuccess(data));
+      return dispatch(updateProductSuccess());
     }
   } catch (e) {
     return dispatch(updateProductError(e.response.data.message));
