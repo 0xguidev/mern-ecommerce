@@ -23,9 +23,7 @@ export default function ProductEditSreen() {
   const { detailSuccess, detailError } = useSelector(
     (state) => state.productDetails
   );
-  const { updatedProduct, updatedError } = useSelector(
-    (state) => state.updateProduct
-  );
+  const { updatedProduct } = useSelector((state) => state.updateProduct);
 
   const dispatch = useDispatch();
 
