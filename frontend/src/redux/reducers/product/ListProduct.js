@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { resetCreteProductState } from './CreateProduct';
 import { resetDeleteProductState } from './DeleteProduct';
+import { resetDataUploadImage } from './ProductImageUpload';
+import { resetDataUpdateProduct } from './UpdateProduct';
 
 const ListProductSlice = createSlice({
   name: 'ListProduct',
@@ -42,6 +44,8 @@ export const asyncListProduct = () => async (dispatch) => {
     dispatch(ListProductLoading());
     dispatch(resetCreteProductState());
     dispatch(resetDeleteProductState());
+    dispatch(resetDataUploadImage());
+    dispatch(resetDataUpdateProduct());
     const { data } = await axios({
       method: 'get',
       url: 'http://localhost:3001/api/products',

@@ -13,9 +13,7 @@ import { asyncListProduct } from '../redux/reducers/product/ListProduct';
 export default function ProductListScreen() {
   const dispatch = useDispatch();
   const { products, error } = useSelector((state) => state.listProduct);
-  const { createdSuccess, createdError } = useSelector(
-    (state) => state.createProduct
-  );
+  const { createdSuccess } = useSelector((state) => state.createProduct);
   const { successDelete, deleteError } = useSelector(
     (state) => state.deleteProduct
   );

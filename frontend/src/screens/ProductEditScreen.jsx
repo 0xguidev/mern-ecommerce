@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import BackButton from '../components/BackButton';
 import Loading from '../components/Loading';
 import Message from '../components/Message';
 import { asyncSingleProduct } from '../redux/reducers/product/ProductDetails';
-import { updateProduct } from '../redux/reducers/product/UpdateProduct';
+import { asyncUploadImageProduct } from '../redux/reducers/product/ProductImageUpload';
+import { asyncUpdateProduct } from '../redux/reducers/product/UpdateProduct';
 
 export default function ProductEditSreen() {
   const { id } = useParams();
+
   const [productData, setproductData] = useState({
     name: '',
     price: 0,
@@ -19,19 +21,25 @@ export default function ProductEditSreen() {
     countInStock: 0,
     description: '',
   });
-  const [isShowMsg, setIsShowMsg] = useState(false);
+
+  const [fileUpload, setfileUpload] = useState('');
   const { detailSuccess, detailError } = useSelector(
     (state) => state.productDetails
   );
   const { updatedProduct } = useSelector((state) => state.updateProduct);
 
+  const { productImageUpload } = useSelector((state) => state.uploadImage);
+
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if (!detailSuccess || detailSuccess._id !== id) {
+    if (detailSuccess || detailSuccess._id !== id) {
       dispatch(asyncSingleProduct(id));
     }
-  }, [dispatch, id, detailSuccess]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (detailSuccess) {
@@ -51,21 +59,34 @@ export default function ProductEditSreen() {
   }, [detailSuccess]);
 
   useEffect(() => {
-    if (updatedProduct) {
-      showSuccessMsg();
+    if (productImageUpload) {
+      setproductData({
+        ...productData,
+        image: productImageUpload,
+      });
     }
-  }, [updatedProduct]);
+  }, [productData, productImageUpload]);
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (productImageUpload.length > 0) {
+      dispatch(asyncUpdateProduct(productData));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productImageUpload]);
+
+  useEffect(() => {
+    if (updatedProduct) {
+      navigate('/admin/productslist/');
+    }
+  }, [navigate, updatedProduct, productImageUpload]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(updateProduct(productData));
-  };
-
-  const showSuccessMsg = () => {
-    setIsShowMsg(true);
-    setTimeout(() => {
-      setIsShowMsg(false);
-    }, 5000);
+    if (fileUpload.length > 0) {
+      dispatch(asyncUploadImageProduct(fileUpload));
+    } else {
+      dispatch(asyncUpdateProduct(productData));
+    }
   };
 
   return (
@@ -112,15 +133,17 @@ export default function ProductEditSreen() {
 
                   <Form.Group className='mb-3' controlId='formBasicImage'>
                     <Form.Label>Image</Form.Label>
+
                     <Form.Control
                       type='text'
+                      name='image'
+                      readOnly
                       value={productData.image}
-                      onChange={(e) =>
-                        setproductData({
-                          ...productData,
-                          image: e.target.value,
-                        })
-                      }
+                    />
+                    <Form.Control
+                      type='file'
+                      name='image'
+                      onChange={(e) => setfileUpload(e.target.files)}
                     />
                   </Form.Group>
 
@@ -187,11 +210,6 @@ export default function ProductEditSreen() {
                   <Button variant='primary' type='submit' className='w-100'>
                     Update
                   </Button>
-                  {isShowMsg ? (
-                    <Message variant={'success'}>
-                      Product updated success
-                    </Message>
-                  ) : null}
                 </Col>
               </Row>
             </Form>

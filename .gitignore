@@ -15,6 +15,7 @@ backend/.env
 
 # production
 /build
+backend/uploads
 
 # misc
 .DS_Store

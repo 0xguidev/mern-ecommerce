@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const UpdateProductSlice = createSlice({
-  name: 'product',
+  name: 'UpdateProduct',
   initialState: {
     updateLoading: 'idle',
     updatedProduct: false,
@@ -13,6 +13,7 @@ const UpdateProductSlice = createSlice({
       return {
         ...state,
         updateLoading: 'pending',
+        updatedProduct: false,
       };
     },
     updateProductSuccess: (state) => {
@@ -29,6 +30,14 @@ const UpdateProductSlice = createSlice({
         updatedError: action.payload,
       };
     },
+    resetDataUpdateProduct: (state) => {
+      return {
+        ...state,
+        updateLoading: 'idle',
+        updatedProduct: false,
+        updatedError: '',
+      };
+    },
   },
 });
 
@@ -36,11 +45,12 @@ export const {
   updateProductLoading,
   updateProductSuccess,
   updateProductError,
+  resetDataUpdateProduct,
 } = UpdateProductSlice.actions;
 
 export default UpdateProductSlice.reducer;
 
-export const updateProduct = (product) => async (dispatch, getState) => {
+export const asyncUpdateProduct = (product) => async (dispatch, getState) => {
   try {
     dispatch(updateProductLoading());
     const {

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const DeleteProductSlice = createSlice({
-  name: 'ProductDetailSlice',
+  name: 'DeleteProduct',
   initialState: {
     deleteLoading: 'idle',
     success: '',

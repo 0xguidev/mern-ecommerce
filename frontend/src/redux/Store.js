@@ -6,6 +6,7 @@ import {
   DeleteProductSlice,
   ListProductSlice,
   ProductDetailSlice,
+  productImageSlice,
   UpdateProductSlice,
 } from './reducers/product';
 import userReducer from './reducers/user';
@@ -17,6 +18,7 @@ const Store = configureStore({
     listProduct: ListProductSlice,
     productDetails: ProductDetailSlice,
     updateProduct: UpdateProductSlice,
+    uploadImage: productImageSlice,
     cart: cartReducer,
     user: userReducer,
     orders: ordersReducer,

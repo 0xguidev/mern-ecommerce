@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const ProductDetailSlice = createSlice({
-  name: 'ProductDetailSlice',
+  name: 'ProductDetails',
   initialState: {
     detailLoading: 'idle',
     detailSuccess: '',
