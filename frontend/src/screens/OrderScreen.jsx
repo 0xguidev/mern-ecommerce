@@ -14,18 +14,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import Loading from '../components/Loading';
 import Message from '../components/Message';
+import { asyncOrderDetails } from '../redux/reducers/order/OrderDetailsSlice';
 import {
-  asyncOrderDetails,
   asyncPayOrder,
   orderPayReset,
-} from '../redux/reducers/order';
+} from '../redux/reducers/order/PayOrderSlice';
+
 
 const OrderScreen = () => {
   const dispatch = useDispatch();
   const { orderDetails, errorOrderDetails } = useSelector(
-    (state) => state.orders
+    (state) => state.orderDetails
   );
-  const { orderPay, loadingOrderPay } = useSelector((state) => state.orders);
+  const { orderPay, loadingOrderPay } = useSelector((state) => state.payOrder);
   const { id } = useParams();
   const [sdkReady, setSdkReady] = useState(false);
 

@@ -1,6 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import cartReducer from './reducers/cart';
-import ordersReducer from './reducers/order';
+import {
+  CreateOrderSlice,
+  GetUserOrders,
+  OrderDetailsSlice,
+  PayOrderSlice,
+} from './reducers/order';
 import {
   CreateProductSlice,
   DeleteProductSlice,
@@ -21,7 +26,10 @@ const Store = configureStore({
     uploadImage: productImageSlice,
     cart: cartReducer,
     user: userReducer,
-    orders: ordersReducer,
+    createOrders: CreateOrderSlice,
+    userOrders: GetUserOrders,
+    orderDetails: OrderDetailsSlice,
+    payOrder: PayOrderSlice,
   },
 });
 

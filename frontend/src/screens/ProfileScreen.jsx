@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Message from '../components/Message';
-import { getUserOrders } from '../redux/reducers/order';
+import { GetUserOrders } from '../redux/reducers/order';
 import { asyncUserUpdateRequest } from '../redux/reducers/user';
 
 function ProfileScreen() {
@@ -21,7 +21,7 @@ function ProfileScreen() {
 
   const dispatch = useDispatch();
   const { loginState, errorLogin, user } = useSelector((state) => state.user);
-  const { userOrders } = useSelector((state) => state.orders);
+  const { userOrders } = useSelector((state) => state.userOrders);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ function ProfileScreen() {
       setIsError(errorLogin);
     }
     if (!userOrders) {
-      dispatch(getUserOrders());
+      dispatch(GetUserOrders());
     }
     if (!loginState) {
       navigate('/');

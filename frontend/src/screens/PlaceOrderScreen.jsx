@@ -14,11 +14,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
 import Loading from '../components/Loading';
 import Message from '../components/Message';
-import { asyncCreateOrder } from '../redux/reducers/order';
+import { asyncCreateOrder } from '../redux/reducers/order/CreateOrderSlice';
 
 const PlaceOrderScreen = () => {
   const cart = useSelector((state) => state.cart);
-  const { order } = useSelector((state) => state.orders);
+  const { order } = useSelector((state) => state.createOrders);
   const [orderStatus, setOrderStatus] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();

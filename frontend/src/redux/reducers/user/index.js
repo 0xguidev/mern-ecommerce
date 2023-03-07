@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { ordersReset } from '../order';
+import { ResetOrders } from '../order/OrderReset';
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
@@ -266,7 +266,7 @@ export const logoutUser = () => (dispatch) => {
   localStorage.removeItem('__paypal_storage__');
   localStorage.removeItem('cartItems');
   localStorage.removeItem('shippingAddress');
-  dispatch(ordersReset());
+  dispatch(ResetOrders());
   return dispatch(userLogout());
 };
 
