@@ -1,14 +1,12 @@
 import express from 'express';
-import {
-  authUser,
-  deleteUser,
-  getUserById,
-  getUserProfile,
-  getUsers,
-  registerUser,
-  updateUser,
-  updateUserProfile,
-} from '../controllers/userController.js';
+import authUser from '../controllers/User/AuthUser.js';
+import deleteUser from '../controllers/User/DeleteUser.js';
+import getUserById from '../controllers/User/GetUserById.js';
+import getUserProfile from '../controllers/User/GetUserProfile.js';
+import getUsers from '../controllers/User/GetUsers.js';
+import registerUser from '../controllers/User/RegisterUser.js';
+import updateUser from '../controllers/User/UpdateUser.js';
+import updateUserProfile from '../controllers/User/UpdateUserProfile.js';
 import { admin, protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
